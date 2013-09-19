@@ -8,6 +8,14 @@
 
 Project.find_or_initialize_by_name('Bcardiff Test 1').tap do |p|
   p.master_collection_id = 927
-  p.source_collection_ids = [928, 929]
+
+  p.source_lists.find_or_initialize_by_collection_id(928) do |source|
+    source.save!
+  end
+
+  p.source_lists.find_or_initialize_by_collection_id(929) do |source|
+    source.save!
+  end
+
   p.save!
 end

@@ -1,0 +1,27 @@
+%h1
+  = @project.name
+  mapping
+
+.row-fluid
+
+  .span3
+    %table.table.table-bordered.table-condensed.table-hover
+      %tr
+        %th
+          Facility List
+        %th
+          Fully reconciled?
+        %th
+      - @project.source_lists.each do |source|
+        %tr
+          %td= source.name
+          %td ?
+          %td
+            = link_to 'Edit', review_mapping_project_source_path(@project, source)
+
+  .span9
+    - if @source.nil?
+      .well
+        Select a source list to edit mapping
+    - else
+      %h2= @source.name

@@ -1,6 +1,14 @@
 ResmapRecon::Application.routes.draw do
 
-  resources :projects do
+  resources :projects, only: [:index, :show] do
+    resources :sources, controller: 'project_sources', only: [] do
+      member do
+        get 'review_mapping'
+      end
+      collection do
+        get 'review_mapping'
+      end
+    end
     member do
       get 'import_wizard'
     end

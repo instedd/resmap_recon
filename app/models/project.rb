@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+  has_many :source_lists
   attr_accessible :config, :name
   serialize :config, Hash
 
@@ -13,14 +14,13 @@ class Project < ActiveRecord::Base
   end
 
   config_property :master_collection_id
-  config_property :source_collection_ids
 
   def master_collection
     Collection.new(master_collection_id)
   end
 
   def source_collections
-    source_collection_ids.map { |id| Collection.new(id) }
+    source_lists.map &:as_collection
   end
 
   def source_collection_by_id(id)
