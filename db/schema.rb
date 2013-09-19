@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919184049) do
+ActiveRecord::Schema.define(:version => 20130919200949) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(:version => 20130919184049) do
   create_table "source_lists", :force => true do |t|
     t.integer  "project_id"
     t.integer  "collection_id"
-    t.text     "mappings"
+    t.text     "config"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

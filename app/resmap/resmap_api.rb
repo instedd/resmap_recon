@@ -12,13 +12,16 @@ class ResmapApi
     "http://#{Settings.resource_map.host}/#{url}"
   end
 
-  def get(api_url)
-    options = { :basic_auth => @auth }
+  def get(api_url, query)
+    options = {
+      :basic_auth => @auth
+    }
+    options[:query] = query unless query.nil?
     res = self.class.get(url("api/#{api_url}"), options)
     res.body
   end
 
-  def json(api_url)
-    JSON.parse get("#{api_url}.json")
+  def json(api_url, query)
+    JSON.parse get("#{api_url}.json", query)
   end
 end
