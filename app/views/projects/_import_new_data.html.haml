@@ -1,0 +1,6 @@
+= inline_form_for(:collection, url: import_wizard_project_path(@project), method: :get, html: { target: '_blank'}) do |f|
+  %div
+    = f.input 'id', collection: @project.source_collections, prompt: "Choose source...", label: false, wrapper: false
+
+    = f.submit 'Go', class: 'btn'
+

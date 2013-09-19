@@ -22,4 +22,8 @@ class Project < ActiveRecord::Base
   def source_collections
     source_collection_ids.map { |id| Collection.new(id) }
   end
+
+  def source_collection_by_id(id)
+    source_collections.detect { |c| c.id == id }
+  end
 end

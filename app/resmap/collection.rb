@@ -18,4 +18,8 @@ class Collection
   def show_url
     @api.url("collections?collection_id=#{id}")
   end
+
+  def import_wizard_url
+    @api.url("collections/#{id}/import_wizard")
+  end
 end

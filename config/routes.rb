@@ -1,6 +1,10 @@
 ResmapRecon::Application.routes.draw do
 
-  resources :projects
+  resources :projects do
+    member do
+      get 'import_wizard'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
