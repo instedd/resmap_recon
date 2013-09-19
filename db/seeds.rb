@@ -5,3 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Project.find_or_initialize_by_name('Bcardiff Test 1').tap do |p|
+  p.master_collection_id = 927
+  p.source_collection_ids = [928, 929]
+  p.save!
+end

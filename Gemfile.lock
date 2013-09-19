@@ -59,6 +59,9 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hike (1.2.3)
+    httparty (0.11.0)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (3.0.4)
@@ -72,6 +75,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.25)
     multi_json (1.8.0)
+    multi_xml (0.5.5)
     mysql2 (0.3.13)
     polyglot (0.3.3)
     pry (0.9.12.2)
@@ -148,6 +152,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   ffaker
   haml-rails
+  httparty
   jquery-rails
   machinist (>= 2.0.0.beta2)
   mysql2

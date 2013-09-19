@@ -1,0 +1,24 @@
+%h1= @project.name
+
+.row-fluid
+
+  .span3
+    .well
+      %h2 Details
+      %dl
+        %dt
+          Master List
+        %dd
+          = @project.master_collection.name
+          = link_to 'view →', @project.master_collection.show_url, target: '_blank'
+
+        %dt
+          Source Lists
+        - @project.source_collections.each do |c|
+          %dd
+            = c.name
+
+  .span9
+    %h2 1. Import new data to source list
+    %h2 2. Review mapping
+    %h2 3. Curate data
