@@ -24,10 +24,4 @@
       .well
         Select a source list to edit mapping
     - else
-      %h2= @source.name
-
-      %p
-        Field:
-        = @source.mapping_property
-      %pre
-        = @source.mapping.inspect
+      = render 'mapping_editor'

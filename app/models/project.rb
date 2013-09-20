@@ -14,9 +14,14 @@ class Project < ActiveRecord::Base
   end
 
   config_property :master_collection_id
+  config_property :master_collection_target_field_code
 
   def master_collection
     Collection.new(master_collection_id)
+  end
+
+  def target_field
+    master_collection.field(master_collection_target_field_code)
   end
 
   def source_collections

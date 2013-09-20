@@ -15,3 +15,7 @@ end
 SourceList.blueprint do
   # Attributes here
 end
+
+MappingEntry.blueprint do
+  # Attributes here
+end

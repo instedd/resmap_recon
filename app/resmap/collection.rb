@@ -1,14 +1,15 @@
 class Collection
 
   def initialize(id)
-    @id = id
     @api = ResmapApi.new
+    @id = id
   end
 
   def details
-    @details ||= @api.json("collections/#{id}", page: 'all')
+    @details ||= @api.json("api/collections/#{id}", page: 'all')
   end
 
+  attr_reader :api
   attr_reader :id
 
   def name
@@ -19,8 +20,8 @@ class Collection
     details['sites']
   end
 
-  def uniq_values(field)
-    sites.map { |site| site['properties'][field] }.uniq
+  def field(code)
+    Field.new(self, code)
   end
 
   def show_url

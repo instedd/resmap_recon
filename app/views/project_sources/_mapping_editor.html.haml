@@ -1,0 +1,31 @@
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(source_list_id: @source.id, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
+  - angular_templates 'shared/angular'
+  %div(ng-controller='MappingEditorCtrl')
+
+    .row-fluid
+      .span6
+        %h2
+          = @source.name
+          \ :
+          = @source.mapping_property
+
+        %table.table.table-border
+          %tr
+            %th Source
+            %th Target
+
+          %tr(ng-repeat='mapping_entry in mapping' ng-controller='MappingEntryCtrl' ng-class='{editing: mapping_entry.editing}')
+            %td
+              {{mapping_entry.source_value}}
+            %td
+              %a(href='javascript:' ng-click='edit()')
+                {{mapping_entry.target_value || '(not mapped)'}}
+
+      .span6
+        %h2
+          = @project.master_collection.name
+          \ :
+          = @project.master_collection_target_field_code
+
+        = render 'shared/angular/hierarchy_tree'
+

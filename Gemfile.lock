@@ -77,6 +77,8 @@ GEM
     multi_json (1.8.0)
     multi_xml (0.5.5)
     mysql2 (0.3.13)
+    ngmin-rails (0.4.0)
+      rails (>= 3.1)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -159,6 +161,7 @@ DEPENDENCIES
   jquery-rails
   machinist (>= 2.0.0.beta2)
   mysql2
+  ngmin-rails
   pry
   pry-debugger
   rails (= 3.2.13)

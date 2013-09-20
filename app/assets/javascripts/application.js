@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require_tree .
+//= require angular
+//= require_tree ./angular
+
+angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);

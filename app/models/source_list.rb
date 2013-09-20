@@ -2,6 +2,7 @@ class SourceList < ActiveRecord::Base
   belongs_to :project
   attr_accessible :collection_id, :config
   serialize :config, Hash
+  has_many :mapping_entries
 
   delegate :name, to: :as_collection
 
@@ -21,9 +22,15 @@ class SourceList < ActiveRecord::Base
   config_property :mapping_property
 
   def mapping
-    config['mapping'] ||= {}
+    entries = mapping_entries.with_property(mapping_property).all
 
-    config['mapping'].tap do |m|
+    res = {}
+
+    entries.each do |e|
+      res[e.source_value] = [e.target_value]
+    end
+
+    res.tap do |m|
       source_values.each do |v|
         puts m, v
         m[v] = nil unless m.has_key?(v)
@@ -32,7 +39,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def source_values
-    as_collection.uniq_values(mapping_property)
+    as_collection.field(mapping_property).uniq_values
   end
 
 end
