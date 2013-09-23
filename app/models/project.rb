@@ -31,4 +31,17 @@ class Project < ActiveRecord::Base
   def source_collection_by_id(id)
     source_collections.detect { |c| c.id == id }
   end
+
+  def pending_changes(node_id)
+    res = []
+    source_lists.each do |s|
+      sites = s.as_collection.sites
+      sites.each do |site|
+        site['source_list'] = s.name
+      end
+      res << sites
+    end
+
+    res.flatten
+  end
 end

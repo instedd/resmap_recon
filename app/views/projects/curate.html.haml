@@ -1,0 +1,29 @@
+%h1
+  = link_to @project.name, project_path(@project)
+  curation
+
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy)}
+  - angular_templates 'shared/angular'
+
+  %div(ng-controller='CurationPanel')
+    .row-fluid
+      .span3
+        %h2 Filter by
+        = render 'shared/angular/hierarchy_tree'
+
+      .span3
+        %h2 Review changes
+
+        %span(ng-show='sites_loading') Loading...
+
+        %ul(ng-show='selected_node && !sites_loading')
+          %li(ng-repeat="site in sites")
+            %b {{site.name}}
+            from
+            {{site.source_list}}
+
+        .well(ng-hide='selected_node')
+          Select a category to filter by.
+
+      .span3
+        %h2 Consolidate

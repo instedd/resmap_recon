@@ -16,4 +16,14 @@ class ProjectsController < ApplicationController
       render :status => 404
     end
   end
+
+  def curate
+    @project = Project.find(params[:id])
+    @hierarchy = @project.target_field.hierarchy
+  end
+
+  def pending_changes
+    @project = Project.find(params[:id])
+    render json: @project.pending_changes(params[:node_id])
+  end
 end

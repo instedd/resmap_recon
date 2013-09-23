@@ -12,6 +12,9 @@ ResmapRecon::Application.routes.draw do
     end
     member do
       get 'import_wizard'
+
+      get 'curate'
+      get 'pending_changes'
     end
   end
 
