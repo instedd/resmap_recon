@@ -1,11 +1,12 @@
 %h1
-  = @project.name
+  = link_to @project.name, project_path(@project)
   mapping
 
 .row-fluid
 
   .span3
-    %table.table.table-bordered.table-condensed.table-hover
+    %h2 Sources
+    %table.table
       %tr
         %th
           Facility List
@@ -13,7 +14,7 @@
           Fully reconciled?
         %th
       - @project.source_lists.each do |source|
-        %tr
+        %tr{:class => "#{'active' if @source && source.id == @source.id}"}
           %td= source.name
           %td ?
           %td
@@ -21,6 +22,8 @@
 
   .span9
     - if @source.nil?
+      %h2
+        &nbsp
       .well
         Select a source list to edit mapping
     - else
