@@ -7,4 +7,11 @@ class ProjectSourcesController < ApplicationController
       @hierarchy = @project.target_field.hierarchy
     end
   end
+
+  def update_mapping_entry
+    @project = Project.find(params[:project_id])
+    @source = @project.source_lists.find(params[:id])
+    @source.update_mapping_entry!(params[:entry])
+    render nothing: true
+  end
 end

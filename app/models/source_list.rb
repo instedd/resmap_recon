@@ -27,15 +27,20 @@ class SourceList < ActiveRecord::Base
     res = {}
 
     entries.each do |e|
-      res[e.source_value] = [e.target_value]
+      res[e.source_value] = e.target_value
     end
 
     res.tap do |m|
       source_values.each do |v|
-        puts m, v
         m[v] = nil unless m.has_key?(v)
       end
     end
+  end
+
+  def update_mapping_entry!(entry_params)
+    entry = self.mapping_entries.find_or_initialize_by_source_property_and_source_value(entry_params[:source_property], entry_params[:source_value])
+    entry.target_value = entry_params[:target_value]
+    entry.save!
   end
 
   def source_values

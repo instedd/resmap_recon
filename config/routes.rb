@@ -4,6 +4,7 @@ ResmapRecon::Application.routes.draw do
     resources :sources, controller: 'project_sources', only: [] do
       member do
         get 'review_mapping'
+        post 'update_mapping_entry'
       end
       collection do
         get 'review_mapping'

@@ -1,6 +1,6 @@
 angular.module('MappingEditor',[])
 
-.controller 'MappingEditorCtrl', ($scope, $rootScope) ->
+.controller 'MappingEditorCtrl', ($scope, $rootScope, $http) ->
 
   $scope.mapping = for source_value, target_value of $scope.mapping_hash
     {
@@ -20,6 +20,9 @@ angular.module('MappingEditor',[])
   $scope.$on 'tree-node-chosed', (e, node) ->
     return unless $scope.selected_entry?.editing
     $scope.selected_entry.target_value = node.id
+
+    data = { entry: _.merge({source_property: $scope.source_property}, $scope.selected_entry) }
+    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/update_mapping_entry", data)
 
 .controller 'MappingEntryCtrl', ($scope, $rootScope) ->
   $scope.edit = ->

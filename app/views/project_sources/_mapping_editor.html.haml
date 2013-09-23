@@ -1,4 +1,4 @@
-%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(source_list_id: @source.id, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
   - angular_templates 'shared/angular'
   %div(ng-controller='MappingEditorCtrl')
 

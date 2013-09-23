@@ -19,6 +19,7 @@ group :assets do
 
   gem 'bootstrap-sass', '~> 2.3.1.3'
   gem 'ngmin-rails'
+  gem 'lodash-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
