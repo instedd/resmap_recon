@@ -51,4 +51,12 @@ class SourceList < ActiveRecord::Base
     as_collection.field_by_id(mapping_property_id).uniq_values
   end
 
+  def prepare
+    recon_layer_name = '__reconciliation_tool__'
+    layer = as_collection.find_or_create_layer_by_name(recon_layer_name)
+
+    layer.ensure_fields [
+      { name: 'seen', kind: 'yes_no', config: { auto_reset: true } }
+    ]
+  end
 end

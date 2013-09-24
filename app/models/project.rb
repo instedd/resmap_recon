@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   attr_accessible :config, :name
   serialize :config, Hash
 
+  after_save :prepare_source_lists
 
   def self.config_property(name)
     define_method(name) {
@@ -43,5 +44,11 @@ class Project < ActiveRecord::Base
     end
 
     res.flatten
+  end
+
+  protected
+
+  def prepare_source_lists
+    source_lists.each &:prepare
   end
 end

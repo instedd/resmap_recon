@@ -1,5 +1,6 @@
 class ResmapApi
   include HTTParty
+  # debug_output $stdout
 
   def initialize
     @auth = {
@@ -18,6 +19,24 @@ class ResmapApi
     }
     options[:query] = query unless query.nil?
     res = self.class.get(url("#{url}"), options)
+    res.body
+  end
+
+  def post(url, body = {})
+    options = {
+      :basic_auth => @auth
+    }
+    options[:body] = body unless body.nil?
+    res = self.class.post(url("#{url}"), options)
+    res.body
+  end
+
+  def put(url, body = {})
+    options = {
+      :basic_auth => @auth
+    }
+    options[:body] = body unless body.nil?
+    res = self.class.put(url("#{url}"), options)
     res.body
   end
 
