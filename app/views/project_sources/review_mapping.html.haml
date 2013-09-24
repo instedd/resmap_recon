@@ -1,6 +1,6 @@
 %h1
   = link_to @project.name, project_path(@project)
-  mapping
+  Administrative Division Mapping
 
 .row-fluid
 
@@ -11,7 +11,7 @@
         %th
           Facility List
         %th
-          Fully reconciled?
+          Fully mapped?
         %th
       - @project.source_lists.each do |source|
         %tr{:class => "#{'active' if @source && source.id == @source.id}"}

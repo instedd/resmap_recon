@@ -22,3 +22,21 @@ Project.find_or_initialize_by_name('Bcardiff Test 1').tap do |p|
 
   p.save!
 end
+
+
+Project.find_or_initialize_by_name('Kenya MFL').tap do |p|
+  p.master_collection_id = 935
+  p.master_collection_target_field_id = 3483 # admin_division
+
+  p.source_lists.find_or_initialize_by_collection_id(933).tap do |source|
+    source.mapping_property_id = 3426 # district(old)
+    source.save!
+  end
+
+  p.source_lists.find_or_initialize_by_collection_id(931).tap do |source|
+    source.mapping_property_id = 3435 # division
+    source.save!
+  end
+
+  p.save!
+end

@@ -6,14 +6,14 @@ class Collection
   end
 
   def details
-    @details ||= @api.json("api/collections/#{id}", page: 'all')
+    @details ||= @api.json("/api/collections/#{id}", page: 'all')
   end
 
   attr_reader :api
   attr_reader :id
 
   def name
-    details['name']
+    @name ||= @api.json("/collections/#{id}")['name']
   end
 
   def sites

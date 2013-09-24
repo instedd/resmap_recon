@@ -1,6 +1,6 @@
 %h1
   = link_to @project.name, project_path(@project)
-  overview
+  MFL Reconciliation Tool
 
 .row-fluid
 
@@ -9,23 +9,23 @@
       %h2 Details
       %dl
         %dt
-          Master List
+          Master Facility List
         %dd
           = @project.master_collection.name
           = link_to 'view →', @project.master_collection.show_url, target: '_blank'
 
         %dt
-          Source Lists
+          Source Facility Lists
         - @project.source_collections.each do |c|
           %dd
             = c.name
 
   .span9
-    %h2 1. Import new data to source list
+    %h2 1. Import Facility Lists
     = render 'import_new_data'
 
-    %h2 2. Review mapping
+    %h2 2. Map Administrative Division
     = link_to 'go →', review_mapping_project_sources_path(@project)
 
-    %h2 3. Curate data
+    %h2 3. Curate Facility Data
     = link_to 'go →', curate_project_path(@project)
