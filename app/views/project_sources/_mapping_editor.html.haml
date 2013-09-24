@@ -1,4 +1,4 @@
-%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.id, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
   - angular_templates 'shared/angular'
   %div(ng-controller='MappingEditorCtrl')
 
@@ -7,7 +7,7 @@
         %h2
           = @source.name
           \ :
-          = @source.mapping_property
+          = @source.mapping_property.name
 
         %table.table
           %tr
@@ -25,7 +25,7 @@
         %h2
           = @project.master_collection.name
           \ :
-          = @project.master_collection_target_field_code
+          = @project.target_field.name
 
         = render 'shared/angular/hierarchy_tree'
 

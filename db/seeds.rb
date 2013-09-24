@@ -8,15 +8,15 @@
 
 Project.find_or_initialize_by_name('Bcardiff Test 1').tap do |p|
   p.master_collection_id = 927
-  p.master_collection_target_field_code = 'kind'
+  p.master_collection_target_field_id = 3417 # cat
 
   p.source_lists.find_or_initialize_by_collection_id(928).tap do |source|
-    source.mapping_property = 'kind'
+    source.mapping_property_id = 3422 # kind
     source.save!
   end
 
   p.source_lists.find_or_initialize_by_collection_id(929).tap do |source|
-    source.mapping_property = 'type'
+    source.mapping_property_id = 3423 # type
     source.save!
   end
 

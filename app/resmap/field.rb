@@ -1,23 +1,27 @@
 class Field
-  def initialize(collection, code)
+  def initialize(collection, mapping)
     @collection = collection
-    @code = code
+    @mapping = mapping
   end
 
-  attr_reader :collection
-  attr_reader :code
   delegate :api, to: :collection
+
+  attr_reader :collection
+  def id
+    @mapping['id']
+  end
+  def code
+    @mapping['code']
+  end
+  def kind
+    @mapping['kind']
+  end
+  def name
+    @mapping['name']
+  end
 
   def uniq_values
     collection.sites.map { |site| site['properties'][code] }.uniq
-  end
-
-  def id
-    # HACK
-    return 3417 if code == 'kind' && collection.id == 927
-
-    return 3422 if code == 'kind' && collection.id == 928
-    return 3423 if code == 'type' && collection.id == 929
   end
 
   def metadata

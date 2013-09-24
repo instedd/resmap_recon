@@ -19,10 +19,14 @@ class SourceList < ActiveRecord::Base
     }
   end
 
-  config_property :mapping_property
+  config_property :mapping_property_id
+
+  def mapping_property
+    as_collection.field_by_id(mapping_property_id)
+  end
 
   def mapping
-    entries = mapping_entries.with_property(mapping_property).all
+    entries = mapping_entries.with_property(mapping_property_id).all
 
     res = {}
 
@@ -44,7 +48,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def source_values
-    as_collection.field(mapping_property).uniq_values
+    as_collection.field_by_id(mapping_property_id).uniq_values
   end
 
 end

@@ -20,8 +20,15 @@ class Collection
     details['sites']
   end
 
-  def field(code)
-    Field.new(self, code)
+  def fields
+    @fields ||= begin
+      fields_mapping = @api.json("/collections/#{id}/fields/mapping")
+      fields_mapping.map { |fm| Field.new(self, fm) }
+    end
+  end
+
+  def field_by_id(id)
+    fields.detect { |f| f.id == id }
   end
 
   def show_url
