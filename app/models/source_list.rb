@@ -68,14 +68,16 @@ class SourceList < ActiveRecord::Base
 
     res = []
 
-    unless values.empty?
+    # unless values.empty?
+    values.each do |value|
       as_collection.sites_where(
         SourceList.app_seen_field_name => false,
-        mapping_property.code => values).each do |site|
+        mapping_property.code => value).each do |site|
         site['source_list'] = { id: id, name: name }
         res << site
       end
     end
+    # end
 
     res
   end
