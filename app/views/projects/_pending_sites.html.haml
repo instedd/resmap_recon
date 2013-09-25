@@ -16,7 +16,7 @@
           %b source list
           %span {{site.source_list.name}}
 
-        %li{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key == '#{SourceList.app_seen_field_name}'"}
+        %li{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
           %b {{key}}
           %span {{value}}
 
