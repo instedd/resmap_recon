@@ -36,14 +36,15 @@ class Project < ActiveRecord::Base
   def pending_changes(node_id)
     res = []
     source_lists.each do |s|
-      sites = s.as_collection.sites
-      sites.each do |site|
-        site['source_list'] = s.name
-      end
+      sites = s.pending_changes(node_id)
       res << sites
     end
 
     res.flatten
+  end
+
+  def dismiss_source_site(source_list_id, site_id)
+    source_lists.find(source_list_id).dismiss_site(site_id)
   end
 
   protected

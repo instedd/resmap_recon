@@ -53,20 +53,44 @@ class SourceList < ActiveRecord::Base
 
   def prepare
     recon_layer_name =
-    layer = as_collection.find_or_create_layer_by_name(app_layer_name)
+    layer = as_collection.find_or_create_layer_by_name(SourceList.app_layer_name)
 
     layer.ensure_fields [
-      { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } }
+      { name: SourceList.app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } }
     ]
+  end
+
+  def pending_changes(node_id)
+    values = mapping_entries
+      .with_property(mapping_property_id)
+      .with_target(node_id)
+      .pluck(:source_value)
+
+    res = []
+
+    unless values.empty?
+      as_collection.sites_where(
+        SourceList.app_seen_field_name => false,
+        mapping_property.code => values).each do |site|
+        site['source_list'] = { id: id, name: name }
+        res << site
+      end
+    end
+
+    res
+  end
+
+  def dismiss_site(site_id)
+    as_collection.update_site_property(site_id, SourceList.app_seen_field_name, true)
   end
 
   protected
 
-  def app_layer_name
+  def self.app_layer_name
     "_recon_tool_#{Settings.system_id}_"
   end
 
-  def app_seen_field_name
+  def self.app_seen_field_name
     "_seen_#{Settings.system_id}_"
   end
 end

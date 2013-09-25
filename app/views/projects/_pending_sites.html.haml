@@ -1,0 +1,25 @@
+.accordion-group(ng-repeat='site in sites' ng-controller='PendingSiteCtrl')
+  .accordion-heading(ng-hide='selected')
+    %a.accordion-toggle(href='javascript:' ng-click='select()')
+      %b {{site.name}}
+      from
+      {{site.source_list.name}}
+
+  .accordion-body(ng-show='selected')
+    .accordion-inner
+      %ul.unstyled
+        %li
+          %b name
+          %span {{site.name}}
+
+        %li
+          %b source list
+          %span {{site.source_list.name}}
+
+        %li{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key == '#{SourceList.app_seen_field_name}'"}
+          %b {{key}}
+          %span {{value}}
+
+      %div
+        %button.btn(ng-click='dismiss()') Dismiss
+        %button.btn.btn-link(ng-click='cancel()') Cancel

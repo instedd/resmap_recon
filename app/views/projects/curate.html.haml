@@ -16,14 +16,14 @@
 
         %span(ng-show='sites_loading') Loading...
 
-        %ul(ng-show='selected_node && !sites_loading')
-          %li(ng-repeat="site in sites")
-            %b {{site.name}}
-            from
-            {{site.source_list}}
+        .accordion(ng-show='selected_node && !sites_loading')
+          = render 'pending_sites'
 
         .well(ng-hide='selected_node')
           Select a category to filter by.
+
+        .well(ng-show='selected_node && !sites_loading && sites.length == 0')
+          There are no sites updates!
 
       .span3
         %h2 Consolidate

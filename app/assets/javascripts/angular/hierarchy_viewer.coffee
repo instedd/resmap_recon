@@ -1,6 +1,6 @@
 angular.module('HierarchyViewer', [])
 
-.controller 'HierarchyTreeCtrl', ($scope, $rootScope) ->
+.controller 'HierarchyTreeCtrl', ($scope) ->
 
   # [{"id"=>"A", "name"=>"A", "sub"=>[{"id"=>"A2", "name"=>"A2"}, {"id"=>"A1", "name"=>"A1"}]}, {"id"=>"B", "name"=>"B", "sub"=>[{"id"=>"B2", "name"=>"B2"}, {"id"=>"B1", "name"=>"B1"}]}]
   $scope.nodes = $scope.hierarchy
@@ -28,7 +28,7 @@ angular.module('HierarchyViewer', [])
 
   $scope.choose = (node) ->
     $scope._set_choosen_node(node)
-    $rootScope.$broadcast('tree-node-chosed', node)
+    $scope.$emit('tree-node-chosed', node)
 
   $scope.$on 'tree-node-open', (e, node_id) ->
     if node_id == null

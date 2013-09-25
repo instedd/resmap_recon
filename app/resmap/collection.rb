@@ -27,6 +27,17 @@ class Collection
     details['sites']
   end
 
+  def sites_where(attrs)
+    @api.json("api/collections/#{id}", {page: 'all'}.merge(attrs))['sites']
+  end
+
+  def update_site_property(site_id, code, value)
+    @api.post("sites/#{site_id}/update_property", {
+      es_code: field_by_code(code).id,
+      value: value
+      })
+  end
+
   def fields
     @fields ||= begin
       fields_mapping = @api.json("collections/#{id}/fields/mapping")

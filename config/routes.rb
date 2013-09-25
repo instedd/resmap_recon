@@ -2,6 +2,11 @@ ResmapRecon::Application.routes.draw do
 
   resources :projects, only: [:index, :show] do
     resources :sources, controller: 'project_sources', only: [] do
+      resources :sites, controller: 'project_sources_sites', only: [] do
+        member do
+          post 'dismiss'
+        end
+      end
       member do
         get 'review_mapping'
         post 'update_mapping_entry'

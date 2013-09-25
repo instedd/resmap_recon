@@ -24,6 +24,6 @@ class ProjectsController < ApplicationController
 
   def pending_changes
     @project = Project.find(params[:id])
-    render json: @project.pending_changes(params[:node_id])
+    render json: @project.pending_changes(params[:target_value])
   end
 end
