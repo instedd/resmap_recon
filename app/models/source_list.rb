@@ -7,7 +7,7 @@ class SourceList < ActiveRecord::Base
   delegate :name, to: :as_collection
 
   def as_collection
-    Collection.new collection_id
+    @collection ||= Collection.new(collection_id)
   end
 
   def self.config_property(name)
