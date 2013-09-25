@@ -55,6 +55,10 @@ class Collection
     fields.detect { |f| f.id == id }
   end
 
+  def field_by_code(code)
+    fields.detect { |f| f.code == code }
+  end
+
   def show_url
     @api.url("collections?collection_id=#{id}")
   end

@@ -29,7 +29,9 @@ class Layer
     field_attributes.each_with_index do |f, i|
       f[:ord] = i + 1
       f[:code] = f[:code] || f[:name]
-      # f[:id] =  put existing field id
+      collection.field_by_code(f[:code]).tap do |existing|
+        f[:id] = existing.id if existing
+      end
 
       fields_data[i.to_s] = f
     end

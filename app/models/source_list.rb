@@ -52,11 +52,21 @@ class SourceList < ActiveRecord::Base
   end
 
   def prepare
-    recon_layer_name = '__reconciliation_tool__'
-    layer = as_collection.find_or_create_layer_by_name(recon_layer_name)
+    recon_layer_name =
+    layer = as_collection.find_or_create_layer_by_name(app_layer_name)
 
     layer.ensure_fields [
-      { name: 'seen', kind: 'yes_no', config: { auto_reset: true } }
+      { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } }
     ]
+  end
+
+  protected
+
+  def app_layer_name
+    "_recon_tool_#{Settings.system_id}_"
+  end
+
+  def app_seen_field_name
+    "_seen_#{Settings.system_id}_"
   end
 end
