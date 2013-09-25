@@ -41,3 +41,32 @@ angular.module('Curation',[])
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.selected = site == $scope.site
+
+.controller 'SearchSiteCtrl', ($scope, $http) ->
+  $scope.search_loading = false
+  $scope.search = ''
+  $scope.sites = null
+
+  $scope._search_sites = ->
+    if _.isEmpty($scope.search)
+      $scope.sites = null
+    else
+      $scope.search_loading = true
+      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {search: $scope.search}})
+        .success (data) ->
+          $scope.sites = data
+        $scope.search_loading = false
+
+  $scope.$watch 'search', _.debounce($scope._search_sites, 200)
+
+  $scope.select = (site) ->
+    $scope.$emit 'site-search-selected', site
+
+.controller 'ConsolitateSiteCtrl', ($scope, $http) ->
+  $scope.target_site = null
+
+  $scope.$on 'site-search-selected', (e, site) ->
+    $scope.target_site = site
+
+  $scope.go_to_search = ->
+    $scope.target_site = null

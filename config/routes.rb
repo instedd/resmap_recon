@@ -15,6 +15,13 @@ ResmapRecon::Application.routes.draw do
         get 'review_mapping'
       end
     end
+    resource :master, only: [] do
+      resources :sites, controller: 'project_master_sites', only: [] do
+        collection do
+          get 'search'
+        end
+      end
+    end
     member do
       get 'import_wizard'
 

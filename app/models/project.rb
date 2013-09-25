@@ -18,7 +18,7 @@ class Project < ActiveRecord::Base
   config_property :master_collection_target_field_id
 
   def master_collection
-    Collection.new(master_collection_id)
+    @master_collection ||= Collection.new(master_collection_id)
   end
 
   def target_field
