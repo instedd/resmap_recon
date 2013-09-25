@@ -48,7 +48,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def source_values
-    as_collection.field_by_id(mapping_property_id).uniq_values
+    mapping_property.uniq_values
   end
 
   def prepare

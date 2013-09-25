@@ -21,7 +21,7 @@ class Field
   end
 
   def uniq_values
-    collection.sites.map { |site| site['properties'][code] }.uniq
+    api.json("/api/collections/#{collection.id}/histogram/#{id}").keys.sort
   end
 
   def metadata
