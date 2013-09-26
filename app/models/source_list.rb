@@ -31,14 +31,28 @@ class SourceList < ActiveRecord::Base
     res = {}
 
     entries.each do |e|
-      res[e.source_value] = e.target_value
+      res[e.source_value] = {
+        source_value: e.source_value,
+        source_count: 0,
+        target_value: e.target_value
+      }
     end
 
-    res.tap do |m|
-      source_values.each do |v|
-        m[v] = nil unless m.has_key?(v)
+    source_values.each do |k,v|
+      if !res.has_key?(k)
+        res[k] = {
+          source_value: k,
+          source_count: v,
+          target_value: nil
+        }
+      else
+        res[k][:source_count] = v
       end
     end
+
+    # TODO: could clean unused mapping_entries
+
+    res.values
   end
 
   def update_mapping_entry!(entry_params)

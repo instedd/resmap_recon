@@ -3,6 +3,11 @@
   Administrative Division Mapping
 
 .row-fluid
+  .span12
+    %a{:href => project_path(@project)}
+      Done with mapping, go back.
+
+.row-fluid
 
   .span3
     %h2 Sources
@@ -28,8 +33,3 @@
         Select a source list to edit mapping
     - else
       = render 'mapping_editor'
-
-.row-fluid
-  .span12
-    %a{:href => project_path(@project)}
-      Done with mapping, go back.

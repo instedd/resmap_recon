@@ -57,7 +57,7 @@ angular.module('Curation',[])
           $scope.sites = data
         $scope.search_loading = false
 
-  $scope.$watch 'search', _.debounce($scope._search_sites, 200)
+  $scope.$watch 'search', _.throttle($scope._search_sites, 200)
 
   $scope.select = (site) ->
     $scope.$emit 'site-search-selected', site

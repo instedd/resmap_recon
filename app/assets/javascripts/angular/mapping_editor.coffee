@@ -2,10 +2,11 @@ angular.module('MappingEditor',[])
 
 .controller 'MappingEditorCtrl', ($scope, $http) ->
 
-  $scope.mapping = for source_value, target_value of $scope.mapping_hash
+  $scope.mapping = for e in $scope.mapping_hash
     {
-      source_value: source_value,
-      target_value: target_value,
+      source_value: e.source_value,
+      source_count: e.source_count,
+      target_value: e.target_value,
       editing: false
     }
 

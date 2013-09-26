@@ -35,13 +35,20 @@ angular.module('HierarchyViewer', [])
       $scope._set_choosen_node(null)
       return
 
+    # close top level nodes
     for node in $scope.nodes
       node.expanded = false
 
     n_id = node_id
     while n_id != null
       n = $scope.nodes_by_id[n_id]
-      n.expanded = true
       n_id = n.parent_id
+      # close siblings
+      if n_id != null
+        parent = $scope.nodes_by_id[n_id]
+        for sibling in parent.sub
+          sibling.expanded = false
+
+      n.expanded = true
 
     $scope._set_choosen_node($scope.nodes_by_id[node_id])

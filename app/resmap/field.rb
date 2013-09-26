@@ -21,7 +21,8 @@ class Field
   end
 
   def uniq_values
-    api.json("/api/collections/#{collection.id}/histogram/#{id}").keys.sort
+    h = api.json("/api/collections/#{collection.id}/histogram/#{id}")
+    Hash[h.sort]
   end
 
   def metadata
