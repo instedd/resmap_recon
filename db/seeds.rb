@@ -34,7 +34,7 @@ Project.find_or_initialize_by_name('Kenya MFL').tap do |p|
   end
 
   p.source_lists.find_or_initialize_by_collection_id(931).tap do |source|
-    source.mapping_property_id = 3435 # division
+    source.mapping_property_id = 3434 # district
     source.save!
   end
 
