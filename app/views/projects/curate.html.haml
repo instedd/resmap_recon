@@ -2,7 +2,7 @@
   = link_to @project.name, project_path(@project)
   curation
 
-%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy)}
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id)}
   - angular_templates 'shared/angular'
 
   %div(ng-controller='CurationPanel')
@@ -26,54 +26,58 @@
           .well(ng-show='selected_node && !sites_loading && sites.length == 0')
             There are no sites updates!
 
-      .span3
-        %h2 Consolidate
+      .span6(ng-controller='ConsolitateSiteCtrl')
+        .row-fluid
+          .span6
+            %h2 Consolidate
 
-        %div.recon-panel(ng-controller='ConsolitateSiteCtrl')
+            %div.recon-panel
 
-          %div(ng-controller='SearchSiteCtrl' ng-show='target_site == null')
-            %input.search-query(ng-model='search')
+              %div(ng-controller='SearchSiteCtrl' ng-show='target_site == null')
+                %input.search-query(ng-model='search')
 
-            %div(ng-show='search_loading') Loading...
+                %div(ng-show='search_loading') Loading...
 
-            %div(ng-show='!search_loading && sites.length == 0') There are no sites that match the criteria.
+                %div(ng-show='!search_loading && sites.length == 0') There are no sites that match the criteria.
 
-            %div(ng-show='!search_loading && sites == null') Input site criteria.
+                %div(ng-show='!search_loading && sites == null') Input site criteria.
 
-            %br
-            %br
-            %ul.nav.nav-tabs.nav-stacked(ng-hide='search_loading')
-              %li(ng-repeat='site in sites')
-                %a(href='javascript:' ng-click='select(site)')
-                  {{site.name}}
+                %br
+                %br
+                %ul.nav.nav-tabs.nav-stacked(ng-hide='search_loading')
+                  %li(ng-repeat='site in sites')
+                    %a(href='javascript:' ng-click='select(site)')
+                      {{site.name}}
 
-          %div(ng-show='target_site != null')
-            %button.btn.btn-link(ng-click='go_to_search()') Back
-            %ul.unstyled
-              %li
-                %b name
-                %span {{target_site.name}}
+              %div(ng-show='target_site != null')
+                %button.btn.btn-link(ng-click='go_to_search()') Back
 
-              %li{'ng-repeat'=>'(key, value) in target_site.properties'}
-                %b {{key}}
-                %span {{value}}
+                %fieldset
+                  .control-group
+                    %label Name
+                    %input(type='text' ng-model='target_site.name')
 
-              %div
-                %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()')
-                  Save & Consolidate with
-                  %br
-                  {{source_site.name}}
+                  - @project.master_collection.fields.each do |field|
+                    - if field.id != @project.master_collection_target_field_id
+                      .control-group
+                        %label= field.name
+                        %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}"}
 
-                .alert(ng-hide='source_site') Select a pending change
+                %div
+                  %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()')
+                    Save & Consolidate with
+                    %br
+                    {{source_site.name}}
 
-            %hr
+                  .alert(ng-hide='source_site') Select a pending change
+
+          .span6(ng-show='target_site != null')
+            %h2 Other consolidations
 
             %div(ng-show='consolidated_sites == null')
               Loading past consolidations...
 
-            %div(ng-show='consolidated_sites != null')
-              %h3 Other consolidations
-
+            %div.recon-panel(ng-show='consolidated_sites != null')
               %p(ng-show='consolidated_sites.length == 0')
                 There are no consolidations
 

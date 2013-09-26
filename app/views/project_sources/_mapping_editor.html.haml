@@ -9,29 +9,28 @@
           \ :
           = @source.mapping_property.name
 
-        %table.table
-          %tr
-            %th Source Division
-            %th MFL Target Division
+        .recon-panel
+          %table.table
+            %tr
+              %th Source Division
+              %th MFL Target Division
 
-          %tr(ng-repeat='mapping_entry in mapping' ng-controller='MappingEntryCtrl' ng-class='{active: mapping_entry.editing}')
-            %td
-              {{mapping_entry.source_value}}
-              .badge {{mapping_entry.source_count}}
-            %td
-              %a(href='javascript:' ng-click='edit()')
-                {{mapping_entry.target_value || '(not mapped)'}}
+            %tr(ng-repeat='mapping_entry in mapping' ng-controller='MappingEntryCtrl' ng-class='{active: mapping_entry.editing}')
+              %td
+                {{mapping_entry.source_value}}
+                .badge {{mapping_entry.source_count}}
+              %td
+                %a(href='javascript:' ng-click='edit()')
+                  {{mapping_entry.target_value || '(not mapped)'}}
 
-      .span6(ng-show='selected_entry')
+      .span6
         %h2
           = @project.master_collection.name
           \ :
           = @project.target_field.name
 
-        = render 'shared/angular/hierarchy_tree'
+        .recon-panel(ng-show='selected_entry')
+          = render 'shared/angular/hierarchy_tree'
 
-      .span6(ng-hide='selected_entry')
-        %h2
-          &nbsp
-        .well
+        .well(ng-hide='selected_entry')
           Select a source value to edit mapping

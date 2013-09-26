@@ -1,6 +1,6 @@
 class ResmapApi
   include HTTParty
-  # debug_output $stdout
+  debug_output $stdout
 
   def initialize
     @auth = {

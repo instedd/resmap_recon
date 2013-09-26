@@ -67,6 +67,9 @@ angular.module('Curation',[])
   $scope.consolidated_sites = null
 
   $scope.$on 'site-search-selected', (e, site) ->
+    $scope.select_target_site(site)
+
+  $scope.select_target_site = (site) ->
     $scope.target_site = site
 
     $scope.consolidated_sites = null
@@ -76,6 +79,12 @@ angular.module('Curation',[])
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.source_site = site
+    master_site_id = site.properties[$scope.app_master_site_id]
+    if master_site_id
+      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {id: master_site_id}})
+        .success (data) ->
+          if data.length == 1
+            $scope.select_target_site(data[0])
 
   $scope.go_to_search = ->
     $scope.target_site = null
@@ -86,6 +95,7 @@ angular.module('Curation',[])
         id: $scope.source_site.id,
         source_list_id: $scope.source_site.source_list.id
       }
+      target_site: $scope.target_site
     }
 
     $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
