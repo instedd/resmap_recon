@@ -57,16 +57,20 @@ class Project < ActiveRecord::Base
     source_lists.find(source_list_id).dismiss_site(site_id)
   end
 
+  def app_suffix
+    "#{Settings.system_id}_#{id}"
+  end
+
   def app_layer_name
-    "_recon_tool_"
+    "_recon_tool_#{app_suffix}_"
   end
 
   def app_seen_field_name
-    "_seen_#{Settings.system_id}_#{id}_"
+    "_seen_#{app_suffix}_"
   end
 
   def app_master_site_id
-    "_master_site_id_#{Settings.system_id}_#{id}_"
+    "_master_site_id_#{app_suffix}_"
   end
 
   protected
