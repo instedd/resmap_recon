@@ -57,4 +57,12 @@
                 %b {{key}}
                 %span {{value}}
 
+              %div
+                %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()')
+                  Save & Consolidate with
+                  %br
+                  {{source_site.name}}
+
+                .alert(ng-hide='source_site') Select a pending change
+
 

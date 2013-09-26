@@ -7,4 +7,14 @@ class ProjectMasterSitesController < ApplicationController
 
     render json: sites
   end
+
+  def update
+    @project = Project.find(params[:project_id])
+    # master_site = @project.master_collection.sites_find(params[:id])
+    source_list = @project.source_lists.find(params[:source_site][:source_list_id])
+
+    source_list.consolidate_with(params[:source_site][:id], params[:id])
+
+    render nothing: true
+  end
 end

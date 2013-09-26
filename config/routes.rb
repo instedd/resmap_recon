@@ -20,6 +20,9 @@ ResmapRecon::Application.routes.draw do
         collection do
           get 'search'
         end
+        member do
+          post 'update'
+        end
       end
     end
     member do

@@ -31,11 +31,10 @@ class Collection
     @api.json("api/collections/#{id}", {page: 'all'}.merge(attrs))['sites']
   end
 
-  def update_site_property(site_id, code, value)
-    @api.post("sites/#{site_id}/update_property", {
-      es_code: field_by_code(code).id,
-      value: value
-      })
+  def sites_find(site_id)
+    # @api.json("api/collections/#{id}/sites/#{site_id}")
+    # sites_where(id: site_id).first
+    Site.new(self, site_id)
   end
 
   def fields

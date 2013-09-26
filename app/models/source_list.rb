@@ -66,11 +66,11 @@ class SourceList < ActiveRecord::Base
   end
 
   def prepare
-    recon_layer_name =
     layer = as_collection.find_or_create_layer_by_name(SourceList.app_layer_name)
 
     layer.ensure_fields [
-      { name: SourceList.app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } }
+      { name: SourceList.app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
+      { name: SourceList.app_master_site_id, kind: 'numeric' }
     ]
   end
 
@@ -95,7 +95,16 @@ class SourceList < ActiveRecord::Base
   end
 
   def dismiss_site(site_id)
-    as_collection.update_site_property(site_id, SourceList.app_seen_field_name, true)
+    as_collection
+      .sites_find(site_id)
+      .update_property(SourceList.app_seen_field_name, true)
+  end
+
+  def consolidate_with(site_id, master_site_id)
+    site = as_collection.sites_find(site_id)
+
+    site.update_property(SourceList.app_master_site_id, master_site_id)
+    site.update_property(SourceList.app_seen_field_name, true)
   end
 
   protected
@@ -106,5 +115,9 @@ class SourceList < ActiveRecord::Base
 
   def self.app_seen_field_name
     "_seen_#{Settings.system_id}_"
+  end
+
+  def self.app_master_site_id
+    "_master_site_id_#{Settings.system_id}_"
   end
 end

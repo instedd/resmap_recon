@@ -68,5 +68,21 @@ angular.module('Curation',[])
   $scope.$on 'site-search-selected', (e, site) ->
     $scope.target_site = site
 
+  $scope.$on 'outside-pending-site-selected', (e, site) ->
+    $scope.source_site = site
+
   $scope.go_to_search = ->
     $scope.target_site = null
+
+  $scope.consolidate = ->
+    params = {
+      source_site: {
+        id: $scope.source_site.id,
+        source_list_id: $scope.source_site.source_list.id
+      }
+    }
+
+    $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
+      .success ->
+        $scope.go_to_search()
+        $scope.$emit('site-dismissed', $scope.source_site)
