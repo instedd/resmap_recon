@@ -22,6 +22,7 @@ ResmapRecon::Application.routes.draw do
         end
         member do
           post 'update'
+          get 'consolidated_sites'
         end
       end
     end

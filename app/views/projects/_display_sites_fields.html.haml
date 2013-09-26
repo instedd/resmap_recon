@@ -1,0 +1,12 @@
+%ul.unstyled
+  %li
+    %b name
+    %span {{site.name}}
+
+  %li
+    %b source list
+    %span {{site.source_list.name}}
+
+  %li{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
+    %b {{key}}
+    %span {{value}}

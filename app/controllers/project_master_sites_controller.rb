@@ -17,4 +17,9 @@ class ProjectMasterSitesController < ApplicationController
 
     render nothing: true
   end
+
+  def consolidated_sites
+    @project = Project.find(params[:project_id])
+    render json: @project.consolidated_with(params[:id])
+  end
 end

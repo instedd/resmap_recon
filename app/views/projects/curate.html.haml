@@ -16,19 +16,20 @@
 
         %span(ng-show='sites_loading') Loading...
 
-        .accordion(ng-show='selected_node && !sites_loading')
-          = render 'pending_sites'
+        .recon-panel
+          .accordion(ng-show='selected_node && !sites_loading')
+            = render 'pending_sites'
 
-        .well(ng-hide='selected_node')
-          Select a category to filter by.
+          .well(ng-hide='selected_node')
+            Select a category to filter by.
 
-        .well(ng-show='selected_node && !sites_loading && sites.length == 0')
-          There are no sites updates!
+          .well(ng-show='selected_node && !sites_loading && sites.length == 0')
+            There are no sites updates!
 
       .span3
         %h2 Consolidate
 
-        %div(ng-controller='ConsolitateSiteCtrl')
+        %div.recon-panel(ng-controller='ConsolitateSiteCtrl')
 
           %div(ng-controller='SearchSiteCtrl' ng-show='target_site == null')
             %input.search-query(ng-model='search')
@@ -65,4 +66,21 @@
 
                 .alert(ng-hide='source_site') Select a pending change
 
+            %hr
+
+            %div(ng-show='consolidated_sites == null')
+              Loading past consolidations...
+
+            %div(ng-show='consolidated_sites != null')
+              %h3 Other consolidations
+
+              %p(ng-show='consolidated_sites.length == 0')
+                There are no consolidations
+
+              .accordion-group(ng-repeat='site in consolidated_sites')
+                .accordion-body.selected
+                  .accordion-inner
+                    .badge.label-warning{'ng-hide'=>"site.properties.#{@project.app_seen_field_name}"} Pending
+                    .badge.label-success{'ng-show'=>"site.id == source_site.id"} Selected
+                    = render 'display_sites_fields'
 

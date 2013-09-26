@@ -43,8 +43,30 @@ class Project < ActiveRecord::Base
     res.flatten
   end
 
+  def consolidated_with(master_site_id)
+    res = []
+    source_lists.each do |s|
+      sites = s.consolidated_with(master_site_id)
+      res << sites
+    end
+
+    res.flatten
+  end
+
   def dismiss_source_site(source_list_id, site_id)
     source_lists.find(source_list_id).dismiss_site(site_id)
+  end
+
+  def app_layer_name
+    "_recon_tool_"
+  end
+
+  def app_seen_field_name
+    "_seen_#{Settings.system_id}_#{id}_"
+  end
+
+  def app_master_site_id
+    "_master_site_id_#{Settings.system_id}_#{id}_"
   end
 
   protected

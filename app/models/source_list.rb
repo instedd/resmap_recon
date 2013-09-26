@@ -6,6 +6,8 @@ class SourceList < ActiveRecord::Base
 
   delegate :name, to: :as_collection
 
+  delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
+
   def as_collection
     @collection ||= Collection.new(collection_id)
   end
@@ -66,11 +68,11 @@ class SourceList < ActiveRecord::Base
   end
 
   def prepare
-    layer = as_collection.find_or_create_layer_by_name(SourceList.app_layer_name)
+    layer = as_collection.find_or_create_layer_by_name(app_layer_name)
 
     layer.ensure_fields [
-      { name: SourceList.app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
-      { name: SourceList.app_master_site_id, kind: 'numeric' }
+      { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
+      { name: app_master_site_id, kind: 'numeric' }
     ]
   end
 
@@ -84,7 +86,7 @@ class SourceList < ActiveRecord::Base
 
     unless values.empty?
       as_collection.sites_where(
-        SourceList.app_seen_field_name => false,
+        app_seen_field_name => false,
         mapping_property.code => values).each do |site|
         site['source_list'] = { id: id, name: name }
         res << site
@@ -97,27 +99,20 @@ class SourceList < ActiveRecord::Base
   def dismiss_site(site_id)
     as_collection
       .sites_find(site_id)
-      .update_property(SourceList.app_seen_field_name, true)
+      .update_property(app_seen_field_name, true)
   end
 
   def consolidate_with(site_id, master_site_id)
     site = as_collection.sites_find(site_id)
 
-    site.update_property(SourceList.app_master_site_id, master_site_id)
-    site.update_property(SourceList.app_seen_field_name, true)
+    site.update_property(app_master_site_id, master_site_id)
+    site.update_property(app_seen_field_name, true)
   end
 
-  protected
-
-  def self.app_layer_name
-    "_recon_tool_#{Settings.system_id}_"
-  end
-
-  def self.app_seen_field_name
-    "_seen_#{Settings.system_id}_"
-  end
-
-  def self.app_master_site_id
-    "_master_site_id_#{Settings.system_id}_"
+  def consolidated_with(master_site_id)
+    res = as_collection.sites_where(app_master_site_id => master_site_id)
+    res.each do |site|
+      site['source_list'] = { id: id, name: name }
+    end
   end
 end

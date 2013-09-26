@@ -64,9 +64,15 @@ angular.module('Curation',[])
 
 .controller 'ConsolitateSiteCtrl', ($scope, $http) ->
   $scope.target_site = null
+  $scope.consolidated_sites = null
 
   $scope.$on 'site-search-selected', (e, site) ->
     $scope.target_site = site
+
+    $scope.consolidated_sites = null
+    $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
+      .success (data) ->
+        $scope.consolidated_sites = data
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.source_site = site

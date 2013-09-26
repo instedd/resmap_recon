@@ -40,3 +40,8 @@ tr.active {
     a { color: $white; }
   }
 }
+
+.recon-panel {
+  height: 500px;
+  overflow: scroll;
+}
