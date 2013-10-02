@@ -13,6 +13,8 @@
         %dd
           = @project.master_collection.name
           = link_to 'view →', @project.master_collection.show_url, target: '_blank'
+          %br
+          = link_to '(download)', csv_download_project_master_path(@project)
 
         %dt
           Source Facility Lists

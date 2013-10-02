@@ -16,6 +16,7 @@ ResmapRecon::Application.routes.draw do
       end
     end
     resource :master, only: [] do
+      get 'csv_download', controller: :project_master_sites
       resources :sites, controller: 'project_master_sites', only: [] do
         collection do
           get 'search'

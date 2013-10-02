@@ -1,4 +1,5 @@
 class ProjectMasterSitesController < ApplicationController
+  require 'csv'
 
   def search
     @project = Project.find(params[:project_id])
@@ -28,5 +29,18 @@ class ProjectMasterSitesController < ApplicationController
   def consolidated_sites
     @project = Project.find(params[:project_id])
     render json: @project.consolidated_with(params[:id])
+  end
+
+  def csv_download
+    @project = Project.find(params[:project_id])
+    csv_string = CSV.generate do |csv|
+      fields = @project.master_collection.fields
+      csv << ['Facility Name', 'Lat', 'Long'] + fields.map(&:name) + ['IsArea']
+      @project.master_collection.sites.each do |site|
+        p = site['properties']
+        csv << [site['name'], site['lat'], site['long']] + fields.map{|f| p[f.code]} + ["1"]
+      end
+    end
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 end
