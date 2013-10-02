@@ -90,5 +90,11 @@ class Collection
     def find(site_id)
       Site.new(collection, site_id)
     end
+
+    def create(params)
+      raise 'missing name attribute' unless params.has_key? :name
+      result = JSON.parse(api.post("/collections/#{collection.id}/sites.json", site: params.to_json))
+      Site.new(collection, result)
+    end
   end
 end

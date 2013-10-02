@@ -1,9 +1,8 @@
 class ProjectMasterSitesController < ApplicationController
   require 'csv'
+  before_filter :load_project
 
   def search
-    @project = Project.find(params[:project_id])
-
     sites = @project.master_collection.sites
     if params[:id].present?
       sites = [sites.find(params[:id])]
@@ -15,24 +14,23 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def update
-    @project = Project.find(params[:project_id])
-    master_site = @project.master_collection.sites.find(params[:id])
-    master_site.update_properties(params[:target_site])
+    site = @project.master_collection.sites.find(params[:id])
+    consolidate_with_master_site(site)
+    render nothing: true
+  end
 
-    source_list = @project.source_lists.find(params[:source_site][:source_list_id])
-
-    source_list.consolidate_with(params[:source_site][:id], params[:id])
-
+  def create
+    params[:target_site].delete(:id) # it is null and we don't want it
+    site = @project.master_collection.sites.create(name: params[:target_site][:name])
+    consolidate_with_master_site(site)
     render nothing: true
   end
 
   def consolidated_sites
-    @project = Project.find(params[:project_id])
     render json: @project.consolidated_with(params[:id])
   end
 
   def csv_download
-    @project = Project.find(params[:project_id])
     csv_string = CSV.generate do |csv|
       fields = @project.master_collection.fields
       csv << ['Facility Name', 'Lat', 'Long'] + fields.map(&:name) + ['IsArea']
@@ -42,5 +40,17 @@ class ProjectMasterSitesController < ApplicationController
       end
     end
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
+  end
+
+  protected
+
+  def load_project
+    @project = Project.find(params[:project_id])
+  end
+
+  def consolidate_with_master_site(master_site)
+    master_site.update_properties(params[:target_site])
+    source_list = @project.source_lists.find(params[:source_site][:source_list_id])
+    source_list.consolidate_with(params[:source_site][:id], master_site.id)
   end
 end

@@ -2,7 +2,7 @@
   = link_to @project.name, project_path(@project)
   curation
 
-%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id)}
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}
   - angular_templates 'shared/angular'
 
   %div(ng-controller='CurationPanel')
@@ -33,21 +33,7 @@
 
             %div.recon-panel
 
-              %div(ng-controller='SearchSiteCtrl' ng-show='target_site == null')
-                %input.search-query(ng-model='search')
-
-                %div(ng-show='search_loading') Loading...
-
-                %div(ng-show='!search_loading && sites.length == 0') There are no sites that match the criteria.
-
-                %div(ng-show='!search_loading && sites == null') Input site criteria.
-
-                %br
-                %br
-                %ul.nav.nav-tabs.nav-stacked(ng-hide='search_loading')
-                  %li(ng-repeat='site in sites')
-                    %a(href='javascript:' ng-click='select(site)')
-                      {{site.name}}
+              = render 'search_master_site'
 
               %div(ng-show='target_site != null')
                 %button.btn.btn-link(ng-click='go_to_search()') Back
@@ -72,19 +58,4 @@
                   .alert(ng-hide='source_site') Select a pending change
 
           .span6(ng-show='target_site != null')
-            %h2 Other consolidations
-
-            %div(ng-show='consolidated_sites == null')
-              Loading past consolidations...
-
-            %div.recon-panel(ng-show='consolidated_sites != null')
-              %p(ng-show='consolidated_sites.length == 0')
-                There are no consolidations
-
-              .accordion-group(ng-repeat='site in consolidated_sites')
-                .accordion-body.selected
-                  .accordion-inner
-                    .badge.label-warning{'ng-hide'=>"site.properties.#{@project.app_seen_field_name}"} Pending
-                    .badge.label-success{'ng-show'=>"site.id == source_site.id"} Selected
-                    = render 'display_sites_fields'
-
+            = render 'other_consolidations'

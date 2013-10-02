@@ -20,6 +20,7 @@ ResmapRecon::Application.routes.draw do
       resources :sites, controller: 'project_master_sites', only: [] do
         collection do
           get 'search'
+          post 'create'
         end
         member do
           post 'update'

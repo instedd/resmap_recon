@@ -1,0 +1,18 @@
+%h2 Other consolidations
+
+%div(ng-show='target_site.id == null')
+  Not applicable. You are creating a new site in the MFL.
+
+%div(ng-show='target_site.id != null && consolidated_sites == null')
+  Loading past consolidations...
+
+%div.recon-panel(ng-show='consolidated_sites != null')
+  %p(ng-show='consolidated_sites.length == 0')
+    There are no consolidations
+
+  .accordion-group(ng-repeat='site in consolidated_sites')
+    .accordion-body.selected
+      .accordion-inner
+        .badge.label-warning{'ng-hide'=>"site.properties.#{@project.app_seen_field_name}"} Pending
+        .badge.label-success{'ng-show'=>"site.id == source_site.id"} Selected
+        = render 'display_sites_fields'

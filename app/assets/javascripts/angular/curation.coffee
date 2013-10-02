@@ -10,6 +10,7 @@ angular.module('Curation',[])
     $scope._load_pending_changes()
 
   $scope._load_pending_changes = ->
+    $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     $http.get("/projects/#{$scope.project_id}/pending_changes", { params: {target_value: $scope.selected_node.id} })
       .success (data) ->
@@ -25,6 +26,8 @@ angular.module('Curation',[])
     next_site_index = Math.min($scope.sites.length - 1, index)
     if next_site_index >= 0
       $scope.$broadcast 'outside-pending-site-selected', $scope.sites[next_site_index]
+    else
+      $scope.$broadcast 'outside-pending-site-selected', null
 
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
@@ -84,6 +87,7 @@ angular.module('Curation',[])
     $scope.target_site = site
 
     $scope.consolidated_sites = null
+    return if $scope.target_site.id == null
     $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
       .success (data) ->
         $scope.consolidated_sites = data
@@ -98,12 +102,19 @@ angular.module('Curation',[])
           if data.length == 1
             $scope._select_target_site(data[0])
 
+  $scope.create_target_site = ->
+    $scope.target_site = { id: null, properties: {} }
+    $scope.consolidated_sites = null
+
   $scope.go_to_search = ->
     $scope.target_site = null
 
   $scope.go_to_and_reset_search = ->
     $scope.go_to_search()
     $scope.$broadcast('site-search-clear')
+
+  $scope.is_target_site_new = ->
+    $scope.target_site.id == null
 
   $scope.consolidate = ->
     params = {
@@ -114,7 +125,23 @@ angular.module('Curation',[])
       target_site: $scope.target_site
     }
 
-    $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
-      .success ->
-        $scope.go_to_and_reset_search()
-        $scope.$emit('site-dismissed', $scope.source_site)
+    if $scope.is_target_site_new()
+      # upon creation
+      # 1. use source_site location
+      # 2. set the hierarchy field
+      $scope.target_site.lat = $scope.source_site.lat
+      $scope.target_site.long = $scope.source_site.long
+      $scope.target_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
+
+    on_success = ->
+      $scope.go_to_and_reset_search()
+      $scope.$emit('site-dismissed', $scope.source_site)
+
+    if $scope.is_target_site_new()
+      $http.post("/projects/#{$scope.project_id}/master/sites", params)
+        .success ->
+          on_success()
+    else
+      $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
+        .success ->
+          on_success()

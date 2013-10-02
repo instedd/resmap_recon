@@ -40,6 +40,12 @@ class Site
       p[collection.field_by_code(k).id] = v
     end
     hash[:properties] = p
+    # from json api location is lat/long but for update is lat/lng
+    # enforce lat/long as convention from outside
+    if hash.has_key?(:long)
+      hash[:lng] = hash[:long]
+      hash.delete(:long)
+    end
     api.post("collections/#{collection.id}/sites/#{id}/partial_update.json", {site: hash.to_json})
   end
 end
