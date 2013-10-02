@@ -9,7 +9,6 @@ angular.module('Curation',[])
     $scope.selected_node = node
     $scope._load_pending_changes()
 
-
   $scope._load_pending_changes = ->
     $scope.sites_loading = true
     $http.get("/projects/#{$scope.project_id}/pending_changes", { params: {target_value: $scope.selected_node.id} })
@@ -18,7 +17,14 @@ angular.module('Curation',[])
         $scope.sites_loading = false
 
   $scope.$on 'site-dismissed', (e, site) ->
-    $scope.sites.splice($scope.sites.indexOf(site), 1)
+    # remove site from pending
+    index = $scope.sites.indexOf(site)
+    $scope.sites.splice(index, 1)
+
+    # open next pending site
+    next_site_index = Math.min($scope.sites.length - 1, index)
+    if next_site_index >= 0
+      $scope.$broadcast 'outside-pending-site-selected', $scope.sites[next_site_index]
 
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
@@ -62,14 +68,19 @@ angular.module('Curation',[])
   $scope.select = (site) ->
     $scope.$emit 'site-search-selected', site
 
+  $scope.$on 'site-search-clear', ->
+    $scope.search = ''
+    $scope._search_sites()
+
 .controller 'ConsolitateSiteCtrl', ($scope, $http) ->
   $scope.target_site = null
   $scope.consolidated_sites = null
+  $scope.source_site = null
 
   $scope.$on 'site-search-selected', (e, site) ->
-    $scope.select_target_site(site)
+    $scope._select_target_site(site)
 
-  $scope.select_target_site = (site) ->
+  $scope._select_target_site = (site) ->
     $scope.target_site = site
 
     $scope.consolidated_sites = null
@@ -79,15 +90,20 @@ angular.module('Curation',[])
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.source_site = site
+    return if $scope.source_site == null
     master_site_id = site.properties[$scope.app_master_site_id]
     if master_site_id
       $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {id: master_site_id}})
         .success (data) ->
           if data.length == 1
-            $scope.select_target_site(data[0])
+            $scope._select_target_site(data[0])
 
   $scope.go_to_search = ->
     $scope.target_site = null
+
+  $scope.go_to_and_reset_search = ->
+    $scope.go_to_search()
+    $scope.$broadcast('site-search-clear')
 
   $scope.consolidate = ->
     params = {
@@ -100,5 +116,5 @@ angular.module('Curation',[])
 
     $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
       .success ->
-        $scope.go_to_search()
+        $scope.go_to_and_reset_search()
         $scope.$emit('site-dismissed', $scope.source_site)

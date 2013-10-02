@@ -3,12 +3,12 @@ class Site
   def initialize(collection, id_or_hash)
     @collection = collection
 
-    if id_or_hash.is_a?(Fixnum)
-      @id = id_or_hash
-      @data = nil
-    else
+    if id_or_hash.is_a?(Hash)
       @id = id_or_hash['id']
       @data = id_or_hash
+    else
+      @id = id_or_hash.to_i
+      @data = nil
     end
   end
 
@@ -17,9 +17,12 @@ class Site
 
   delegate :api, to: :collection
 
+  def data
+    @data ||= api.json("api/sites/#{id}")
+  end
+
   def to_hash
-    #TODO fetch if only id is available.
-    @data
+    data
   end
 
   def update_property(code, value)

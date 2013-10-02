@@ -2,12 +2,15 @@ class ProjectMasterSitesController < ApplicationController
 
   def search
     @project = Project.find(params[:project_id])
-    sites = @project.master_collection
-      .sites
-      .where(search: params[:search])
-      .map &:to_hash
 
-    render json: sites
+    sites = @project.master_collection.sites
+    if params[:id].present?
+      sites = [sites.find(params[:id])]
+    else
+      sites = sites.where(search: params[:search])
+    end
+
+    render json: sites.map(&:to_hash)
   end
 
   def update
