@@ -33,16 +33,54 @@ class ProjectMasterSitesController < ApplicationController
   def csv_download
     csv_string = CSV.generate do |csv|
       fields = @project.master_collection.fields
-      csv << ['Facility Name', 'Lat', 'Long'] + fields.map(&:name) + ['IsArea']
-      @project.master_collection.sites.each do |site|
-        p = site['properties']
-        csv << [site['name'], site['lat'], site['long']] + fields.map{|f| p[f.code]} + ["1"]
+
+      @hierarchy_field = @project.target_field
+      @fields_to_export = fields.select { |f| f.id != @hierarchy_field.id }
+
+      csv << [@hierarchy_field.name, 'Facility Name'] + @fields_to_export.map(&:name) + ['Lat', 'Long', 'IsArea']
+      sites = @project.master_collection.sites.all
+
+      @hierarchy = @project.target_field.hierarchy
+
+      append_sites_for_node(csv, "", @hierarchy, sites)
+
+      # render pending sites (in case something messed up the data)
+      sites.each do |site|
+        append_site_to_csv(csv, '(none)', site)
       end
     end
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 
   protected
+
+  def append_sites_for_node(csv, path, hierarchy, sites)
+    hierarchy.each do |node|
+      p = "#{path}#{'\\' unless path.blank?}#{node['name']}"
+
+      append_hierarchy_to_csv(csv, p)
+
+      sites.select! do |site|
+        if site['properties'][@hierarchy_field.code] == node['id']
+          append_site_to_csv(csv, p, site)
+          # remove from sites
+          false
+        else
+          true
+        end
+      end
+
+      append_sites_for_node(csv, p, node['sub'], sites) unless node['sub'].nil?
+    end
+  end
+
+  def append_site_to_csv(csv, hierarchy_full_path, site)
+    csv << [hierarchy_full_path, site['name']] + @fields_to_export.map{|f| site['properties'][f.code]} + [site['lat'], site['long'], "0"]
+  end
+
+  def append_hierarchy_to_csv(csv, hierarchy_full_path)
+    csv << [hierarchy_full_path, ""] + @fields_to_export.map{|f| ""} + ["", "", "1"]
+  end
 
   def load_project
     @project = Project.find(params[:project_id])

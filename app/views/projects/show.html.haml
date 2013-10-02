@@ -13,8 +13,6 @@
         %dd
           = @project.master_collection.name
           = link_to 'view →', @project.master_collection.show_url, target: '_blank'
-          %br
-          = link_to '(download)', csv_download_project_master_path(@project)
 
         %dt
           Source Facility Lists
@@ -31,3 +29,6 @@
 
     %h2 3. Curate Facility Data
     = link_to 'go →', curate_project_path(@project)
+
+    %h2 4. Export MFL
+    = link_to 'download csv', csv_download_project_master_path(@project)
