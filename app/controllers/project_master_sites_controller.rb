@@ -3,14 +3,16 @@ class ProjectMasterSitesController < ApplicationController
   def search
     @project = Project.find(params[:project_id])
     sites = @project.master_collection
-      .sites_where(search: params[:search])
+      .sites
+      .where(search: params[:search])
+      .map &:to_hash
 
     render json: sites
   end
 
   def update
     @project = Project.find(params[:project_id])
-    master_site = @project.master_collection.sites_find(params[:id])
+    master_site = @project.master_collection.sites.find(params[:id])
     master_site.update_properties(params[:target_site])
 
     source_list = @project.source_lists.find(params[:source_site][:source_list_id])

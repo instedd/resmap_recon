@@ -1,14 +1,26 @@
 class Site
 
-  def initialize(collection, id)
+  def initialize(collection, id_or_hash)
     @collection = collection
-    @id = id
+
+    if id_or_hash.is_a?(Fixnum)
+      @id = id_or_hash
+      @data = nil
+    else
+      @id = id_or_hash['id']
+      @data = id_or_hash
+    end
   end
 
   attr_reader :collection
   attr_reader :id
 
   delegate :api, to: :collection
+
+  def to_hash
+    #TODO fetch if only id is available.
+    @data
+  end
 
   def update_property(code, value)
     api.post("sites/#{id}/update_property", {

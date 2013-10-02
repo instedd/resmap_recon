@@ -85,12 +85,11 @@ class SourceList < ActiveRecord::Base
     res = []
 
     unless values.empty?
-      as_collection.sites_where(
-        app_seen_field_name => false,
-        mapping_property.code => values).each do |site|
-        site['source_list'] = { id: id, name: name }
-        res << site
-      end
+      res.concat(as_collection.sites
+        .where(
+          app_seen_field_name => false,
+          mapping_property.code => values)
+        .map { |s| site_to_hash(s) })
     end
 
     res
@@ -98,21 +97,32 @@ class SourceList < ActiveRecord::Base
 
   def dismiss_site(site_id)
     as_collection
-      .sites_find(site_id)
+      .sites.find(site_id)
       .update_property(app_seen_field_name, true)
   end
 
   def consolidate_with(site_id, master_site_id)
-    site = as_collection.sites_find(site_id)
+    site = as_collection.sites.find(site_id)
 
     site.update_property(app_master_site_id, master_site_id)
     site.update_property(app_seen_field_name, true)
   end
 
   def consolidated_with(master_site_id)
-    res = as_collection.sites_where(app_master_site_id => master_site_id)
-    res.each do |site|
-      site['source_list'] = { id: id, name: name }
-    end
+    as_collection.sites
+      .where(app_master_site_id => master_site_id)
+      .map { |s| site_to_hash(s) }
+  end
+
+  def site_to_hash(site)
+    h = Hash[site.to_hash]
+    h['source_list'] = {
+      id: id,
+      name: name
+    }
+    #TODO create properties for seen/master_site_id
+    #     and hide "private" fields
+
+    h
   end
 end

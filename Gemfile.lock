@@ -74,6 +74,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memoist (0.9.1)
     method_source (0.8.1)
     mime-types (1.25)
     multi_json (1.8.0)
@@ -164,6 +165,7 @@ DEPENDENCIES
   jquery-rails
   lodash-rails
   machinist (>= 2.0.0.beta2)
+  memoist
   mysql2
   ngmin-rails
   pg

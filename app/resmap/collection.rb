@@ -1,4 +1,5 @@
 class Collection
+  extend Memoist
 
   def initialize(id)
     @api = ResmapApi.new
@@ -6,36 +7,28 @@ class Collection
   end
 
   def reload
-    @details = nil
-    @name = nil
     @fields = nil
     @layer_names = nil
+    self.flush_cache
   end
 
   def details
-    @details ||= @api.json("api/collections/#{id}", page: 'all')
+    api.json("api/collections/#{id}", page: 'all')
   end
+  memoize :details
 
   attr_reader :api
   attr_reader :id
 
   def name
-    @name ||= @api.json("collections/#{id}")['name']
+    api.json("collections/#{id}")['name']
   end
+  memoize :name
 
   def sites
-    details['sites']
+    SiteRelation.new(self)
   end
-
-  def sites_where(attrs)
-    @api.json("api/collections/#{id}", {page: 'all'}.merge(attrs))['sites']
-  end
-
-  def sites_find(site_id)
-    # @api.json("api/collections/#{id}/sites/#{site_id}")
-    # sites_where(id: site_id).first
-    Site.new(self, site_id)
-  end
+  memoize :sites
 
   def fields
     @fields ||= begin
@@ -75,5 +68,27 @@ class Collection
 
   def import_wizard_url
     @api.url("collections/#{id}/import_wizard")
+  end
+
+  class SiteRelation
+    attr_reader :collection
+    delegate :api, to: :collection
+
+    def initialize(collection)
+      @collection = collection
+    end
+
+    def all
+      collection.details['sites']
+    end
+
+    def where(attrs)
+      sites_data = api.json("api/collections/#{collection.id}", {page: 'all'}.merge(attrs))['sites']
+      sites_data.map { |site_hash| Site.new(collection, site_hash) }
+    end
+
+    def find(site_id)
+      Site.new(collection, site_id)
+    end
   end
 end
