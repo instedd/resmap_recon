@@ -1,15 +1,21 @@
 angular.module('MasterSitesEditor', ['HierarchyService'])
 
 .controller 'MasterSitesEditorCtrl', ($scope, $http) ->
-
   $scope.sites = null
+  $scope.search = ''
 
-  $scope.loading = true
-  # load all master sites
-  $http.get("/projects/#{$scope.project_id}/master/sites/search")
-    .success (data) ->
-      $scope.sites = data
-      $scope.loading = false
+  load_sites = ->
+    $scope.sites = null
+    $scope.loading = true
+    params = {}
+    if !_.isEmpty($scope.search)
+      params.search = $scope.search
+    $http.get("/projects/#{$scope.project_id}/master/sites/search", params: params)
+      .success (data) ->
+        $scope.sites = data
+        $scope.loading = false
+
+  $scope.$watch 'search', _.throttle(load_sites, 200)
 
 .controller 'MasterSiteRow', ($scope, $rootScope, HierarchyService) ->
   $scope.$watch "site.properties.#{$scope.hierarchy_target_field_code}", ->

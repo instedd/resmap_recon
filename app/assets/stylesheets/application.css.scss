@@ -56,3 +56,9 @@ tr.active {
     height: 300px;
   }
 }
+
+textarea, input, button {
+  &:focus {
+    outline: none;
+  }
+}

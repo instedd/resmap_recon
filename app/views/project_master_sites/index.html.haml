@@ -7,6 +7,10 @@
 
   %div(ng-controller='MasterSitesEditorCtrl')
 
+    .pull-right
+      %form.form-search
+        %input.search-query(ng-model='search' placeholder='Search facility')
+
     %table.table.table-bordered
       %tr
         %th= @project.target_field.name
