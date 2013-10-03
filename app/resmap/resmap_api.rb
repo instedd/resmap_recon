@@ -19,6 +19,7 @@ class ResmapApi
     }
     options[:query] = query unless query.nil?
     res = self.class.get(url("#{url}"), options)
+    process_response(res)
     res.body
   end
 
@@ -28,6 +29,7 @@ class ResmapApi
     }
     options[:body] = body unless body.nil?
     res = self.class.post(url("#{url}"), options)
+    process_response(res)
     res.body
   end
 
@@ -37,10 +39,19 @@ class ResmapApi
     }
     options[:body] = body unless body.nil?
     res = self.class.put(url("#{url}"), options)
+    process_response(res)
     res.body
   end
 
   def json(url, query = {})
     JSON.parse get("#{url}.json", query)
+  end
+
+  protected
+
+  def process_response(response)
+    if response.code != 200
+      raise response.body
+    end
   end
 end

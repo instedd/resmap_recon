@@ -1,0 +1,57 @@
+%h1
+  = link_to @project.name, project_path(@project)
+  MFL Records
+
+%div{'ng-app'=>'MasterSitesEditorApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @project.target_field.hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}
+  - angular_templates 'shared/angular'
+
+  %div(ng-controller='MasterSitesEditorCtrl')
+
+    %table.table.table-bordered
+      %tr
+        %th= @project.target_field.name
+        %th Facility Name
+        - @project.master_collection.fields.each do |field|
+          - if field.id != @project.target_field.id
+            %th
+              = field.name
+        %th
+
+      %tr(ng-show='loading')
+        %td{'colspan' => @project.master_collection.fields.count + 2}
+          Loading...
+
+      %tr(ng-repeat='site in sites' ng-controller='MasterSiteRow')
+        %td {{site_hierarchy_path}}
+        %td {{site.name}}
+        - @project.master_collection.fields.each do |field|
+          - if field.id != @project.target_field.id
+            %td= "{{site.properties.#{field.code}}}"
+        %td
+          %a(href='javascript:' ng-click='edit()') edit
+
+
+    #MasterSiteEditor.modal.hide.modal-big.fade(ng-controller='MasterSiteEditor')
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+        %h3 Editing {{target_site.name}}
+      .modal-body
+
+        .row-fluid
+          .span6
+            %fieldset
+              .control-group
+                %label Facility Name
+                %input(type='text' ng-model='target_site.name')
+
+              - @project.master_collection.fields.each do |field|
+                - if field.id != @project.master_collection_target_field_id
+                  .control-group
+                    %label= field.name
+                    %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}"}
+          .span6
+            = render 'projects/other_consolidations'
+
+      .modal-footer
+        %a.btn.btn-link(href='javascript:' ng-click='cancel()') Cancel
+        %a.btn.btn-primary(href='javascript:' ng-click='save()') Save changes

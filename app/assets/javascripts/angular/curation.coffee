@@ -86,11 +86,13 @@ angular.module('Curation',[])
   $scope._select_target_site = (site) ->
     $scope.target_site = site
 
+    # begin duplicate code consolidated_sites
     $scope.consolidated_sites = null
     return if $scope.target_site.id == null
     $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
       .success (data) ->
         $scope.consolidated_sites = data
+    # end
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.source_site = site

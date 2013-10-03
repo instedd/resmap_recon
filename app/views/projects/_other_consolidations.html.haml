@@ -15,4 +15,4 @@
       .accordion-inner
         .badge.label-warning{'ng-hide'=>"site.properties.#{@project.app_seen_field_name}"} Pending
         .badge.label-success{'ng-show'=>"site.id == source_site.id"} Selected
-        = render 'display_sites_fields'
+        = render 'projects/display_sites_fields'

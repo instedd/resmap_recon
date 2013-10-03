@@ -19,8 +19,9 @@ ResmapRecon::Application.routes.draw do
       get 'csv_download', controller: :project_master_sites
       resources :sites, controller: 'project_master_sites', only: [] do
         collection do
-          get 'search'
+          get 'index'
           post 'create'
+          get 'search'
         end
         member do
           post 'update'

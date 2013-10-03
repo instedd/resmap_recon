@@ -19,3 +19,4 @@
 
 angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
 angular.module('CurationApp', ['Curation', 'HierarchyViewer']);
+angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer']);

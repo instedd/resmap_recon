@@ -2,12 +2,17 @@ class ProjectMasterSitesController < ApplicationController
   require 'csv'
   before_filter :load_project
 
+  def index
+  end
+
   def search
     sites = @project.master_collection.sites
     if params[:id].present?
       sites = [sites.find(params[:id])]
-    else
+    elsif params[:search].present?
       sites = sites.where(search: params[:search])
+    else
+      sites = sites.all
     end
 
     render json: sites.map(&:to_hash)
@@ -88,7 +93,10 @@ class ProjectMasterSitesController < ApplicationController
 
   def consolidate_with_master_site(master_site)
     master_site.update_properties(params[:target_site])
-    source_list = @project.source_lists.find(params[:source_site][:source_list_id])
-    source_list.consolidate_with(params[:source_site][:id], master_site.id)
+
+    if params.has_key?(:source_site)
+      source_list = @project.source_lists.find(params[:source_site][:source_list_id])
+      source_list.consolidate_with(params[:source_site][:id], master_site.id)
+    end
   end
 end
