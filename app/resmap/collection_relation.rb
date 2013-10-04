@@ -7,7 +7,7 @@ class CollectionRelation
   attr_reader :api
 
   def all
-    api.json("/collections").map { |h| build_collection(h['id'].to_i) }
+    api.json("/collections").map { |h| build_collection(h['id'].to_i, h['name']) }
   end
 
   def create(params)
@@ -23,7 +23,7 @@ class CollectionRelation
 
   protected
 
-  def build_collection(id)
-    Collection.new api, id
+  def build_collection(id, name = nil)
+    Collection.new api, id, name
   end
 end

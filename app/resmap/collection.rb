@@ -1,9 +1,10 @@
 class Collection
   extend Memoist
 
-  def initialize(api, id)
+  def initialize(api, id, name = nil)
     @api = api
     @id = id
+    @name = name
   end
 
   def self.create(api, params)
@@ -29,7 +30,7 @@ class Collection
   attr_reader :id
 
   def name
-    api.json("collections/#{id}")['name']
+    @name || api.json("collections/#{id}")['name']
   end
   memoize :name
 
@@ -40,13 +41,13 @@ class Collection
 
   def fields
     @fields ||= begin
-      fields_mapping = @api.json("collections/#{id}/fields/mapping")
+      fields_mapping = api.json("collections/#{id}/fields/mapping")
       fields_mapping.map { |fm| Field.new(self, fm) }
     end
   end
 
   def layers
-    @layers ||= @api.json("collections/#{id}/layers").map { |l| Layer.new(self, l) }
+    @layers ||= api.json("collections/#{id}/layers").map { |l| Layer.new(self, l) }
   end
 
   def find_or_create_layer_by_name(name)
@@ -71,11 +72,11 @@ class Collection
   end
 
   def show_url
-    @api.url("collections?collection_id=#{id}")
+    api.url("collections?collection_id=#{id}")
   end
 
   def import_wizard_url
-    @api.url("collections/#{id}/import_wizard")
+    api.url("collections/#{id}/import_wizard")
   end
 
   class SiteRelation
