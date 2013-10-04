@@ -71,6 +71,7 @@ angular.module('LocationInput', [])
       return if changing_scope_localy
       return unless scope.latitude?
       return unless scope.longitude?
+      # TODO should remove marker if lat/long in scope is undefined
 
       create_or_move_location_marker()
 
