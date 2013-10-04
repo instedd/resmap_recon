@@ -1,0 +1,13 @@
+
+%ul.project_source_lists
+  - @project.source_lists.each do |source_list|
+    %li
+      .well.well-small.well-white
+        = link_to source_list.name, '#'
+
+  %li
+    .well.well-small
+      %a(href='#')
+        %i.icon-plus-sign
+        %br
+        New facility source
