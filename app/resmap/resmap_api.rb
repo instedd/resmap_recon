@@ -15,7 +15,11 @@ class ResmapApi
   memoize :collections
 
   def url(url, query = nil)
-    "http://#{Settings.resource_map.host}/#{url}#{('?' + query.to_query) unless query.nil?}"
+    if url !~ /http:|https:/
+      url = "http://#{Settings.resource_map.host}/#{url}"
+    end
+
+    "#{url}#{('?' + query.to_query) unless query.nil?}"
   end
 
   def get(url, query = {})
@@ -55,7 +59,15 @@ class ResmapApi
 
     options[:payload] = payload if payload
 
-    RestClient::Request.execute(options)
+    RestClient::Request.execute options do |response, request, result, &block|
+      # follow-redirections on POST (required for import wizard)
+      # but ignore payload (file)
+      if request.method == :post && [301, 302, 307].include?(response.code)
+        self.get(response.headers[:location])
+      else
+        response.return!(request, result, &block)
+      end
+    end
   end
 
   def process_response(response)
