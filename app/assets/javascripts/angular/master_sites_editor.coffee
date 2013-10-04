@@ -20,15 +20,19 @@ angular.module('MasterSitesEditor', ['HierarchyService'])
 .controller 'MasterSiteRow', ($scope, $rootScope, HierarchyService) ->
   $scope.$watch "site.properties.#{$scope.hierarchy_target_field_code}", ->
     node = HierarchyService.node_by_id($scope.site.properties[$scope.hierarchy_target_field_code])
-    $scope.site_hierarchy_path = node.path
+    $scope.site_hierarchy_path = node?.path
 
   $scope.edit = ->
     $rootScope.$broadcast('edit-master-site', $scope.site)
 
 .controller 'MasterSiteEditor', ($scope, $http, HierarchyService) ->
+  original_target_site = null
+  modal_editor = $('#MasterSiteEditor')
+
   $scope.$on 'edit-master-site', (e, site) ->
-    $scope.target_site = site
-    $('#MasterSiteEditor').modal('show')
+    original_target_site = site
+    $scope.target_site = _.cloneDeep(site)
+    modal_editor.modal('show')
 
     # begin duplicate code consolidated_sites
     $scope.consolidated_sites = null
@@ -38,6 +42,14 @@ angular.module('MasterSitesEditor', ['HierarchyService'])
         $scope.consolidated_sites = data
     # end
 
+  $scope._close = ->
+    modal_editor.modal('hide')
+    $scope.$broadcast('hide')
+
+  modal_editor.on 'hide', ->
+    $scope.$broadcast('hide')
+    original_target_site = null
+
   $scope.save = ->
     params = {
       target_site: $scope.target_site
@@ -45,8 +57,9 @@ angular.module('MasterSitesEditor', ['HierarchyService'])
 
     $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
       .success ->
-        $('#MasterSiteEditor').modal('hide')
+        _.assign(original_target_site, _.cloneDeep($scope.target_site))
+        $scope._close()
 
   $scope.cancel = ->
-    # TODO discard editions
-    $('#MasterSiteEditor').modal('hide')
+    original_target_site = null
+    $scope._close()

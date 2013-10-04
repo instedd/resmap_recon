@@ -4,6 +4,8 @@
     %title ResourceMap Reconciliation & Curation tools
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
+    %script{:src => "https://maps.googleapis.com/maps/api/js?key=#{Settings.google_api_key}&sensor=false", :type => "text/javascript"}
+
     = csrf_meta_tags
   %body
     .container-fluid

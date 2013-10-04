@@ -14,9 +14,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require dompopover
 //= require angular
 //= require_tree ./angular
 
 angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
-angular.module('CurationApp', ['Curation', 'HierarchyViewer']);
-angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer']);
+angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput']);
+angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);

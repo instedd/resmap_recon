@@ -62,3 +62,26 @@ textarea, input, button {
     outline: none;
   }
 }
+
+.location_edit_popover {
+  .map {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+// support multiple inputs in .input-append
+.input-append input + input {
+  margin-left: -1px;
+  @include border-radius(0);
+}
+
+// popover in modals z-index issue
+.popover {
+  z-index: 2020;
+}
+
+// http://stackoverflow.com/questions/9904379/google-map-zoom-controls-not-displaying-correctly
+.gmnoprint img {
+  max-width: none;
+}

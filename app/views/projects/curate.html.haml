@@ -43,6 +43,14 @@
                     %label Facility Name
                     %input(type='text' ng-model='target_site.name')
 
+                  .control-group
+                    %label Latitude & Longitude
+                    .input-append
+                      %input.input-small(type='text' ng-model='target_site.lat')
+                      %input.input-small(type='text' ng-model='target_site.long')
+                      %button.btn(location-edit latitude='target_site.lat' longitude='target_site.long')
+                        %i.icon-globe
+
                   - @project.master_collection.fields.each do |field|
                     - if field.id != @project.master_collection_target_field_id
                       .control-group
