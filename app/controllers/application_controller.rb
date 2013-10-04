@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filer :setup_app_context
+  before_filter :setup_app_context
 
   protected
 

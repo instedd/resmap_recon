@@ -10,7 +10,7 @@ gem "pg", :group => :production
 gem 'mysql2'
 gem 'haml-rails'
 gem 'rails_config'
-gem 'httparty'
+gem 'rest-client'
 gem 'simple_form'
 gem 'memoist'
 

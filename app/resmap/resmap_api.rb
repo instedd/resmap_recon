@@ -1,7 +1,6 @@
 class ResmapApi
   extend Memoist
-  include HTTParty
-  # debug_output $stdout
+  # RestClient.log = 'stdout'
 
   def initialize
     @auth = {
@@ -15,47 +14,24 @@ class ResmapApi
   end
   memoize :collections
 
-  def url(url)
-    "http://#{Settings.resource_map.host}/#{url}"
+  def url(url, query = nil)
+    "http://#{Settings.resource_map.host}/#{url}#{('?' + query.to_query) unless query.nil?}"
   end
 
   def get(url, query = {})
-    options = {
-      :basic_auth => @auth
-    }
-    options[:query] = query unless query.nil?
-    res = self.class.get(url("#{url}"), options)
-    process_response(res)
-    res.body
+    process_response(execute(:get, url, query, nil))
   end
 
   def post(url, body = {})
-    options = {
-      :basic_auth => @auth
-    }
-    options[:body] = body unless body.nil?
-    res = self.class.post(url("#{url}"), options)
-    process_response(res)
-    res.body
+    process_response(execute(:post, url, nil, body))
   end
 
   def put(url, body = {})
-    options = {
-      :basic_auth => @auth
-    }
-    options[:body] = body unless body.nil?
-    res = self.class.put(url("#{url}"), options)
-    process_response(res)
-    res.body
+    process_response(execute(:put, url, nil, body))
   end
 
   def delete(url)
-    options = {
-      :basic_auth => @auth
-    }
-    res = self.class.delete(url("#{url}"), options)
-    process_response(res)
-    res.body
+    process_response(execute(:delete, url, nil, nil))
   end
 
   def json(url, query = {})
@@ -68,9 +44,21 @@ class ResmapApi
 
   protected
 
+  def execute(method, url, query, payload)
+    options = {
+      :user => @auth[:username],
+      :password => @auth[:password],
+
+      :method => method,
+      :url => self.url(url, query)
+    }
+
+    options[:payload] = payload if payload
+
+    RestClient::Request.execute(options)
+  end
+
   def process_response(response)
-    if response.code != 200
-      raise response.body
-    end
+    response.body
   end
 end
