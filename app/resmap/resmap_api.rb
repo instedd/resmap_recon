@@ -1,6 +1,7 @@
 class ResmapApi
+  extend Memoist
   include HTTParty
-  debug_output $stdout
+  # debug_output $stdout
 
   def initialize
     @auth = {
@@ -8,6 +9,11 @@ class ResmapApi
       :password => Settings.resource_map.password
     }
   end
+
+  def collections
+    CollectionRelation.new(self)
+  end
+  memoize :collections
 
   def url(url)
     "http://#{Settings.resource_map.host}/#{url}"
@@ -43,8 +49,21 @@ class ResmapApi
     res.body
   end
 
+  def delete(url)
+    options = {
+      :basic_auth => @auth
+    }
+    res = self.class.delete(url("#{url}"), options)
+    process_response(res)
+    res.body
+  end
+
   def json(url, query = {})
     JSON.parse get("#{url}.json", query)
+  end
+
+  def json_post(url, query = {})
+    JSON.parse post("#{url}.json", query)
   end
 
   protected

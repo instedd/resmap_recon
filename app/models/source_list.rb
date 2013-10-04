@@ -1,4 +1,6 @@
 class SourceList < ActiveRecord::Base
+  extend Memoist
+
   belongs_to :project
   attr_accessible :collection_id, :config
   serialize :config, Hash
@@ -9,8 +11,9 @@ class SourceList < ActiveRecord::Base
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
 
   def as_collection
-    @collection ||= Collection.new(collection_id)
+    AppContext.resmap_api.collections.find(collection_id)
   end
+  memoize :as_collection
 
   def self.config_property(name)
     define_method(name) {

@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+  extend Memoist
+
   has_many :source_lists
   attr_accessible :config, :name
   serialize :config, Hash
@@ -18,8 +20,9 @@ class Project < ActiveRecord::Base
   config_property :master_collection_target_field_id
 
   def master_collection
-    @master_collection ||= Collection.new(master_collection_id)
+    AppContext.resmap_api.collections.find(master_collection_id)
   end
+  memoize :master_collection
 
   def target_field
     master_collection.field_by_id(master_collection_target_field_id)

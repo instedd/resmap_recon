@@ -1,9 +1,17 @@
 class Collection
   extend Memoist
 
-  def initialize(id)
-    @api = ResmapApi.new
+  def initialize(api, id)
+    @api = api
     @id = id
+  end
+
+  def self.create(api, params)
+    Collection.new(api, api.json_post('/collections', collection: params)['id'])
+  end
+
+  def destroy
+    api.delete("/collections/#{id}")
   end
 
   def reload
@@ -79,7 +87,8 @@ class Collection
     end
 
     def all
-      collection.details['sites']
+      sites_data = collection.details['sites']
+      sites_data.map { |site_hash| Site.new(collection, site_hash) }
     end
 
     def where(attrs)
@@ -93,7 +102,7 @@ class Collection
 
     def create(params)
       raise 'missing name attribute' unless params.has_key? :name
-      result = JSON.parse(api.post("/collections/#{collection.id}/sites.json", site: params.to_json))
+      result = api.json_post("/collections/#{collection.id}/sites", site: params.to_json)
       Site.new(collection, result)
     end
   end
