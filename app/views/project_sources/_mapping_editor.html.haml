@@ -2,35 +2,54 @@
   - angular_templates 'shared/angular'
   %div(ng-controller='MappingEditorCtrl')
 
-    .row-fluid
-      .span6
-        %h2
-          = @source.name
-          \ :
-          = @source.mapping_property.name
+    #accordion2.accordion
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{"data-parent" => "#accordion2", "data-toggle" => "collapse", href: "#collapseOne"}
+            Not classified
+        #collapseOne.accordion-body.collapse.in
+          .accordion-inner
+            .recon-panel
+              %table.table.table-bordered
+                %tr
+                  %th Source Division
+                  %th Number of Records
+                  %th Geo-political division
 
-        .recon-panel
-          %table.table
-            %tr
-              %th Source Division
-              %th MFL Target Division
+                %tr(ng-repeat='mapping_entry in unclassified_mapping' ng-controller='MappingEntryCtrl' ng-class='{active: mapping_entry.editing}')
+                  %td
+                    {{mapping_entry.source_value}}
+                  %td
+                    {{mapping_entry.source_count}}
+                  %td
+                    %a(href='javascript:' ng-click='edit()')
+                      (choose)
 
-            %tr(ng-repeat='mapping_entry in mapping' ng-controller='MappingEntryCtrl' ng-class='{active: mapping_entry.editing}')
-              %td
-                {{mapping_entry.source_value}}
-                .badge {{mapping_entry.source_count}}
-              %td
-                %a(href='javascript:' ng-click='edit()')
-                  {{mapping_entry.target_value || '(not mapped)'}}
+        .accordion-heading
+          %a.accordion-toggle{"data-parent" => "#accordion2", "data-toggle" => "collapse", href: "#collapseTwo"}
+            Classified
+        #collapseTwo.accordion-body.collapse
+          .accordion-inner
+            .recon-panel
+              %table.table.table-bordered
+                %tr
+                  %th Source Division
+                  %th Number of Records
+                  %th Geo-political division
 
-      .span6
-        %h2
-          = @project.master_collection.name
-          \ :
-          = @project.target_field.name
+                %tr(ng-repeat='mapping_entry in classified_mapping' ng-controller='MappingEntryCtrl' ng-class='{active: mapping_entry.editing}')
+                  %td
+                    {{mapping_entry.source_value}}
+                  %td
+                    {{mapping_entry.source_count}}
+                  %td
+                    %a(href='javascript:' ng-click='edit()')
+                      {{mapping_entry.target_value}}
 
-        .recon-panel(ng-show='selected_entry')
-          = render 'shared/angular/hierarchy_tree'
+    .span12
+      .recon-panel(ng-show='selected_entry')
+        = render 'shared/angular/hierarchy_tree'
 
-        .well(ng-hide='selected_entry')
-          Select a source value to edit mapping
+      .well(ng-hide='selected_entry')
+        Select a source value to edit mapping
+

@@ -8,6 +8,12 @@ class ProjectSourcesController < ApplicationController
   def create
   end
 
+  def source_list_details
+    @project = Project.find(params[:project_id])
+    @source = @project.source_lists.find(params[:id])
+    @hierarchy = @project.target_field.hierarchy
+  end
+
   def review_mapping
     if params[:id].present?
       @source = @project.source_lists.find(params[:id])

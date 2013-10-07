@@ -9,6 +9,7 @@ ResmapRecon::Application.routes.draw do
       end
       member do
         get 'review_mapping'
+        get 'source_list_details'
         post 'update_mapping_entry'
       end
       collection do

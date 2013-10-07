@@ -3,7 +3,7 @@
   - @project.source_lists.each do |source_list|
     %li
       .well.well-small.well-white
-        = link_to source_list.name, '#'
+        = link_to source_list.name, source_list_details_project_source_path(@project, source_list)
 
   %li
     .well.well-small

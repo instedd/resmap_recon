@@ -2,13 +2,23 @@ angular.module('MappingEditor',[])
 
 .controller 'MappingEditorCtrl', ($scope, $http) ->
 
-  $scope.mapping = for e in $scope.mapping_hash
-    {
-      source_value: e.source_value,
-      source_count: e.source_count,
-      target_value: e.target_value,
-      editing: false
-    }
+  $scope.classified_mapping = []
+  $scope.unclassified_mapping = []
+  for e in $scope.mapping_hash
+    if e.target_value == null
+      $scope.unclassified_mapping.push {
+        source_value: e.source_value,
+        source_count: e.source_count,
+        target_value: e.target_value,
+        editing: false
+      }
+    else
+      $scope.classified_mapping.push {
+        source_value: e.source_value,
+        source_count: e.source_count,
+        target_value: e.target_value,
+        editing: false
+      }
 
   $scope.$on 'edit-mapping-entry', (e, entry) ->
     $scope.selected_entry.editing = false if $scope.selected_entry?

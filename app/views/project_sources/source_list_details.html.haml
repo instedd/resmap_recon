@@ -1,0 +1,18 @@
+%h1
+  = link_to @project.name, project_path(@project)
+
+.div
+  %a upload new version
+  %a export not curated data
+
+%h2 Facilities classification
+
+= "#{number_to_percentage((@source.mapping.select{|h| !h[:target_value].nil?}.count.to_f * 100 / @source.mapping.count).round(2))} classified"
+
+%p Facilities in source lists need to be classified into the geo-political division.
+
+%p
+  Classify by:
+  = select_tag :field_for_classification, options_for_select(@source.as_collection.fields.map{|f| [f.name, f.code]}.select{|n,c| !c.starts_with?("_")})
+
+= render 'mapping_editor'
