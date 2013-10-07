@@ -1,7 +1,7 @@
 ResmapRecon::Application.routes.draw do
 
   resources :projects, only: [:index, :show] do
-    resources :sources, controller: 'project_sources', only: [] do
+    resources :sources, controller: 'project_sources', only: [:new, :create] do
       resources :sites, controller: 'project_sources_sites', only: [] do
         member do
           post 'dismiss'
