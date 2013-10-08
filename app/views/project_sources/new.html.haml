@@ -7,3 +7,5 @@
 = simple_form_for @new_source_list, url: project_sources_path(@project) do |f|
   = f.input :name
   = f.input :file, :as => :file
+
+  = f.submit :class => 'btn'

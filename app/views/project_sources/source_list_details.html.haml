@@ -1,18 +1,25 @@
-%h1
-  = link_to @project.name, project_path(@project)
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.id, source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.id}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy: @hierarchy)}
+  - angular_templates 'shared/angular'
 
-.div
-  %a upload new version
-  %a export not curated data
+  %div{'ng-controller' => 'MappingEditorCtrl'}
+    %h1
+      = link_to @project.name, project_path(@project)
+      = @source.name
 
-%h2 Facilities classification
+    .div
+      %a upload new version
+      %a export not curated data
 
-= "#{number_to_percentage((@source.mapping.select{|h| !h[:target_value].nil?}.count.to_f * 100 / @source.mapping.count).round(2))} classified"
+    %h2 Facilities classification
 
-%p Facilities in source lists need to be classified into the geo-political division.
+    {{percentage_classified}}
+    classified
 
-%p
-  Classify by:
-  = select_tag :field_for_classification, options_for_select(@source.as_collection.fields.map{|f| [f.name, f.code]}.select{|n,c| !c.starts_with?("_")})
+    %p Facilities in source lists need to be classified into the geo-political division.
 
-= render 'mapping_editor'
+    %p
+      Classify by:
+      %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
+
+    #HierarchySelection.modal.hide.fade(ng-controller='HierarchySelection')
+      = render 'mapping_editor'

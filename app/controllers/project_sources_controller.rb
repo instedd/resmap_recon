@@ -28,6 +28,18 @@ class ProjectSourcesController < ApplicationController
     render nothing: true
   end
 
+  def update_mapping_property
+    @source = @project.source_lists.find(params[:id])
+    @source.mapping_property_id = params[:mapping_property_id]
+    p params
+    p params[:mapping_property_id]
+    if @source.save
+      render 'reload'
+    else
+      render nothing: true
+    end
+  end
+
   protected
 
   def load_project
