@@ -29,6 +29,6 @@
     %div
       = link_to "export not curated data", unmapped_csv_download_project_source_path(@project, @source)
 
-    = "#{@curation_progress} classified"
+    = "#{@curation_progress} curated"
     .progress
       .bar{style: "width: #{@curation_progress}"}
