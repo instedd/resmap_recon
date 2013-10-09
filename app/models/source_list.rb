@@ -10,6 +10,8 @@ class SourceList < ActiveRecord::Base
 
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
 
+  before_create :prepare
+
   def as_collection
     AppContext.resmap_api.collections.find(collection_id)
   end
@@ -77,6 +79,8 @@ class SourceList < ActiveRecord::Base
       { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
       { name: app_master_site_id, kind: 'numeric' }
     ]
+
+    true
   end
 
   def pending_changes(node_id)
