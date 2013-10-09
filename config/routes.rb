@@ -13,6 +13,14 @@ ResmapRecon::Application.routes.draw do
         post 'update_mapping_entry'
         post 'update_mapping_property'
         get 'unmapped_csv_download'
+
+        get 'after_create'
+
+        resource 'import_wizard', controller: 'project_sources_import_wizard', only: [] do
+          get 'validate'
+          post 'start'
+          get 'status'
+        end
       end
       collection do
         get 'review_mapping'

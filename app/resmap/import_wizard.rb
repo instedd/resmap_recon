@@ -23,6 +23,10 @@ class ImportWizard
     api.json_post "collections/#{collection.id}/import_wizard/validate_sites_with_columns", columns: columns_spec.to_json
   end
 
+  def sites_count(columns_spec)
+    validate_sites_with_columns(columns_spec)['sites_count']
+  end
+
   def is_column_spec_valid?(columns_spec)
     validation = validate_sites_with_columns(columns_spec)
 

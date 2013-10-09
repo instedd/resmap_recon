@@ -1,0 +1,34 @@
+%h1
+  = link_to @project.name, project_path(@project)
+
+%h2
+  = @source.name
+
+%p
+  .badge.badge-info
+    = @sites_to_import
+  facilities to import
+
+%div{'ng-app'=>'ProjectSourceAfterCreateApp', 'ng-init'=>init_scope(project_id: @project.id, source_id: @source.id, columns_spec: @columns_spec)}
+
+  %div(ng-controller='AfterCreateCtrl')
+
+    %fieldset
+      .control-group(ng-class='{error: !valid_columns_spec}')
+        %label.control-label Data source identifier:
+        .controls
+          %select(ng-model='identifier_column' ng-options='cs.header for cs in columns_spec')
+          %span.help-inline(ng-show='valid_columns_loading')
+            Validating...
+          %span.help-inline(ng-hide='valid_columns_spec')
+            This column can't be used as identifier
+
+    %button.btn.btn-primary(ng-disabled="import_disabled" ng-click="import()" ladda-loading="importing" ng-hide="status_finished")
+      Import
+
+    %p(ng-show="status_finished")
+      Facilities imported. You will be redirected in {{redirect_in}} seconds or
+      %a(ng-href='{{redirect_url}}')
+        click here
+      \.
+

@@ -15,9 +15,12 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require dompopover
+//= require spin
+//= require ladda
 //= require angular
 //= require_tree ./angular
 
+angular.module('ProjectSourceAfterCreateApp', ['ProjectSourceAfterCreate', 'Ladda']);
 angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
 angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput']);
 angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);

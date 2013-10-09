@@ -7,6 +7,21 @@ class ProjectSourcesController < ApplicationController
   end
 
   def create
+    @new_source_list = NewSourceList.new(params[:new_source_list])
+
+    if @new_source_list.valid?
+      @source_list = @new_source_list.create_in_project(@project)
+      redirect_to after_create_project_source_path(@project, @source_list)
+    else
+      render 'new'
+    end
+  end
+
+  def after_create
+    iw = @source.as_collection.import_wizard
+    raise 'invalid import wizard state' if iw.status != 'file_uploaded'
+    @columns_spec = iw.guess_columns_spec
+    @sites_to_import = iw.sites_count(@columns_spec)
   end
 
   def source_list_details
@@ -18,14 +33,11 @@ class ProjectSourcesController < ApplicationController
 
   def review_mapping
     if params[:id].present?
-      @source = @project.source_lists.find(params[:id])
-
       @hierarchy = @project.target_field.hierarchy
     end
   end
 
   def update_mapping_entry
-    @source = @project.source_lists.find(params[:id])
     @source.update_mapping_entry!(params[:entry])
     render nothing: true
   end
@@ -46,6 +58,7 @@ class ProjectSourcesController < ApplicationController
 
   def load_project
     @project = Project.find(params[:project_id])
+    @source = @project.source_lists.find(params[:id]) if params[:id].present?
   end
 
 end

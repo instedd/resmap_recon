@@ -1,0 +1,73 @@
+$spinnerSize: 32px;
+
+@mixin transition( $value ) {
+  -webkit-transition: $value !important; // important to override bootstrap
+     -moz-transition: $value !important;
+      -ms-transition: $value !important;
+       -o-transition: $value !important;
+          transition: $value !important;
+}
+
+.ladda-button {
+  position: relative;
+}
+
+
+/* Spinner animation */
+.ladda-button .ladda-spinner {
+  position: absolute;
+  z-index: 2;
+  display: inline-block;
+  width: $spinnerSize;
+  height: $spinnerSize;
+  top: 50%;
+  margin-top: -$spinnerSize/2;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Button label */
+.ladda-button .ladda-label {
+  position: relative;
+  z-index: 3;
+}
+
+/* Progress bar */
+.ladda-button .ladda-progress {
+  position: absolute;
+  width: 0;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba( 0, 0, 0, 0.2 );
+
+  visibility: hidden;
+  opacity: 0;
+
+  @include transition( 0.1s linear all );
+}
+
+.ladda-button[data-loading] .ladda-progress {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ladda-button,
+.ladda-button .ladda-spinner,
+.ladda-button .ladda-label {
+  @include transition( 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) all );
+}
+
+.ladda-button[data-style=expand-right] {
+  .ladda-spinner {
+    right: 0px;
+  }
+
+  &[data-loading] {
+    padding-right: 34px;
+
+    .ladda-spinner {
+      opacity: 1;
+    }
+  }
+}
