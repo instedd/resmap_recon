@@ -6,9 +6,8 @@
       = link_to @project.name, project_path(@project)
       = @source.name
 
-    .div
+    %div
       %a upload new version
-      = link_to "export not curated data", unmapped_csv_download_project_source_path(@project, @source)
 
     %h2 Facilities classification
 
@@ -24,3 +23,12 @@
       %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
 
     = render 'mapping_editor'
+
+    %h2 Facilities curation
+
+    %div
+      = link_to "export not curated data", unmapped_csv_download_project_source_path(@project, @source)
+
+    = "#{@curation_progress} classified"
+    .progress
+      .bar{style: "width: #{@curation_progress}"}
