@@ -8,7 +8,7 @@
 
     .div
       %a upload new version
-      %a export not curated data
+      = link_to "export not curated data", unmapped_csv_download_project_source_path(@project, @source)
 
     %h2 Facilities classification
 

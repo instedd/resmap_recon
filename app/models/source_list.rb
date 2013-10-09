@@ -98,6 +98,31 @@ class SourceList < ActiveRecord::Base
     res
   end
 
+  def sites_not_curated
+    as_collection.sites.where(app_master_site_id => '=')
+  end
+
+  def unmapped_sites_csv
+    collection = as_collection
+    properties = collection.fields.select{|f| !f.name.starts_with?("_")}
+    remaining_fields = ['id', 'name', 'lat', 'long']
+    csv_string = CSV.generate do |csv|
+      csv << remaining_fields + properties.map(&:name)
+      sites_not_curated.each do |site|
+        data = site.data
+        row = []
+        remaining_fields.each do |code|
+          row << data[code]
+        end
+        properties.map(&:code).each do |prop|
+          row << data['properties'][prop]
+        end
+        csv << row
+      end
+    end
+    csv_string
+  end
+
   def dismiss_site(site_id)
     as_collection
       .sites.find(site_id)

@@ -12,6 +12,7 @@ ResmapRecon::Application.routes.draw do
         get 'source_list_details'
         post 'update_mapping_entry'
         post 'update_mapping_property'
+        get 'unmapped_csv_download'
       end
       collection do
         get 'review_mapping'

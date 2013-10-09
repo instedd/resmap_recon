@@ -1,3 +1,4 @@
+require 'csv'
 class ProjectSourcesController < ApplicationController
   before_filter :load_project
 
@@ -32,6 +33,12 @@ class ProjectSourcesController < ApplicationController
     @source = @project.source_lists.find(params[:id])
     @source.mapping_property_id = params[:mapping_property_id]
     render nothing: true
+  end
+
+  def unmapped_csv_download
+    @source = @project.source_lists.find(params[:id])
+    csv_string = @source.unmapped_sites_csv
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 
   protected

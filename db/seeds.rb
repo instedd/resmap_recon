@@ -6,6 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+AppContext.resmap_api = ResmapApi.new
+
 Project.find_or_initialize_by_name('Bcardiff Test 1').tap do |p|
   p.master_collection_id = 927
   p.master_collection_target_field_id = 3417 # cat
