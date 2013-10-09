@@ -6,15 +6,12 @@
       = link_to @project.name, project_path(@project)
       = @source.name
 
-    %div
-      %a upload new version
-
     %h2 Facilities classification
 
-    {{percentage_classified}}
+    {{percentage_classified | number}}%
     classified
     .progress
-      .bar{style: "width: {{percentage_classified}}"}
+      .bar{style: "width: {{percentage_classified}}%"}
 
     %p Facilities in source lists need to be classified into the geo-political division.
 
@@ -26,9 +23,14 @@
 
     %h2 Facilities curation
 
-    %div
-      = link_to "export not curated data", unmapped_csv_download_project_source_path(@project, @source)
-
     = "#{@curation_progress} curated"
     .progress
       .bar{style: "width: #{@curation_progress}"}
+
+    = link_to unmapped_csv_download_project_source_path(@project, @source), class: "btn btn-success btn-large" do
+      %i.icon-white.icon-download-alt
+      export not curated data
+
+    = link_to unmapped_csv_download_project_source_path(@project, @source), class: "btn btn-success btn-large" do
+      %i.icon-white.icon-upload
+      upload new version

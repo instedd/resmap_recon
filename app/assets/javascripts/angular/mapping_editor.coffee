@@ -33,7 +33,7 @@ angular.module('MappingEditor',['HierarchySelection'])
   $scope.calculate_progress = ->
     just_classified = _.filter($scope.unclassified_mapping, (e)-> e.target_value != null).length
     classified_count = $scope.classified_mapping.length + just_classified
-    $scope.percentage_classified = "#{classified_count * 100 / ($scope.mapping_hash.length)}%"
+    $scope.percentage_classified = classified_count * 100 / ($scope.mapping_hash.length)
 
   $scope.calculate_progress()
 
