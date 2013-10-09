@@ -21,3 +21,4 @@
 angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
 angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput']);
 angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
+angular.module('HierarchySelectionApp', ['HierarchySelection']);

@@ -5,7 +5,7 @@ angular.module('Curation',[])
   $scope.selected_node = null
   $scope.sites_loading = false
 
-  $scope.$on 'tree-node-chosed', (e, node) ->
+  $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
     $scope._load_pending_changes()
 

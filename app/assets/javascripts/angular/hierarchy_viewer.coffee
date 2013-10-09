@@ -28,7 +28,7 @@ angular.module('HierarchyViewer', [])
 
   $scope.choose = (node) ->
     $scope._set_choosen_node(node)
-    $scope.$emit('tree-node-chosed', node)
+    $scope.$emit('tree-node-chosen', node)
 
   $scope.$on 'tree-node-open', (e, node_id) ->
     if node_id == null
