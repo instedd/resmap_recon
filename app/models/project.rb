@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   has_many :source_lists
   attr_accessible :config, :name
   serialize :config, Hash
+  validates :name, :presence => true
 
   after_save :prepare_source_lists
 

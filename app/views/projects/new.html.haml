@@ -1,0 +1,10 @@
+%h1 New curation project
+
+= simple_form_for @project do |f|
+  = f.input :name
+
+  = f.input :template, as: :radio_buttons, collection: @templates, checked: @templates.first
+
+  .control-group
+    = f.submit class: 'btn btn-primary'
+    = link_to 'Cancel', projects_path, class: 'btn btn-link'

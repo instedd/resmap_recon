@@ -1,6 +1,16 @@
 %h1 Projects
 
-%ul
-  - @projects.each do |p|
-    %li
-      = link_to p.name, project_path(p)
+.row
+  .span4
+    %ul.nav.nav-tabs.nav-stacked
+      - @projects.each do |p|
+        %li
+          = link_to project_path(p) do
+            = p.name
+            %i.icon-chevron-right.pull-right
+
+      %li
+        = link_to new_project_path do
+          %i.icon-plus
+          Create curation project
+
