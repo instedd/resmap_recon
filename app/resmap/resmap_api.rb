@@ -49,6 +49,8 @@ class ResmapApi
   protected
 
   def execute(method, url, query, payload)
+    # puts "#{method} #{url} #{query}#{payload}"
+
     options = {
       :user => @auth[:username],
       :password => @auth[:password],
