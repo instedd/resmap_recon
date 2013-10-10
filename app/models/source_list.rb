@@ -161,9 +161,9 @@ class SourceList < ActiveRecord::Base
 
   def curation_progress
     if as_collection.sites.all.count != 0
-      "#{100 - (sites_not_curated.count * 100 / as_collection.sites.all.count)}%"
+      100 - (sites_not_curated.count * 100 / as_collection.sites.all.count)
     else
-      "0%"
+      0
     end
   end
 end

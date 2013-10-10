@@ -28,7 +28,7 @@ class ProjectSourcesController < ApplicationController
     @project = Project.find(params[:project_id])
     @source = @project.source_lists.find(params[:id])
     @hierarchy = @project.target_field.hierarchy
-    @curation_progress = @source.curation_progress
+    @curation_progress = "#{@source.curation_progress}%"
   end
 
   def review_mapping

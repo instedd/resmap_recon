@@ -12,6 +12,9 @@
   Note: not classified records can't be reconciliated in MFL
 
   %h2 Step 3. Curate Facility Data
+  = "#{@curation_progress} classified"
+  .progress
+    .bar{style: "width: #{@curation_progress}"}
   %p
     = link_to 'Curate pending facility data by geo-political hierarchy', curate_project_path(@project)
   %p
