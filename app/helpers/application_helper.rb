@@ -19,4 +19,8 @@ module ApplicationHelper
     options[:wrapper] = :default
     simple_form_for(object, *(args << options), &block)
   end
+
+  def submit_ladda_button(txt, options = {})
+    button_tag txt, :class => ["ladda ladda-button btn btn-primary"]<<options[:class], :type => "submit", data: { style: 'expand-right' }
+  end
 end

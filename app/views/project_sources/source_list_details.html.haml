@@ -2,8 +2,8 @@
   - angular_templates 'shared/angular'
 
   %div{'ng-controller' => 'MappingEditorCtrl'}
+    = link_to '← back to project', project_path(@project)
     %h1
-      = link_to @project.name, project_path(@project)
       = @source.name
 
     %h2 Facilities classification
@@ -31,6 +31,6 @@
       %i.icon-white.icon-download-alt
       Export not curated data
 
-    = link_to '#', class: "btn btn-success btn-large" do
+    = link_to '#', class: "btn btn-success btn-large disabled" do
       %i.icon-white.icon-upload
       Upload new version

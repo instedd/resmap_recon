@@ -27,6 +27,11 @@ class ProjectSourcesController < ApplicationController
   def source_list_details
     @project = Project.find(params[:project_id])
     @source = @project.source_lists.find(params[:id])
+
+    if @source.mapping_property_id.nil?
+      redirect_to after_create_project_source_path(@project, @source)
+    end
+
     @hierarchy = @project.target_field.hierarchy
     @curation_progress = "#{@source.curation_progress}%"
   end

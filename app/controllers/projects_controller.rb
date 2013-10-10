@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
   protected
 
   def setup_templates
-    @templates = ['Kenya MFL', 'USA MFL']
+    @templates = ['Kenya MFL']
   end
 
   def apply_template(project, template)

@@ -8,5 +8,21 @@
 
     = csrf_meta_tags
   %body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          - unless @project.nil? || @project.new_record?
+            %a.brand{:href => project_path(@project)}
+              = @project.name
+          - else
+            %a.brand{:href => root_url} MFL-Curation-Tool
+
+          .nav-collapse.collapse.pull-right
+            %ul.nav
+              %li
+                = link_to 'All curation projects', projects_path
+
     .container-fluid
       = yield
+
+    %br
