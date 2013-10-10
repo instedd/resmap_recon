@@ -6,5 +6,5 @@
   = f.input :template, as: :radio_buttons, collection: @templates, checked: @templates.first
 
   .control-group
-    = f.submit class: 'btn btn-primary'
+    = submit_ladda_button 'Create'
     = link_to 'Cancel', projects_path, class: 'btn btn-link'

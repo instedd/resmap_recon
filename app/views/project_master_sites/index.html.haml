@@ -1,5 +1,6 @@
+= back_to_project
+
 %h1
-  = link_to @project.name, project_path(@project)
   MFL Records
 
 %div{'ng-app'=>'MasterSitesEditorApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @project.target_field.hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}

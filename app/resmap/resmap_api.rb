@@ -50,6 +50,7 @@ class ResmapApi
 
   def execute(method, url, query, payload)
     # puts "#{method} #{url} #{query}#{payload}"
+    # binding.pry
 
     options = {
       :user => @auth[:username],

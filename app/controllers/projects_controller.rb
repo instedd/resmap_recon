@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @curation_progress = "#{@project.source_lists.map(&:curation_progress).reduce(:+) / @project.source_lists.count}%"
+    @curation_progress = "#{@project.source_lists.map(&:curation_progress).reduce(:+) / @project.source_lists.count}%" rescue "0%"
   end
 
   def curate

@@ -25,10 +25,7 @@ class ProjectSourcesController < ApplicationController
   end
 
   def source_list_details
-    @project = Project.find(params[:project_id])
-    @source = @project.source_lists.find(params[:id])
-
-    if @source.mapping_property_id.nil?
+    if @source.as_collection.sites.count == 0
       redirect_to after_create_project_source_path(@project, @source)
     end
 
@@ -48,13 +45,12 @@ class ProjectSourcesController < ApplicationController
   end
 
   def update_mapping_property
-    @source = @project.source_lists.find(params[:id])
     @source.mapping_property_id = params[:mapping_property_id]
+    @source.save!
     render nothing: true
   end
 
   def unmapped_csv_download
-    @source = @project.source_lists.find(params[:id])
     csv_string = @source.unmapped_sites_csv
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end

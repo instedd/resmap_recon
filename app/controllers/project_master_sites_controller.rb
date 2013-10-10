@@ -66,7 +66,7 @@ class ProjectMasterSitesController < ApplicationController
       append_hierarchy_to_csv(csv, p)
 
       sites.select! do |site|
-        if site['properties'][@hierarchy_field.code] == node['id']
+        if site.to_hash['properties'][@hierarchy_field.code] == node['id']
           append_site_to_csv(csv, p, site)
           # remove from sites
           false
@@ -80,7 +80,7 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def append_site_to_csv(csv, hierarchy_full_path, site)
-    csv << [hierarchy_full_path, site['name']] + @fields_to_export.map{|f| site['properties'][f.code]} + [site['lat'], site['long'], "0"]
+    csv << [hierarchy_full_path, site.to_hash['name']] + @fields_to_export.map{|f| site.to_hash['properties'][f.code]} + [site.to_hash['lat'], site.to_hash['long'], "0"]
   end
 
   def append_hierarchy_to_csv(csv, hierarchy_full_path)
