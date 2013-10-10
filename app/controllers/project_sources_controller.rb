@@ -28,9 +28,7 @@ class ProjectSourcesController < ApplicationController
     @project = Project.find(params[:project_id])
     @source = @project.source_lists.find(params[:id])
     @hierarchy = @project.target_field.hierarchy
-    unless @source.as_collection.sites.all.count == 0
-      @curation_progress = "#{100 - (@source.sites_not_curated.count * 100 / @source.as_collection.sites.all.count)}%"
-    end
+    @curation_progress = @source.curation_progress
   end
 
   def review_mapping

@@ -7,6 +7,9 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
+    # unless sites.all.count == 0
+    #   @curation_progress = "#{100 - (@source.sites_not_curated.count * 100 / @source.as_collection.sites.all.count)}%"
+    # end
   end
 
   def curate
