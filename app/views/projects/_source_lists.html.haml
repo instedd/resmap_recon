@@ -5,13 +5,14 @@
       .well.well-small.well-white
         = link_to source_list.name, source_list_details_project_source_path(@project, source_list)
         .source-bottom
-          - if source_list.curation_progress == 100
-            %i.icon-ok
-          - else
-            %i.icon-warning-sign
-          = "#{source_list.curation_progress}% curated"
-          .progress
-            .bar{style: "width: #{source_list.curation_progress}%"}
+          - source_list.classification_progress.tap do |progress|
+            - if progress == 100
+              %i.icon-ok
+            - else
+              %i.icon-warning-sign
+            = "#{progress}% classified"
+            .progress
+              .bar{style: "width: #{progress}%"}
 
   %li
     .well.well-small

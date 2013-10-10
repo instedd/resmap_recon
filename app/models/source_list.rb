@@ -171,4 +171,20 @@ class SourceList < ActiveRecord::Base
       0
     end
   end
+
+  def classification_progress
+    total = 0
+    classifed = 0
+    mapping.each do |m|
+      total += m[:source_count]
+      classifed += m[:source_count] if m[:target_value]
+    end
+
+    if total != 0
+      classifed * 100 / total
+    else
+      0
+    end
+  end
+
 end
