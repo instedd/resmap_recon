@@ -44,15 +44,31 @@ class ProjectsController < ApplicationController
 
   def apply_template(project, template)
     collection = AppContext.resmap_api.collections.create name: project.name
+
+    hierarchy = nil
+    if template == 'Kenya MFL'
+      hierarchy = prepare_hierarchy(YAML::load_file(File.join(Rails.root, "config", "kenya_hierarchy.yml")))
+    end
+
     layer = collection.find_or_create_layer_by_name('Main')
     layer.ensure_fields [
       { name: 'Facility Code', code: 'fcode', kind: 'text' },
       { name: 'Facility Type', code: 'ftype', kind: 'text' },
       { name: 'Beds', code: 'beds', kind: 'numeric' },
-      { name: 'Administrative Division', code: 'admin_division', kind: 'hierarchy' }
+      { name: 'Administrative Division', code: 'admin_division', kind: 'hierarchy', config: { hierarchy: hierarchy } }
     ]
 
     project.master_collection_id = collection.id
     project.master_collection_target_field_id = collection.field_by_code('admin_division').id
+  end
+
+  def prepare_hierarchy(hierarchy)
+    res = {}
+    hierarchy.each_with_index do |n,i|
+      res[i] = { 'id' => n['id'], 'name' => n['name'] }
+      res[i]['sub'] = prepare_hierarchy(n['sub']) unless n['sub'].nil?
+    end
+
+    res
   end
 end

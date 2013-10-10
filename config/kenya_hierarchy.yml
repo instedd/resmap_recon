@@ -1,0 +1,1080 @@
+---
+- order: '1'
+  id: KNY
+  name: Kenya
+  sub:
+  - order: '2'
+    id: CTR
+    name: Central
+    sub:
+    - order: '10'
+      id: Kiam
+      name: Kiambu
+      sub:
+      - order: '57'
+        id: Ki-Gatanga
+        name: Gatanga
+      - order: '58'
+        id: Ki-Gatundu
+        name: Gatundu
+      - order: '59'
+        id: Ki-Gatundu North
+        name: Gatundu North
+      - order: '60'
+        id: Ki-Githunguri
+        name: Githunguri
+      - order: '61'
+        id: Ki-Kiambu
+        name: Kiambu
+      - order: '62'
+        id: Ki-Kikuyu
+        name: Kikuyu
+      - order: '63'
+        id: Ki-Lari
+        name: Lari
+      - order: '64'
+        id: Ki-Limuru
+        name: Limuru
+      - order: '65'
+        id: Ki-Ruiru
+        name: Ruiru
+      - order: '66'
+        id: Ki-Thika East
+        name: Thika East
+      - order: '67'
+        id: Ki-Thika West
+        name: Thika West
+    - order: '11'
+      id: Kiri
+      name: Kirinyaga
+      sub:
+      - order: '68'
+        id: Ki-Kirinyaga Central
+        name: Kirinyaga Central
+      - order: '69'
+        id: Ki-Kirinyaga East
+        name: Kirinyaga East
+      - order: '70'
+        id: Ki-Kirinyaga North
+        name: Kirinyaga North
+      - order: '71'
+        id: Ki-Kirinyaga South
+        name: Kirinyaga South
+      - order: '72'
+        id: Ki-Kirinyaga West
+        name: Kirinyaga West
+    - order: '12'
+      id: Mura
+      name: Murang'a
+      sub:
+      - order: '73'
+        id: Mu-Kahuro
+        name: Kahuro
+      - order: '74'
+        id: Mu-Kandara
+        name: Kandara
+      - order: '75'
+        id: Mu-Kigumo
+        name: Kigumo
+      - order: '76'
+        id: Mu-Kiharu
+        name: Kiharu
+      - order: '77'
+        id: Mu-Mathioya
+        name: Mathioya
+      - order: '78'
+        id: Mu-Muranga South
+        name: Muranga South
+      - order: '79'
+        id: Mu-Muranga West
+        name: Muranga West
+    - order: '13'
+      id: Nyan
+      name: Nyandarua
+      sub:
+      - order: '80'
+        id: Ny-Kinangop
+        name: Kinangop
+      - order: '81'
+        id: Ny-Kipipiri
+        name: Kipipiri
+      - order: '82'
+        id: Ny-Mirangine
+        name: Mirangine
+      - order: '83'
+        id: Ny-Nyandarua Central
+        name: Nyandarua Central
+      - order: '84'
+        id: Ny-Nyandarua North
+        name: Nyandarua North
+      - order: '85'
+        id: Ny-Nyandarua South
+        name: Nyandarua South
+      - order: '86'
+        id: Ny-Nyandarua West
+        name: Nyandarua West
+    - order: '14'
+      id: Nyer
+      name: Nyeri
+      sub:
+      - order: '87'
+        id: Ny-Kieni East
+        name: Kieni East
+      - order: '88'
+        id: Ny-Kieni West
+        name: Kieni West
+      - order: '89'
+        id: Ny-Mathira East
+        name: Mathira East
+      - order: '90'
+        id: Ny-Mathira West
+        name: Mathira West
+      - order: '91'
+        id: Ny-Mukurweini
+        name: Mukurweini
+      - order: '92'
+        id: Ny-Nyeri Central
+        name: Nyeri Central
+      - order: '93'
+        id: Ny-Nyeri South
+        name: Nyeri South
+      - order: '94'
+        id: Ny-Tetu
+        name: Tetu
+  - order: '3'
+    id: CST
+    name: Coast
+    sub:
+    - order: '15'
+      id: Kili
+      name: Kilifi
+      sub:
+      - order: '95'
+        id: Ki-Bahari
+        name: Bahari
+      - order: '96'
+        id: Ki-Ganze
+        name: Ganze
+      - order: '97'
+        id: Ki-Kaloleni
+        name: Kaloleni
+      - order: '98'
+        id: Ki-Magarini
+        name: Magarini
+      - order: '99'
+        id: Ki-Malindi
+        name: Malindi
+      - order: '100'
+        id: Ki-Rabai
+        name: Rabai
+    - order: '16'
+      id: Kwal
+      name: Kwale
+      sub:
+      - order: '101'
+        id: Kw-Kinango
+        name: Kinango
+      - order: '102'
+        id: Kw-Matuga
+        name: Matuga
+      - order: '103'
+        id: Kw-Msambweni
+        name: Msambweni
+    - order: '17'
+      id: Lamu
+      name: Lamu
+      sub:
+      - order: '104'
+        id: La-Lamu East
+        name: Lamu East
+      - order: '105'
+        id: La-Lamu West
+        name: Lamu West
+    - order: '18'
+      id: Momb
+      name: Mombasa
+      sub:
+      - order: '106'
+        id: Mo-Changamwe
+        name: Changamwe
+      - order: '107'
+        id: Mo-Kisauni
+        name: Kisauni
+      - order: '108'
+        id: Mo-Likoni
+        name: Likoni
+      - order: '109'
+        id: Mo-Mvita
+        name: Mvita
+    - order: '19'
+      id: Tait
+      name: Taita Taveta
+      sub:
+      - order: '110'
+        id: Ta-Mwatate
+        name: Mwatate
+      - order: '111'
+        id: Ta-Taveta
+        name: Taveta
+      - order: '112'
+        id: Ta-Voi
+        name: Voi
+      - order: '113'
+        id: Ta-Wundanyi
+        name: Wundanyi
+    - order: '20'
+      id: Tana
+      name: Tana River
+      sub:
+      - order: '114'
+        id: Ta-Bura
+        name: Bura
+      - order: '115'
+        id: Ta-Galole
+        name: Galole
+      - order: '116'
+        id: Ta-Tana Delta
+        name: Tana Delta
+  - order: '4'
+    id: EST
+    name: Eastern
+    sub:
+    - order: '21'
+      id: Embu
+      name: Embu
+      sub:
+      - order: '117'
+        id: Em-Embu East
+        name: Embu East
+      - order: '118'
+        id: Em-Embu North
+        name: Embu North
+      - order: '119'
+        id: Em-Embu West
+        name: Embu West
+      - order: '120'
+        id: Em-Mbeere North
+        name: Mbeere North
+      - order: '121'
+        id: Em-Mbeere South
+        name: Mbeere South
+    - order: '22'
+      id: Isio
+      name: Isiolo
+      sub:
+      - order: '122'
+        id: Is-Garbatula
+        name: Garbatula
+      - order: '123'
+        id: Is-Isiolo
+        name: Isiolo
+      - order: '124'
+        id: Is-Merti
+        name: Merti
+    - order: '23'
+      id: Kitu
+      name: Kitui
+      sub:
+      - order: '125'
+        id: Ki-Ikutha
+        name: Ikutha
+      - order: '126'
+        id: Ki-Katulani
+        name: Katulani
+      - order: '127'
+        id: Ki-Kisasi
+        name: Kisasi
+      - order: '128'
+        id: Ki-Kitui Central
+        name: Kitui Central
+      - order: '129'
+        id: Ki-Kitui West
+        name: Kitui West
+      - order: '130'
+        id: Ki-Kyuso
+        name: Kyuso
+      - order: '131'
+        id: Ki-Lower Yatta
+        name: Lower Yatta
+      - order: '132'
+        id: Ki-Matinyani
+        name: Matinyani
+      - order: '133'
+        id: Ki-Mumoni
+        name: Mumoni
+      - order: '134'
+        id: Ki-Mutitu
+        name: Mutitu
+      - order: '135'
+        id: Ki-Mutomo
+        name: Mutomo
+      - order: '136'
+        id: Ki-Mwingi Central
+        name: Mwingi Central
+      - order: '137'
+        id: Ki-Mwingi East
+        name: Mwingi East
+      - order: '138'
+        id: Ki-Mwingi West
+        name: Mwingi West
+      - order: '139'
+        id: Ki-Nzambani
+        name: Nzambani
+      - order: '140'
+        id: Ki-Tseikuru
+        name: Tseikuru
+    - order: '24'
+      id: Mach
+      name: Machakos
+      sub:
+      - order: '141'
+        id: Ma-Athi River
+        name: Athi River
+      - order: '142'
+        id: Ma-Kangundo
+        name: Kangundo
+      - order: '143'
+        id: Ma-Kathiani
+        name: Kathiani
+      - order: '144'
+        id: Ma-Machakos
+        name: Machakos
+      - order: '145'
+        id: Ma-Masinga
+        name: Masinga
+      - order: '146'
+        id: Ma-Matungulu
+        name: Matungulu
+      - order: '147'
+        id: Ma-Mwala
+        name: Mwala
+      - order: '148'
+        id: Ma-Yatta
+        name: Yatta
+    - order: '25'
+      id: Maku
+      name: Makueni
+      sub:
+      - order: '149'
+        id: Ma-Kathonzweni
+        name: Kathonzweni
+      - order: '150'
+        id: Ma-Kibwezi
+        name: Kibwezi
+      - order: '151'
+        id: Ma-Kilungu
+        name: Kilungu
+      - order: '152'
+        id: Ma-Makindu
+        name: Makindu
+      - order: '153'
+        id: Ma-Makueni
+        name: Makueni
+      - order: '154'
+        id: Ma-Mbooni East
+        name: Mbooni East
+      - order: '155'
+        id: Ma-Mbooni West
+        name: Mbooni West
+      - order: '156'
+        id: Ma-Mukaa
+        name: Mukaa
+      - order: '157'
+        id: Ma-Nzaui
+        name: Nzaui
+    - order: '26'
+      id: Mars
+      name: Marsabit
+      sub:
+      - order: '158'
+        id: Ma-Loyangalani
+        name: Loyangalani
+      - order: '159'
+        id: Ma-Marsabit
+        name: Marsabit
+      - order: '160'
+        id: Ma-Marsabit North
+        name: Marsabit North
+      - order: '161'
+        id: Ma-Marsabit South
+        name: Marsabit South
+      - order: '162'
+        id: Ma-Moyale
+        name: Moyale
+      - order: '163'
+        id: Ma-North Horr
+        name: North Horr
+      - order: '164'
+        id: Ma-Sololo
+        name: Sololo
+    - order: '27'
+      id: Meru
+      name: Meru
+      sub:
+      - order: '165'
+        id: Me-Buuri
+        name: Buuri
+      - order: '166'
+        id: Me-Igembe North
+        name: Igembe North
+      - order: '167'
+        id: Me-Igembe South
+        name: Igembe South
+      - order: '168'
+        id: Me-Imenti North
+        name: Imenti North
+      - order: '169'
+        id: Me-Imenti South
+        name: Imenti South
+      - order: '170'
+        id: Me-Meru Central
+        name: Meru Central
+      - order: '171'
+        id: Me-Tigania East
+        name: Tigania East
+      - order: '172'
+        id: Me-Tigania West
+        name: Tigania West
+    - order: '28'
+      id: Thar
+      name: Tharaka Nithi
+      sub:
+      - order: '173'
+        id: Th-Maara
+        name: Maara
+      - order: '174'
+        id: Th-Meru South
+        name: Meru South
+      - order: '175'
+        id: Th-Tharaka North
+        name: Tharaka North
+      - order: '176'
+        id: Th-Tharaka South
+        name: Tharaka South
+  - order: '5'
+    id: NRB
+    name: Nairobi
+    sub:
+    - order: '29'
+      id: Nair
+      name: Nairobi
+      sub:
+      - order: '177'
+        id: Na-Dagoretti
+        name: Dagoretti
+      - order: '178'
+        id: Na-Embakasi
+        name: Embakasi
+      - order: '179'
+        id: Na-Kamukunji
+        name: Kamukunji
+      - order: '180'
+        id: Na-Kasarani
+        name: Kasarani
+      - order: '181'
+        id: Na-Langata
+        name: Langata
+      - order: '182'
+        id: Na-Makadara
+        name: Makadara
+      - order: '183'
+        id: Na-Njiru
+        name: Njiru
+      - order: '184'
+        id: Na-Starehe
+        name: Starehe
+      - order: '185'
+        id: Na-Westlands
+        name: Westlands
+  - order: '6'
+    id: NEST
+    name: North Eastern
+    sub:
+    - order: '30'
+      id: Gari
+      name: Garissa
+      sub:
+      - order: '186'
+        id: Ga-Balambala
+        name: Balambala
+      - order: '187'
+        id: Ga-Dadaab
+        name: Dadaab
+      - order: '188'
+        id: Ga-Fafi
+        name: Fafi
+      - order: '189'
+        id: Ga-Garissa
+        name: Garissa
+      - order: '190'
+        id: Ga-Hulugho
+        name: Hulugho
+      - order: '191'
+        id: Ga-Ijara
+        name: Ijara
+      - order: '192'
+        id: Ga-Lagdera
+        name: Lagdera
+    - order: '31'
+      id: Mand
+      name: Mandera
+      sub:
+      - order: '193'
+        id: Ma-Banisa
+        name: Banisa
+      - order: '194'
+        id: Ma-Lafey
+        name: Lafey
+      - order: '195'
+        id: Ma-Mandera Central
+        name: Mandera Central
+      - order: '196'
+        id: Ma-Mandera East
+        name: Mandera East
+      - order: '197'
+        id: Ma-Mandera North
+        name: Mandera North
+      - order: '198'
+        id: Ma-Mandera West
+        name: Mandera West
+    - order: '32'
+      id: Waji
+      name: Wajir
+      sub:
+      - order: '199'
+        id: Wa-Buna
+        name: Buna
+      - order: '200'
+        id: Wa-Eldas
+        name: Eldas
+      - order: '201'
+        id: Wa-Habaswein
+        name: Habaswein
+      - order: '202'
+        id: Wa-Tarbaj
+        name: Tarbaj
+      - order: '203'
+        id: Wa-Wajir East
+        name: Wajir East
+      - order: '204'
+        id: Wa-Wajir North
+        name: Wajir North
+      - order: '205'
+        id: Wa-Wajir South
+        name: Wajir South
+      - order: '206'
+        id: Wa-Wajir West
+        name: Wajir West
+  - order: '7'
+    id: NYZ
+    name: Nyanza
+    sub:
+    - order: '33'
+      id: Homa
+      name: Homa Bay
+      sub:
+      - order: '207'
+        id: Ho-Homa Bay
+        name: Homa Bay
+      - order: '208'
+        id: Ho-Mbita
+        name: Mbita
+      - order: '209'
+        id: Ho-Ndhiwa
+        name: Ndhiwa
+      - order: '210'
+        id: Ho-Rachuonyo North
+        name: Rachuonyo North
+      - order: '211'
+        id: Ho-Rachuonyo South
+        name: Rachuonyo South
+      - order: '212'
+        id: Ho-Suba
+        name: Suba
+    - order: '34'
+      id: Kisi
+      name: Kisii
+      sub:
+      - order: '213'
+        id: Ki-Gucha
+        name: Gucha
+      - order: '214'
+        id: Ki-Kenyenya
+        name: Kenyenya
+      - order: '215'
+        id: Ki-Kisii Central
+        name: Kisii Central
+      - order: '216'
+        id: Ki-Kisii South
+        name: Kisii South
+      - order: '217'
+        id: Ki-Marani
+        name: Marani
+      - order: '218'
+        id: Ki-Nyamache
+        name: Nyamache
+      - order: '219'
+        id: Ki-Sameta
+        name: Sameta
+      - order: '220'
+        id: Ki-South Gucha
+        name: South Gucha
+    - order: '35'
+      id: Kisu
+      name: Kisumu
+      sub:
+      - order: '221'
+        id: Ki-Kisumu East
+        name: Kisumu East
+      - order: '222'
+        id: Ki-Kisumu West
+        name: Kisumu West
+      - order: '223'
+        id: Ki-Muhoroni
+        name: Muhoroni
+      - order: '224'
+        id: Ki-Nyakach
+        name: Nyakach
+      - order: '225'
+        id: Ki-Nyando
+        name: Nyando
+    - order: '36'
+      id: Migo
+      name: Migori
+      sub:
+      - order: '226'
+        id: Mi-Awendo
+        name: Awendo
+      - order: '227'
+        id: Mi-Kuria East
+        name: Kuria East
+      - order: '228'
+        id: Mi-Kuria West
+        name: Kuria West
+      - order: '229'
+        id: Mi-Migori
+        name: Migori
+      - order: '230'
+        id: Mi-Nyatike
+        name: Nyatike
+      - order: '231'
+        id: Mi-Rongo
+        name: Rongo
+      - order: '232'
+        id: Mi-Uriri
+        name: Uriri
+    - order: '37'
+      id: Nyam
+      name: Nyamira
+      sub:
+      - order: '233'
+        id: Ny-Borabu
+        name: Borabu
+      - order: '234'
+        id: Ny-Manga
+        name: Manga
+      - order: '235'
+        id: Ny-Masaba South
+        name: Masaba South
+      - order: '236'
+        id: Ny-North Masaba
+        name: North Masaba
+      - order: '237'
+        id: Ny-Nyamira
+        name: Nyamira
+      - order: '238'
+        id: Ny-Nyamira North
+        name: Nyamira North
+    - order: '38'
+      id: Siay
+      name: Siaya
+      sub:
+      - order: '239'
+        id: Si-Bondo
+        name: Bondo
+      - order: '240'
+        id: Si-Gem
+        name: Gem
+      - order: '241'
+        id: Si-Rarieda
+        name: Rarieda
+      - order: '242'
+        id: Si-Siaya
+        name: Siaya
+      - order: '243'
+        id: Si-Ugenya
+        name: Ugenya
+      - order: '244'
+        id: Si-Ugunja
+        name: Ugunja
+  - order: '8'
+    id: RFV
+    name: Rift Valley
+    sub:
+    - order: '39'
+      id: Bari
+      name: Baringo
+      sub:
+      - order: '245'
+        id: Ba-Baringo Central
+        name: Baringo Central
+      - order: '246'
+        id: Ba-Baringo North
+        name: Baringo North
+      - order: '247'
+        id: Ba-East Pokot
+        name: East Pokot
+      - order: '248'
+        id: Ba-Koibatek
+        name: Koibatek
+      - order: '249'
+        id: Ba-Marigat
+        name: Marigat
+      - order: '250'
+        id: Ba-Mogotio
+        name: Mogotio
+    - order: '40'
+      id: Bome
+      name: Bomet
+      sub:
+      - order: '251'
+        id: Bo-Bomet
+        name: Bomet
+      - order: '252'
+        id: Bo-Chepalungu
+        name: Chepalungu
+      - order: '253'
+        id: Bo-Konoin
+        name: Konoin
+      - order: '254'
+        id: Bo-Sotik
+        name: Sotik
+    - order: '41'
+      id: Elge
+      name: Elgeyo Marakwet
+      sub:
+      - order: '255'
+        id: El-Keiyo
+        name: Keiyo
+      - order: '256'
+        id: El-Keiyo South
+        name: Keiyo South
+      - order: '257'
+        id: El-Marakwet East
+        name: Marakwet East
+      - order: '258'
+        id: El-Marakwet West
+        name: Marakwet West
+    - order: '42'
+      id: Kaji
+      name: Kajiado
+      sub:
+      - order: '259'
+        id: Ka-Isinya
+        name: Isinya
+      - order: '260'
+        id: Ka-Kajiado Central
+        name: Kajiado Central
+      - order: '261'
+        id: Ka-Kajiado North
+        name: Kajiado North
+      - order: '262'
+        id: Ka-Loitoktok
+        name: Loitoktok
+      - order: '263'
+        id: Ka-Mashuru
+        name: Mashuru
+    - order: '43'
+      id: Keri
+      name: Kericho
+      sub:
+      - order: '264'
+        id: Ke-Belgut
+        name: Belgut
+      - order: '265'
+        id: Ke-Bureti
+        name: Bureti
+      - order: '266'
+        id: Ke-Kericho
+        name: Kericho
+      - order: '267'
+        id: Ke-Kipkelion
+        name: Kipkelion
+      - order: '268'
+        id: Ke-Londiani
+        name: Londiani
+    - order: '44'
+      id: Laik
+      name: Laikipia
+      sub:
+      - order: '269'
+        id: La-Laikipia Central
+        name: Laikipia Central
+      - order: '270'
+        id: La-Laikipia East
+        name: Laikipia East
+      - order: '271'
+        id: La-Laikipia North
+        name: Laikipia North
+      - order: '272'
+        id: La-Laikipia West
+        name: Laikipia West
+      - order: '273'
+        id: La-Nyahururu
+        name: Nyahururu
+    - order: '45'
+      id: Naku
+      name: Nakuru
+      sub:
+      - order: '274'
+        id: Na-Gilgil
+        name: Gilgil
+      - order: '275'
+        id: Na-Kuresoi
+        name: Kuresoi
+      - order: '276'
+        id: Na-Molo
+        name: Molo
+      - order: '277'
+        id: Na-Naivasha
+        name: Naivasha
+      - order: '278'
+        id: Na-Nakuru
+        name: Nakuru
+      - order: '279'
+        id: Na-Nakuru North
+        name: Nakuru North
+      - order: '280'
+        id: Na-Njoro
+        name: Njoro
+      - order: '281'
+        id: Na-Rongai
+        name: Rongai
+      - order: '282'
+        id: Na-Subukia
+        name: Subukia
+    - order: '46'
+      id: Nand
+      name: Nandi
+      sub:
+      - order: '283'
+        id: Na-Nandi Central
+        name: Nandi Central
+      - order: '284'
+        id: Na-Nandi East
+        name: Nandi East
+      - order: '285'
+        id: Na-Nandi North
+        name: Nandi North
+      - order: '286'
+        id: Na-Nandi South
+        name: Nandi South
+      - order: '287'
+        id: Na-Tinderet
+        name: Tinderet
+    - order: '47'
+      id: Naro
+      name: Narok
+      sub:
+      - order: '288'
+        id: Na-Narok North
+        name: Narok North
+      - order: '289'
+        id: Na-Narok South
+        name: Narok South
+      - order: '290'
+        id: Na-Trans Mara East
+        name: Trans Mara East
+      - order: '291'
+        id: Na-Trans Mara West - Dikirr
+        name: Trans Mara West - Dikirr
+    - order: '48'
+      id: Samb
+      name: Samburu
+      sub:
+      - order: '292'
+        id: Sa-Samburu Central
+        name: Samburu Central
+      - order: '293'
+        id: Sa-Samburu East
+        name: Samburu East
+      - order: '294'
+        id: Sa-Samburu North
+        name: Samburu North
+    - order: '49'
+      id: Tran
+      name: Trans Nzoia
+      sub:
+      - order: '295'
+        id: Tr-Kwanza
+        name: Kwanza
+      - order: '296'
+        id: Tr-Trans Nzoia East
+        name: Trans Nzoia East
+      - order: '297'
+        id: Tr-Trans Nzoia West
+        name: Trans Nzoia West
+    - order: '50'
+      id: Turk
+      name: Turkana
+      sub:
+      - order: '298'
+        id: Tu-Loima
+        name: Loima
+      - order: '299'
+        id: Tu-Turkana Central
+        name: Turkana Central
+      - order: '300'
+        id: Tu-Turkana East
+        name: Turkana East
+      - order: '301'
+        id: Tu-Turkana North
+        name: Turkana North
+      - order: '302'
+        id: Tu-Turkana South
+        name: Turkana South
+      - order: '303'
+        id: Tu-Turkana West
+        name: Turkana West
+    - order: '51'
+      id: Uasi
+      name: Uasin Gishu
+      sub:
+      - order: '304'
+        id: Ua-Eldoret East
+        name: Eldoret East
+      - order: '305'
+        id: Ua-Eldoret West
+        name: Eldoret West
+      - order: '306'
+        id: Ua-Wareng
+        name: Wareng
+    - order: '52'
+      id: West
+      name: West Pokot
+      sub:
+      - order: '307'
+        id: We-North Pokot
+        name: North Pokot
+      - order: '308'
+        id: We-Pokot Central
+        name: Pokot Central
+      - order: '309'
+        id: We-Pokot South
+        name: Pokot South
+      - order: '310'
+        id: We-West Pokot
+        name: West Pokot
+  - order: '9'
+    id: WST
+    name: Western
+    sub:
+    - order: '53'
+      id: Bung
+      name: Bungoma
+      sub:
+      - order: '311'
+        id: Bu-Bumula
+        name: Bumula
+      - order: '312'
+        id: Bu-Bungoma Central
+        name: Bungoma Central
+      - order: '313'
+        id: Bu-Bungoma East
+        name: Bungoma East
+      - order: '314'
+        id: Bu-Bungoma North
+        name: Bungoma North
+      - order: '315'
+        id: Bu-Bungoma South
+        name: Bungoma South
+      - order: '316'
+        id: Bu-Bungoma West
+        name: Bungoma West
+      - order: '317'
+        id: Bu-Cheptais
+        name: Cheptais
+      - order: '318'
+        id: Bu-Kimilili Bungoma
+        name: Kimilili Bungoma
+      - order: '319'
+        id: Bu-Mt Elgon
+        name: Mt Elgon
+    - order: '54'
+      id: Busi
+      name: Busia
+      sub:
+      - order: '320'
+        id: Bu-Bunyala
+        name: Bunyala
+      - order: '321'
+        id: Bu-Busia
+        name: Busia
+      - order: '322'
+        id: Bu-Butula
+        name: Butula
+      - order: '323'
+        id: Bu-Nambale
+        name: Nambale
+      - order: '324'
+        id: Bu-Samia
+        name: Samia
+      - order: '325'
+        id: Bu-Teso North
+        name: Teso North
+      - order: '326'
+        id: Bu-Teso South
+        name: Teso South
+    - order: '55'
+      id: Kaka
+      name: Kakamega
+      sub:
+      - order: '327'
+        id: Ka-Butere
+        name: Butere
+      - order: '328'
+        id: Ka-Kakamega Central (Lurambi)
+        name: Kakamega Central (Lurambi)
+      - order: '329'
+        id: Ka-Kakamega East (Shinyalu)
+        name: Kakamega East (Shinyalu)
+      - order: '330'
+        id: Ka-Kakamega North (Malava)
+        name: Kakamega North (Malava)
+      - order: '331'
+        id: Ka-Kakamega South (Ikolomani)
+        name: Kakamega South (Ikolomani)
+      - order: '332'
+        id: Ka-Khwisero
+        name: Khwisero
+      - order: '333'
+        id: Ka-Likuyani
+        name: Likuyani
+      - order: '334'
+        id: Ka-Lugari
+        name: Lugari
+      - order: '335'
+        id: Ka-Matete
+        name: Matete
+      - order: '336'
+        id: Ka-Matungu
+        name: Matungu
+      - order: '337'
+        id: Ka-Mumias
+        name: Mumias
+    - order: '56'
+      id: Vihi
+      name: Vihiga
+      sub:
+      - order: '338'
+        id: Vi-Emuhaya
+        name: Emuhaya
+      - order: '339'
+        id: Vi-Hamisi
+        name: Hamisi
+      - order: '340'
+        id: Vi-Sabatia
+        name: Sabatia
+      - order: '341'
+        id: Vi-Vihiga
+        name: Vihiga
