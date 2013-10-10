@@ -165,7 +165,7 @@ class SourceList < ActiveRecord::Base
 
   def curation_progress
     total_count = as_collection.sites.count
-    if as_collection.sites.all.count != 0
+    if total_count != 0
       100 - (sites_not_curated_count * 100 / total_count)
     else
       0

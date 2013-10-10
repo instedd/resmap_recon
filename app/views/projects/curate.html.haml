@@ -1,6 +1,4 @@
-%h1
-  = link_to @project.name, project_path(@project)
-  curation
+= back_to_project
 
 %div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}
   - angular_templates 'shared/angular'
@@ -58,10 +56,11 @@
                         %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}"}
 
                 %div
-                  %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()')
-                    Save & Consolidate with
-                    %br
-                    {{source_site.name}}
+                  %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()' ladda-loading='consolidate_loading')
+                    Save & Consolidate
+                  %br
+                  %span
+                    with {{source_site.name}}
 
                   .alert(ng-hide='source_site') Select a pending change
 

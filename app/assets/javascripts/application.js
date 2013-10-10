@@ -22,7 +22,7 @@
 
 angular.module('ProjectSourceAfterCreateApp', ['ProjectSourceAfterCreate', 'Ladda']);
 angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
-angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput']);
+angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput', 'Ladda']);
 angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
 angular.module('HierarchySelectionApp', ['HierarchySelection']);
 

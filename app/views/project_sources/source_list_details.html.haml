@@ -2,7 +2,7 @@
   - angular_templates 'shared/angular'
 
   %div{'ng-controller' => 'MappingEditorCtrl'}
-    = link_to '← back to project', project_path(@project)
+    = back_to_project
     %h1
       = @source.name
 

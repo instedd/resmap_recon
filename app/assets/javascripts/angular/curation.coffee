@@ -119,6 +119,7 @@ angular.module('Curation',[])
     $scope.target_site.id == null
 
   $scope.consolidate = ->
+    $scope.consolidate_loading = true
     params = {
       source_site: {
         id: $scope.source_site.id,
@@ -138,6 +139,7 @@ angular.module('Curation',[])
     on_success = ->
       $scope.go_to_and_reset_search()
       $scope.$emit('site-dismissed', $scope.source_site)
+      $scope.consolidate_loading = false
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
