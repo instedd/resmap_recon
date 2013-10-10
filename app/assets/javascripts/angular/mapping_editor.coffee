@@ -9,7 +9,7 @@ angular.module('MappingEditor',['HierarchySelection'])
 
   $scope.$watch 'mapping_property', ->
     url = "/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/update_mapping_property"
-    if $scope.mapping_property.id != $scope.source_property
+    if $scope.mapping_property && $scope.mapping_property.id != $scope.source_property
       $http.post(url, {mapping_property_id: $scope.mapping_property.id}).success ->
         location.reload()
 

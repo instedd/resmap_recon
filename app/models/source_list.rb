@@ -33,6 +33,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def mapping
+    return {} if mapping_property_id.nil?
     entries = mapping_entries.with_property(mapping_property_id).all
 
     res = {}
