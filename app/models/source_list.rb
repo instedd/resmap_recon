@@ -107,6 +107,10 @@ class SourceList < ActiveRecord::Base
     as_collection.sites.where(app_master_site_id => '=')
   end
 
+  def sites_not_curated_count
+    as_collection.sites.count_where(app_master_site_id => '=')
+  end
+
   def unmapped_sites_csv
     collection = as_collection
     properties = collection.fields.select{|f| !f.name.starts_with?("_")}
@@ -160,8 +164,9 @@ class SourceList < ActiveRecord::Base
   end
 
   def curation_progress
+    total_count = as_collection.sites.count
     if as_collection.sites.all.count != 0
-      100 - (sites_not_curated.count * 100 / as_collection.sites.all.count)
+      100 - (sites_not_curated_count * 100 / total_count)
     else
       0
     end

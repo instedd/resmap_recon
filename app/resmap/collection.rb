@@ -94,9 +94,17 @@ class Collection
       sites_data.map { |site_hash| Site.new(collection, site_hash) }
     end
 
+    def count
+      api.json("api/collections/#{collection.id}")['count']
+    end
+
     def where(attrs)
       sites_data = api.json("api/collections/#{collection.id}", {page: 'all'}.merge(attrs))['sites']
       sites_data.map { |site_hash| Site.new(collection, site_hash) }
+    end
+
+    def count_where(attrs)
+      api.json("api/collections/#{collection.id}", attrs)['count']
     end
 
     def find(site_id)
