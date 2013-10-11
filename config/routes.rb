@@ -1,5 +1,7 @@
 ResmapRecon::Application.routes.draw do
 
+  resource :session, only: [:new, :create, :destroy]
+
   resources :projects, only: [:index, :show, :new, :create] do
     resources :sources, controller: 'project_sources', only: [:new, :create] do
       resources :sites, controller: 'project_sources_sites', only: [] do

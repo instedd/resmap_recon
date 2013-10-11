@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_filter :authenticate_user!
   before_filter :setup_templates, only: [:new, :create]
 
   def index

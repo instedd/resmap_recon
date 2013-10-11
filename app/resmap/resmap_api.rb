@@ -2,12 +2,26 @@ class ResmapApi
   extend Memoist
   # RestClient.log = 'stdout'
 
-  def initialize
-    @auth = {
-      :username => Settings.resource_map.username,
-      :password => Settings.resource_map.password
-    }
+  attr_accessor :auth
+
+  def self.public
+    self.new
   end
+
+  def self.basic(email, password)
+    api = self.new
+    api.auth = {
+      :username => email,
+      :password => password
+    }
+
+    api
+  end
+
+  def users
+    Users.new(self)
+  end
+  memoize :users
 
   def collections
     CollectionRelation.new(self)
@@ -53,12 +67,14 @@ class ResmapApi
     # binding.pry
 
     options = {
-      :user => @auth[:username],
-      :password => @auth[:password],
-
       :method => method,
       :url => self.url(url, query)
     }
+
+    if auth
+      options[:user] = auth[:username]
+      options[:password] = auth[:password]
+    end
 
     options[:payload] = payload if payload
 
