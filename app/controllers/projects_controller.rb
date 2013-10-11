@@ -1,23 +1,21 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :load_project, except: [:index, :new, :create]
   before_filter :setup_templates, only: [:new, :create]
 
   def index
-    @projects = Project.all
+    @projects = current_user.projects
   end
 
   def show
-    @project = Project.find(params[:id])
     @curation_progress = "#{@project.source_lists.map(&:curation_progress).reduce(:+) / @project.source_lists.count}%" rescue "0%"
   end
 
   def curate
-    @project = Project.find(params[:id])
     @hierarchy = @project.target_field.hierarchy
   end
 
   def pending_changes
-    @project = Project.find(params[:id])
     render json: @project.pending_changes(params[:target_value])
   end
 
@@ -30,6 +28,7 @@ class ProjectsController < ApplicationController
 
     if @project.valid?
       apply_template(@project, params[:project][:template])
+      @project.users << current_user
       @project.save!
 
       redirect_to project_path(@project)
@@ -73,4 +72,11 @@ class ProjectsController < ApplicationController
 
     res
   end
+
+  protected
+
+  def load_project
+    @project = load_project_by_id(params[:id])
+  end
+
 end

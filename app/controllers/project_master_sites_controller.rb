@@ -1,5 +1,6 @@
 class ProjectMasterSitesController < ApplicationController
   require 'csv'
+  before_filter :authenticate_user!
   before_filter :load_project
 
   def index
@@ -88,7 +89,7 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def load_project
-    @project = Project.find(params[:project_id])
+    @project = load_project_by_id(params[:project_id])
   end
 
   def consolidate_with_master_site(master_site)

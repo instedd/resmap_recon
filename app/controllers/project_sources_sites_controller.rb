@@ -1,4 +1,5 @@
 class ProjectSourcesSitesController < ApplicationController
+  before_filter :authenticate_user!
 
   def dismiss
     Project

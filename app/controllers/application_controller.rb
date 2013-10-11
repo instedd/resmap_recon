@@ -30,4 +30,8 @@ class ApplicationController < ActionController::Base
       redirect_to new_session_path
     end
   end
+
+  def load_project_by_id(id)
+    current_user.projects.find(id)
+  end
 end

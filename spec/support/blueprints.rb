@@ -23,3 +23,7 @@ end
 User.blueprint do
   # Attributes here
 end
+
+UserProjectMembership.blueprint do
+  # Attributes here
+end

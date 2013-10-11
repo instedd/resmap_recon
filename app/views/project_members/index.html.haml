@@ -1,0 +1,13 @@
+%h1 Members
+
+.row-fluid
+  .span6
+    %table.table.table-bordered
+      %tr
+        %th Email
+        %th
+      - @project.users.each do |user|
+        %tr
+          %td= user.email
+          %td
+            = link_to 'Remove', project_member_path(@project, user), method: :delete

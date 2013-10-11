@@ -76,6 +76,10 @@ class Collection
     api.url("collections?collection_id=#{id}")
   end
 
+  def layers_url
+    api.url("collections/#{id}/layers")
+  end
+
   def import_wizard
     ImportWizard.new self
   end

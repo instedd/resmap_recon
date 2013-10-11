@@ -1,5 +1,6 @@
 require 'csv'
 class ProjectSourcesController < ApplicationController
+  before_filter :authenticate_user!
   before_filter :load_project
 
   def new
@@ -58,7 +59,7 @@ class ProjectSourcesController < ApplicationController
   protected
 
   def load_project
-    @project = Project.find(params[:project_id])
+    @project = load_project_by_id(params[:project_id])
     @source = @project.source_lists.find(params[:id]) if params[:id].present?
   end
 

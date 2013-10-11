@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131011153411) do
+ActiveRecord::Schema.define(:version => 20131011185846) do
 
   create_table "mapping_entries", :force => true do |t|
     t.integer  "source_list_id"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(:version => 20131011153411) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
+
+  create_table "user_project_memberships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_project_memberships", ["project_id"], :name => "index_user_project_memberships_on_project_id"
+  add_index "user_project_memberships", ["user_id"], :name => "index_user_project_memberships_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"

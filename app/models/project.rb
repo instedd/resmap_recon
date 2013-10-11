@@ -1,12 +1,17 @@
 class Project < ActiveRecord::Base
   extend Memoist
 
+  has_many :user_project_memberships
+  has_many :users, through: :user_project_memberships
+
   has_many :source_lists
   attr_accessible :config, :name
   serialize :config, Hash
   validates :name, :presence => true
 
   after_save :prepare_source_lists
+
+  default_scope order('name')
 
   def self.config_property(name)
     define_method(name) {
