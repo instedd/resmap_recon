@@ -27,6 +27,9 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     if current_user.nil?
+      if request.xhr?
+        raise 'Session lost'
+      end
       redirect_to new_session_path
     end
   end

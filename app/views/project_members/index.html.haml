@@ -1,3 +1,5 @@
+= back_to_project
+
 %h1 Members
 
 .row-fluid
@@ -10,7 +12,7 @@
         %tr
           %td= user.email
           %td
-            = link_to 'Remove', project_member_path(@project, user), method: :delete
+            = link_to 'Remove', project_member_path(@project, user), method: :delete, class: 'ladda'
 
 %h2 Invite members
 

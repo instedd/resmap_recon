@@ -20,11 +20,11 @@
 //= require angular
 //= require_tree ./angular
 
-angular.module('ProjectSourceAfterCreateApp', ['ProjectSourceAfterCreate', 'Ladda']);
-angular.module('MappingEditorApp', ['MappingEditor', 'HierarchyViewer']);
-angular.module('CurationApp', ['Curation', 'HierarchyViewer', 'LocationInput', 'Ladda']);
-angular.module('MasterSitesEditorApp', ['MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
-angular.module('HierarchySelectionApp', ['HierarchySelection']);
+angular.module('ProjectSourceAfterCreateApp', ['Rails','ProjectSourceAfterCreate', 'Ladda']);
+angular.module('MappingEditorApp', ['Rails','MappingEditor', 'HierarchyViewer']);
+angular.module('CurationApp', ['Rails','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda']);
+angular.module('MasterSitesEditorApp', ['Rails','MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
+angular.module('HierarchySelectionApp', ['Rails','HierarchySelection']);
 
 $(function(){
   Ladda.bind('.ladda');

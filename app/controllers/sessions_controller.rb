@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
       session[:email] = params[:email]
       session[:password] = params[:password]
 
-      User.find_or_create_by_email!(params[:email])
+      User.by_email(params[:email])
       redirect_to root_path
     else
       flash.now.alert = 'Invalid credentials'

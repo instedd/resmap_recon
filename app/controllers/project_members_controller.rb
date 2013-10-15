@@ -8,12 +8,7 @@ class ProjectMembersController < ApplicationController
   def create
     email = params[:member][:email]
 
-    @project.master_collection.members.find_or_create_by_email(email).set_admin!
-    @project.source_lists.each do |s|
-      s.as_collection.members.find_or_create_by_email(email).set_admin!
-    end
-
-    invited = User.find_or_create_by_email!(email)
+    invited = User.by_email(email)
     @project.users << invited
 
     flash.notice = "#{email} added to project"
@@ -21,17 +16,9 @@ class ProjectMembersController < ApplicationController
   end
 
   def destroy
-    member = @project.users.find(params[:id])
-    email = member.email
-
-    @project.master_collection.members.find_or_create_by_email(email).delete!
-    @project.source_lists.each do |s|
-      s.as_collection.members.find_or_create_by_email(email).delete!
-    end
-
-    @project.users.delete member
-
-    flash.notice = "#{email} removed from project"
+    user = @project.users.find(params[:id])
+    @project.users.delete user
+    flash.notice = "#{user.email} removed from project"
     redirect_to project_members_path(@project)
   end
 
