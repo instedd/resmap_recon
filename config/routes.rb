@@ -46,7 +46,10 @@ ResmapRecon::Application.routes.draw do
         end
       end
     end
-    resources :members, controller: 'project_members', only: [:index, :destroy] do
+    resources :members, controller: 'project_members', only: [:index, :destroy, :create] do
+      collection do
+        get 'typeahead'
+      end
     end
   end
 

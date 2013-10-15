@@ -63,7 +63,7 @@ class ResmapApi
   protected
 
   def execute(method, url, query, payload)
-    # puts "#{method} #{url} #{query}#{payload}"
+    puts "#{method} #{url} #{query}#{payload}"
     # binding.pry
 
     options = {

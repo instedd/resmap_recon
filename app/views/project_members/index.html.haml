@@ -11,3 +11,20 @@
           %td= user.email
           %td
             = link_to 'Remove', project_member_path(@project, user), method: :delete
+
+%h2 Invite members
+
+= form_for :member, html: { class: 'form-inline add-members' } do |f|
+  = f.text_field :email, class: 'input', placeholder: 'Email', autocomplete: 'off'
+  = submit_ladda_button 'Add'
+
+:javascript
+  $(function(){
+    $('.add-members input[name="member[email]"]').
+      typeahead({
+        source: function (query, process) {
+          $.get("/projects/#{@project.id}/members/typeahead", {q: query},
+            function(data){ process(data); });
+        }
+      });
+  });
