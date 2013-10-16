@@ -15,6 +15,16 @@
 @import "bootstrap";
 @import "ladda";
 
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
 body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
@@ -128,4 +138,15 @@ textarea, input, button {
   .changed-field-cell {
     background-color: #cfc;
   }
+}
+
+.value {
+  @extend .uneditable-input;
+  cursor: pointer;
+  background-color: #ddd;
+  color: #111;
+}
+
+.target-highlight {
+  background-color: #f2f2f2 !important;
 }
