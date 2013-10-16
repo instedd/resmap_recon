@@ -43,6 +43,7 @@ ResmapRecon::Application.routes.draw do
         member do
           post 'update'
           get 'consolidated_sites'
+          get 'history'
         end
       end
     end

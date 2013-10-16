@@ -1,0 +1,19 @@
+%h2= "History for #{@site.data['name']}"
+
+%table.table
+  %tr
+    %th
+    %th Name
+    %th Latitude
+    %th Longitude
+    - @project.master_collection.fields.each do |f|
+      %th= f.name
+
+  - @history.each_with_index do |row,i|
+    %tr
+      %td= distance_of_time_in_words_to_now row['created_at']
+      %td{class: changed_field(@history, i, 'name') ? 'changed-field-cell' : ''}= row['name']
+      %td{class: changed_field(@history, i, 'lat') ? 'changed-field-cell' : ''}= row['lat']
+      %td{class: changed_field(@history, i, 'lng') ? 'changed-field-cell' : ''}= row['lng']
+      - @project.master_collection.fields.each do |f|
+        %td{class: changed_field(@history, i, f.id.to_s) ? 'changed-field-cell' : ''}= row['properties'][f.id.to_s]

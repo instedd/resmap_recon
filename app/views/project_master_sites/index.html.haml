@@ -67,6 +67,8 @@
                   .control-group
                     %label= field.name
                     %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}"}
+
+            %a(ng-href='/projects/{{project_id}}/master/sites/{{target_site.id}}/history' target='_blank') View history
           .span6
             = render 'projects/other_consolidations'
 

@@ -28,4 +28,8 @@ module ApplicationHelper
   def back_to_project
     link_to '← back to project', project_path(@project)
   end
+
+  def changed_field(history, i, field_name)
+    !history[i+1].nil? && (history[i+1][field_name] != history[i][field_name] || history[i+1]['properties'][field_name] != history[i]['properties'][field_name])
+  end
 end

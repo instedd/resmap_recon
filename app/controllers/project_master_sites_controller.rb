@@ -36,6 +36,11 @@ class ProjectMasterSitesController < ApplicationController
     render json: @project.consolidated_with(params[:id])
   end
 
+  def history
+    @site = @project.master_collection.sites.find(params[:id])
+    @history = @site.history.sort_by{|h| h['created_at']}.reverse
+  end
+
   def csv_download
     csv_string = CSV.generate do |csv|
       fields = @project.master_collection.fields
