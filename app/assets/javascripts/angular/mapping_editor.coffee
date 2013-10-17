@@ -16,7 +16,9 @@ angular.module('MappingEditor',['HierarchySelection'])
   $scope.classified_mapping = []
   $scope.unclassified_mapping = []
 
+  all_count = 0
   for e in $scope.mapping_hash
+    all_count += e.source_count
     if e.target_value == null
       $scope.unclassified_mapping.push {
         source_value: e.source_value,
@@ -30,11 +32,21 @@ angular.module('MappingEditor',['HierarchySelection'])
         target_value: e.target_value,
       }
 
+  already_classified = 0
+  for e in $scope.classified_mapping
+    already_classified += e.source_count
+
+  $scope.add_source_values = (array) ->
+    sum = 0
+    for e in array
+      sum += e.source_count
+    return sum
+
   $scope.calculate_progress = ->
-    # todo . use source_count in the calculation
-    just_classified = _.filter($scope.unclassified_mapping, (e)-> e.target_value != null).length
-    classified_count = $scope.classified_mapping.length + just_classified
-    $scope.percentage_classified = classified_count * 100 / ($scope.mapping_hash.length)
+    just_classified = $scope.add_source_values(_.filter($scope.unclassified_mapping, (e)-> e.target_value != null))
+    classified_count = already_classified + just_classified
+    $scope.percentage_classified = classified_count * 100 / all_count
+
 
   $scope.calculate_progress()
 
