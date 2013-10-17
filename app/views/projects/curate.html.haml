@@ -39,7 +39,7 @@
                 %fieldset
                   .control-group
                     %label Facility Name
-                    %input(type='text' ng-model='target_site.name' target='target_site.name')
+                    %input(type='text' ng-model='target_site.name' dnd-target='target_site.name')
 
                   .control-group
                     %label Latitude & Longitude
@@ -53,7 +53,7 @@
                     - if field.id != @project.master_collection_target_field_id
                       .control-group
                         %label= field.name
-                        %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}", 'target' =>"target_site.properties.#{field.code}"}
+                        %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}", 'dnd-target' =>"target_site.properties.#{field.code}"}
 
                 %div
                   %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()' ladda-loading='consolidate_loading')

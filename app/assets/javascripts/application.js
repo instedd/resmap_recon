@@ -22,8 +22,8 @@
 
 angular.module('ProjectSourceAfterCreateApp', ['Rails','ProjectSourceAfterCreate', 'Ladda']);
 angular.module('MappingEditorApp', ['Rails','MappingEditor', 'HierarchyViewer']);
-angular.module('CurationApp', ['Rails','Value','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda']);
-angular.module('MasterSitesEditorApp', ['Rails','Value','MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
+angular.module('CurationApp', ['Rails','DndValue','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda']);
+angular.module('MasterSitesEditorApp', ['Rails','DndValue','MasterSitesEditor', 'HierarchyViewer', 'LocationInput']);
 angular.module('HierarchySelectionApp', ['Rails','HierarchySelection']);
 
 $(function(){

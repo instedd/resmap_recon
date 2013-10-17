@@ -1,41 +1,43 @@
-elem_dragged = null
+value_dragged = null
 
-angular.module('Value',[])
+angular.module('DndValue',[])
 
-.directive 'value', ($document) ->
-  restrict: 'C'
+.directive 'dndSource', ($document, $parse) ->
+  restrict: 'A'
   link: (scope, elem, attrs) ->
     elem.attr('draggable', true)
+    elem.addClass('dnd-source')
+
+    dndSourceGet = $parse(attrs.dndSource)
 
     targets = null
 
     elem[0].addEventListener 'dragstart', ->
-      targets = $document.find('.target')
+      targets = $document.find('.dnd-target')
       targets.addClass('target-highlight')
-      elem_dragged = elem
+      value_dragged = dndSourceGet(scope)
     , false
 
     elem[0].addEventListener 'dragend', ->
       targets.removeClass('target-highlight')
     , false
 
-.directive 'target', ($document) ->
+.directive 'dndTarget', ($document, $parse) ->
   restrict: 'A',
-  # scope: {
-  #   target: '='
-  # }
   link: (scope, elem, attrs) ->
-    console.log(attrs)
-    elem.addClass('target')
+    elem.addClass('dnd-target')
     elem.attr('draggable', true)
+
+    dndTargetGet = $parse(attrs.dndTarget)
+    dndTargetSet = dndTargetGet.assign
 
     elem[0].addEventListener 'dragover', (e) ->
       e.preventDefault()
     , false
 
     elem[0].addEventListener 'drop', (e) ->
-      scope.$eval("#{attrs.target} = '#{elem_dragged.text()}'")
+      dndTargetSet(scope, value_dragged)
       scope.$apply()
-      elem_dragged = null
+      value_dragged = null
       e.preventDefault()
     , false

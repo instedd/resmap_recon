@@ -2,12 +2,12 @@
   %fieldset
     %div
       %label Name
-      %span.value {{site.name}}
+      %span(dnd-source='site.name') {{site.name}}
 
     %div
       %label source list
-      %span.value {{site.source_list.name}}
+      %span(dnd-source='site.source_list.name') {{site.source_list.name}}
 
     %div{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
       %label {{key}}
-      %span.value {{value}}
+      %span(dnd-source='value') {{value}}
