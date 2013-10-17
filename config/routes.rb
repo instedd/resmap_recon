@@ -23,7 +23,7 @@ ResmapRecon::Application.routes.draw do
         get 'after_create'
 
         resource 'import_wizard', controller: 'project_sources_import_wizard', only: [] do
-          get 'validate'
+          post 'validate'
           post 'start'
           get 'status'
         end

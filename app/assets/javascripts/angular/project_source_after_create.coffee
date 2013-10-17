@@ -22,7 +22,7 @@ angular.module('ProjectSourceAfterCreate', [])
     id_col.kind = 'identifier'
 
     params = { columns_spec: $scope.final_columns_spec }
-    $http.get("/projects/#{$scope.project_id}/sources/#{$scope.source_id}/import_wizard/validate", { params: params })
+    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_id}/import_wizard/validate", params)
       .success (data) ->
         $scope.valid_columns_spec = data.valid
         $scope.valid_columns_loading = false

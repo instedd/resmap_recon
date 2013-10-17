@@ -84,6 +84,7 @@ class ResmapApi
       if request.method == :post && [301, 302, 307].include?(response.code)
         self.get(response.headers[:location])
       else
+        # binding.pry
         response.return!(request, result, &block)
       end
     end
