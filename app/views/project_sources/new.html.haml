@@ -3,9 +3,16 @@
 %h1
   New facility source
 
-= simple_form_for @new_source_list, url: project_sources_path(@project) do |f|
+= simple_form_for @new_source_list, url: create_from_file_project_sources_path(@project) do |f|
 
+  Choose a name for a new ResourceMap collection and upload it
   = f.input :name
   = f.input :file
 
   = submit_ladda_button 'Upload & continue'
+
+= simple_form_for @source_list, url: create_from_collection_project_sources_path(@project) do |f|
+  Or choose an existing ResourceMap collection
+  = f.input :collection_id, as: :radio_buttons, collection: @collection_ids
+
+  = submit_ladda_button 'Create & continue'

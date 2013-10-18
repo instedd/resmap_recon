@@ -2,7 +2,7 @@ class SourceList < ActiveRecord::Base
   extend Memoist
 
   belongs_to :project
-  attr_accessible :collection_id, :config
+  attr_accessible :collection_id, :config, :project
   serialize :config, Hash
   has_many :mapping_entries
 

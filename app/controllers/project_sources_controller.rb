@@ -5,14 +5,27 @@ class ProjectSourcesController < ApplicationController
 
   def new
     @new_source_list = NewSourceList.new
+    @source_list = SourceList.new project: @project
+    @collection_ids = AppContext.resmap_api.collections.all.map{|c| [c.name, c.id]}
   end
 
-  def create
+  def create_from_file
     @new_source_list = NewSourceList.new(params[:new_source_list])
 
     if @new_source_list.valid?
       @source_list = @new_source_list.create_in_project(@project)
       redirect_to after_create_project_source_path(@project, @source_list)
+    else
+      render 'new'
+    end
+  end
+
+  def create_from_collection
+    p params
+    source_list = SourceList.new project: @project, collection_id: params[:source_list][:collection_id]
+    if source_list.valid?
+      source_list.save
+      redirect_to project_path(@project)
     else
       render 'new'
     end

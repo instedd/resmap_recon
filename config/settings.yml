@@ -1,5 +1,5 @@
 resource_map:
   # host: resourcemap.instedd.org
-  host: resmap-stg.instedd.org
-  # host: localhost:3000
+  # host: resmap-stg.instedd.org
+  host: localhost:3000
 google_api_key: AIzaSyBwm_YM5joj7fmy0u9HqDMWi2j2lUAArGs

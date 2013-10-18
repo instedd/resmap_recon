@@ -7,7 +7,7 @@ ResmapRecon::Application.routes.draw do
       get 'curate'
       get 'pending_changes'
     end
-    resources :sources, controller: 'project_sources', only: [:new, :create] do
+    resources :sources, controller: 'project_sources', only: [:new] do
       resources :sites, controller: 'project_sources_sites', only: [] do
         member do
           post 'dismiss'
@@ -30,6 +30,8 @@ ResmapRecon::Application.routes.draw do
       end
       collection do
         get 'review_mapping'
+        post 'create_from_file'
+        post 'create_from_collection'
       end
     end
     resource :master, only: [] do
