@@ -18,4 +18,4 @@
       %td{class: changed_field(@history, i, 'lng') ? 'changed-field-cell' : ''}= row['lng']
       - @project.master_collection.fields.each do |f|
         %td{class: changed_field(@history, i, f.id.to_s) ? 'changed-field-cell' : ''}= row['properties'][f.id.to_s]
-      %td= row['user_id']
+      %td= row['user']
