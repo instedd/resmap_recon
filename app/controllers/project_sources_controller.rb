@@ -21,7 +21,6 @@ class ProjectSourcesController < ApplicationController
   end
 
   def create_from_collection
-    p params
     source_list = SourceList.new project: @project, collection_id: params[:source_list][:collection_id]
     if source_list.valid?
       source_list.save
