@@ -38,7 +38,7 @@ class ProjectSourcesController < ApplicationController
   end
 
   def source_list_details
-    if @source.as_collection.sites.count == 0
+    if @source.as_collection.import_wizard.status == 'file_uploaded'
       redirect_to after_create_project_source_path(@project, @source)
     end
 

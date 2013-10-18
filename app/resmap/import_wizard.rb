@@ -34,7 +34,7 @@ class ImportWizard
   end
 
   def status
-    api.json("collections/#{collection.id}/import_wizard/job_status")['status']
+    api.json("collections/#{collection.id}/import_wizard/job_status")['status'] rescue nil
   end
 
   def execute(columns_spec)
