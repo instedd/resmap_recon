@@ -13,6 +13,6 @@
 
 = simple_form_for @source_list, url: create_from_collection_project_sources_path(@project) do |f|
   Or choose an existing ResourceMap collection
-  = f.input :collection_id, as: :radio_buttons, collection: @collection_ids
+  = f.input :collection_id, collection: @collection_ids
 
   = submit_ladda_button 'Create & continue'
