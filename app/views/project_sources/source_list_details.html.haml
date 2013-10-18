@@ -6,6 +6,8 @@
     %h1
       = @source.name
 
+    = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
+
     %h2 Facilities classification
 
     {{(percentage_classified | number) || 0}}%
