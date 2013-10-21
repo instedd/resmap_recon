@@ -114,7 +114,7 @@ class SourceList < ActiveRecord::Base
   def unmapped_sites_csv
     collection = as_collection
     properties = collection.fields.select{|f| !f.name.starts_with?("_")}
-    remaining_fields = ['id', 'name', 'lat', 'long']
+    remaining_fields = ['name', 'lat', 'long']
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name)
       sites_not_curated.each do |site|
