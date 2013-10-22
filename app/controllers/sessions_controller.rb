@@ -3,13 +3,16 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if AppContext.resmap_api.users.valid?(params[:email], params[:password])
+    begin
+      api = ResmapApi.basic(params[:email], params[:password])
+      api.json('/collections')
+
       session[:email] = params[:email]
       session[:password] = params[:password]
 
       User.by_email(params[:email])
       redirect_to root_path
-    else
+    rescue
       flash.now.alert = 'Invalid credentials'
       render 'new'
     end
