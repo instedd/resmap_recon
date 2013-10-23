@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :setup_app_context
+  before_filter do
+    GA.tracker = Settings.google_analytics
+  end
 
   protected
 

@@ -6,6 +6,7 @@
     = javascript_include_tag "application"
     %script{:src => "https://maps.googleapis.com/maps/api/js?key=#{Settings.google_api_key}&sensor=false", :type => "text/javascript"}
 
+    = analytics_init
     = csrf_meta_tags
   %body
     .navbar.navbar-inverse.navbar-fixed-top
