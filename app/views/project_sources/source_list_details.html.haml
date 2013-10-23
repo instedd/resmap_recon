@@ -21,6 +21,8 @@
       Source Mapped By:
       %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
 
+      %span(ng-show='mapping_property_loading') Loading ...
+
     = render 'mapping_editor'
 
     %h2 Facilities curation

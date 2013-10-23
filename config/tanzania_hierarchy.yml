@@ -1,0 +1,535 @@
+---
+- order: '1'
+  id: TZ
+  name: Tanzania
+  sub:
+  - order: '2'
+    id: TZ.CL
+    name: Central Zone
+    sub:
+    - order: '3'
+      id: TZ.CL.DO
+      name: Dodoma Region
+      sub:
+      - order: '4'
+        id: TZ.CL.DO.BA
+        name: Bahi District
+      - order: '5'
+        id: TZ.CL.DO.CM
+        name: Chemba District
+      - order: '6'
+        id: TZ.CL.DO.CW
+        name: Chamwino District
+      - order: '7'
+        id: TZ.CL.DO.DO
+        name: Dodoma District
+      - order: '8'
+        id: TZ.CL.DO.KO
+        name: Kondoa District
+      - order: '9'
+        id: TZ.CL.DO.KW
+        name: Kongwa District
+      - order: '10'
+        id: TZ.CL.DO.MW
+        name: Mpwapwa District
+    - order: '11'
+      id: TZ.CL.SD
+      name: Singida Region
+      sub:
+      - order: '12'
+        id: TZ.CL.SD.IK
+        name: Ikungi District
+      - order: '13'
+        id: TZ.CL.SD.IR
+        name: Iramba District
+      - order: '14'
+        id: TZ.CL.SD.ML
+        name: Mkalama District
+      - order: '15'
+        id: TZ.CL.SD.MN
+        name: Manyoni District
+      - order: '16'
+        id: TZ.CL.SD.SD
+        name: Singida District
+  - order: '17'
+    id: TZ.ET
+    name: Eastern Zone
+    sub:
+    - order: '18'
+      id: TZ.ET.DS
+      name: Dar es Salaam Region
+      sub:
+      - order: '19'
+        id: TZ.ET.DS.IL
+        name: Ilala District
+      - order: '20'
+        id: TZ.ET.DS.KN
+        name: Kinondoni District
+      - order: '21'
+        id: TZ.ET.DS.TE
+        name: Temeke District
+    - order: '22'
+      id: TZ.ET.MO
+      name: Morogoro Region
+      sub:
+      - order: '23'
+        id: TZ.ET.MO.GA
+        name: Gairo District
+      - order: '24'
+        id: TZ.ET.MO.KE
+        name: Kilombero District
+      - order: '25'
+        id: TZ.ET.MO.KS
+        name: Kilosa District
+      - order: '26'
+        id: TZ.ET.MO.MG
+        name: Morogoro District
+      - order: '27'
+        id: TZ.ET.MO.MV
+        name: Mvomero District
+      - order: '28'
+        id: TZ.ET.MO.UL
+        name: Ulanga District
+    - order: '29'
+      id: TZ.ET.PW
+      name: Pwani Region
+      sub:
+      - order: '30'
+        id: TZ.ET.PW.BA
+        name: Bagamoyo District
+      - order: '31'
+        id: TZ.ET.PW.KH
+        name: Kibaha District
+      - order: '32'
+        id: TZ.ET.PW.KS
+        name: Kisarawe District
+      - order: '33'
+        id: TZ.ET.PW.MF
+        name: Mafia District
+      - order: '34'
+        id: TZ.ET.PW.MU
+        name: Mkuranga District
+      - order: '35'
+        id: TZ.ET.PW.RF
+        name: Rufiji District
+  - order: '36'
+    id: TZ.LK
+    name: Lake Zone
+    sub:
+    - order: '37'
+      id: TZ.LK.GE
+      name: Geita Region
+      sub:
+      - order: '38'
+        id: TZ.LK.GE.BK
+        name: Bukombe District
+      - order: '39'
+        id: TZ.LK.GE.CT
+        name: Chato District
+      - order: '40'
+        id: TZ.LK.GE.GE
+        name: Geita District
+      - order: '41'
+        id: TZ.LK.GE.MW
+        name: Mbogwe District
+      - order: '42'
+        id: TZ.LK.GE.NH
+        name: Nyang'hwale District
+    - order: '43'
+      id: TZ.LK.KR
+      name: Kagera Region
+      sub:
+      - order: '44'
+        id: TZ.LK.KR.BI
+        name: Biharamulo District
+      - order: '45'
+        id: TZ.LK.KR.BU
+        name: Bukoba District
+      - order: '46'
+        id: TZ.LK.KR.KW
+        name: Karagwe District
+      - order: '47'
+        id: TZ.LK.KR.KY
+        name: Kyerwa District
+      - order: '48'
+        id: TZ.LK.KR.ML
+        name: Muleba District
+      - order: '49'
+        id: TZ.LK.KR.MN
+        name: Missenyi District
+      - order: '50'
+        id: TZ.LK.KR.NG
+        name: Ngara District
+    - order: '51'
+      id: TZ.LK.MA
+      name: Mara Region
+      sub:
+      - order: '52'
+        id: TZ.LK.MA.BN
+        name: Bunda District
+      - order: '53'
+        id: TZ.LK.MA.BT
+        name: Butiama District
+      - order: '54'
+        id: TZ.LK.MA.MS
+        name: Musoma District
+      - order: '55'
+        id: TZ.LK.MA.RO
+        name: Rorya District
+      - order: '56'
+        id: TZ.LK.MA.SR
+        name: Serengeti District
+      - order: '57'
+        id: TZ.LK.MA.TR
+        name: Tarime District
+    - order: '58'
+      id: TZ.LK.MZ
+      name: Mwanza Region
+      sub:
+      - order: '59'
+        id: TZ.LK.MZ.IM
+        name: Ilemela District
+      - order: '60'
+        id: TZ.LK.MZ.KW
+        name: Kwimba District
+      - order: '61'
+        id: TZ.LK.MZ.MG
+        name: Magu District
+      - order: '62'
+        id: TZ.LK.MZ.MI
+        name: Misungwi District
+      - order: '63'
+        id: TZ.LK.MZ.NA
+        name: Nyamagana District
+      - order: '64'
+        id: TZ.LK.MZ.SE
+        name: Sengerema District
+      - order: '65'
+        id: TZ.LK.MZ.UK
+        name: Ukerewe District
+  - order: '66'
+    id: TZ.NT
+    name: Northern Zone
+    sub:
+    - order: '67'
+      id: TZ.NT.AS
+      name: Arusha Region
+      sub:
+      - order: '68'
+        id: TZ.NT.AS.AM
+        name: Arumeru District
+      - order: '69'
+        id: TZ.NT.AS.AS
+        name: Arusha District
+      - order: '70'
+        id: TZ.NT.AS.KR
+        name: Karatu District
+      - order: '71'
+        id: TZ.NT.AS.LO
+        name: Longido District
+      - order: '72'
+        id: TZ.NT.AS.MN
+        name: Monduli District
+      - order: '73'
+        id: TZ.NT.AS.NO
+        name: Ngorongoro District
+    - order: '74'
+      id: TZ.NT.KL
+      name: Kilimanjaro Region
+      sub:
+      - order: '75'
+        id: TZ.NT.KL.HA
+        name: Hai District
+      - order: '76'
+        id: TZ.NT.KL.MS
+        name: Moshi District
+      - order: '77'
+        id: TZ.NT.KL.MW
+        name: Mwanga District
+      - order: '78'
+        id: TZ.NT.KL.RM
+        name: Rombo District
+      - order: '79'
+        id: TZ.NT.KL.SA
+        name: Same District
+      - order: '80'
+        id: TZ.NT.KL.SI
+        name: Siha District
+    - order: '81'
+      id: TZ.NT.MY
+      name: Manyara Region
+      sub:
+      - order: '82'
+        id: TZ.NT.MY.BA
+        name: Babati District
+      - order: '83'
+        id: TZ.NT.MY.HG
+        name: Hanang District
+      - order: '84'
+        id: TZ.NT.MY.KT
+        name: Kiteto District
+      - order: '85'
+        id: TZ.NT.MY.ML
+        name: Mbulu District
+      - order: '86'
+        id: TZ.NT.MY.SM
+        name: Simanjiro District
+    - order: '87'
+      id: TZ.NT.TN
+      name: Tanga Region
+      sub:
+      - order: '88'
+        id: TZ.NT.TN.HD
+        name: Handeni District
+      - order: '89'
+        id: TZ.NT.TN.KI
+        name: Kilindi District
+      - order: '90'
+        id: TZ.NT.TN.KO
+        name: Korogwe District
+      - order: '91'
+        id: TZ.NT.TN.LS
+        name: Lushoto District
+      - order: '92'
+        id: TZ.NT.TN.MH
+        name: Muheza District
+      - order: '93'
+        id: TZ.NT.TN.MK
+        name: Mkinga District
+      - order: '94'
+        id: TZ.NT.TN.PA
+        name: Pangani District
+      - order: '95'
+        id: TZ.NT.TN.TN
+        name: Tanga District
+  - order: '96'
+    id: TZ.SH
+    name: Southern Highlands Zone
+    sub:
+    - order: '97'
+      id: TZ.SH.IG
+      name: Iringa Region
+      sub:
+      - order: '98'
+        id: TZ.SH.IG.IG
+        name: Iringa District
+      - order: '99'
+        id: TZ.SH.IG.KO
+        name: Kilolo District
+      - order: '100'
+        id: TZ.SH.IG.MF
+        name: Mufindi District
+      - order: '101'
+        id: TZ.SH.IG.MG
+        name: Mafinga District
+    - order: '102'
+      id: TZ.SH.KA
+      name: Katavi Region
+      sub:
+      - order: '103'
+        id: TZ.SH.KA.ME
+        name: Mlele District
+      - order: '104'
+        id: TZ.SH.KA.MP
+        name: Mpanda District
+    - order: '105'
+      id: TZ.SH.MB
+      name: Mbeya Region
+      sub:
+      - order: '106'
+        id: TZ.SH.MB.CH
+        name: Chunya District
+      - order: '107'
+        id: TZ.SH.MB.IJ
+        name: Ileje District
+      - order: '108'
+        id: TZ.SH.MB.KY
+        name: Kyela District
+      - order: '109'
+        id: TZ.SH.MB.MB
+        name: Mbarali District
+      - order: '110'
+        id: TZ.SH.MB.MO
+        name: Momba District
+      - order: '111'
+        id: TZ.SH.MB.MY
+        name: Mbeya District
+      - order: '112'
+        id: TZ.SH.MB.MZ
+        name: Mbozi District
+      - order: '113'
+        id: TZ.SH.MB.RG
+        name: Rungwe District
+    - order: '114'
+      id: TZ.SH.NJ
+      name: Njombe Region
+      sub:
+      - order: '115'
+        id: TZ.SH.NJ.LI
+        name: Ludewa District
+      - order: '116'
+        id: TZ.SH.NJ.MA
+        name: Makete District
+      - order: '117'
+        id: TZ.SH.NJ.NJ
+        name: Njombe District
+      - order: '118'
+        id: TZ.SH.NJ.WA
+        name: Wanging'ombe District
+    - order: '119'
+      id: TZ.SH.RU
+      name: Rukwa Region
+      sub:
+      - order: '120'
+        id: TZ.SH.RU.KB
+        name: Kalambo District
+      - order: '121'
+        id: TZ.SH.RU.NK
+        name: Nkasi District
+      - order: '122'
+        id: TZ.SH.RU.SU
+        name: Sumbawanga District
+  - order: '123'
+    id: TZ.ST
+    name: Southern Zone
+    sub:
+    - order: '124'
+      id: TZ.ST.LI
+      name: Lindi Region
+      sub:
+      - order: '125'
+        id: TZ.ST.LI.KW
+        name: Kilwa District
+      - order: '126'
+        id: TZ.ST.LI.LI
+        name: Lindi District
+      - order: '127'
+        id: TZ.ST.LI.LW
+        name: Liwale District
+      - order: '128'
+        id: TZ.ST.LI.NC
+        name: Nachingwea District
+      - order: '129'
+        id: TZ.ST.LI.RU
+        name: Ruangwa District
+    - order: '130'
+      id: TZ.ST.MT
+      name: Mtwara Region
+      sub:
+      - order: '131'
+        id: TZ.ST.MT.MS
+        name: Masasi District
+      - order: '132'
+        id: TZ.ST.MT.MT
+        name: Mtwara District
+      - order: '133'
+        id: TZ.ST.MT.NN
+        name: Nanyumbu District
+      - order: '134'
+        id: TZ.ST.MT.NW
+        name: Newala District
+      - order: '135'
+        id: TZ.ST.MT.TD
+        name: Tandahimba District
+    - order: '136'
+      id: TZ.ST.RV
+      name: Ruvuma Region
+      sub:
+      - order: '137'
+        id: TZ.ST.RV.MG
+        name: Mbinga District
+      - order: '138'
+        id: TZ.ST.RV.NM
+        name: Namtumbo District
+      - order: '139'
+        id: TZ.ST.RV.NY
+        name: Nyasa District
+      - order: '140'
+        id: TZ.ST.RV.SG
+        name: Songea District
+      - order: '141'
+        id: TZ.ST.RV.TU
+        name: Tunduru District
+  - order: '142'
+    id: TZ.WT
+    name: Western Zone
+    sub:
+    - order: '143'
+      id: TZ.WT.KM
+      name: Kigoma Region
+      sub:
+      - order: '144'
+        id: TZ.WT.KM.BW
+        name: Buhigwe District
+      - order: '145'
+        id: TZ.WT.KM.KD
+        name: Kibondo District
+      - order: '146'
+        id: TZ.WT.KM.KG
+        name: Kigoma District
+      - order: '147'
+        id: TZ.WT.KM.KK
+        name: Kakonko District
+      - order: '148'
+        id: TZ.WT.KM.KS
+        name: Kasulu District
+      - order: '149'
+        id: TZ.WT.KM.UV
+        name: Uvinza District
+    - order: '150'
+      id: TZ.WT.SI
+      name: Simiyu Region
+      sub:
+      - order: '151'
+        id: TZ.WT.SI.BR
+        name: Bariadi District
+      - order: '152'
+        id: TZ.WT.SI.BS
+        name: Busega District
+      - order: '153'
+        id: TZ.WT.SI.IT
+        name: Itilima District
+      - order: '154'
+        id: TZ.WT.SI.MT
+        name: Meatu District
+      - order: '155'
+        id: TZ.WT.SI.MW
+        name: Maswa District
+    - order: '156'
+      id: TZ.WT.SY
+      name: Shinyanga Region
+      sub:
+      - order: '157'
+        id: TZ.WT.SY.KA
+        name: Kahama District
+      - order: '158'
+        id: TZ.WT.SY.KU
+        name: Kishapu District
+      - order: '159'
+        id: TZ.WT.SY.SH
+        name: Shinyanga District
+    - order: '160'
+      id: TZ.WT.TB
+      name: Tabora Region
+      sub:
+      - order: '161'
+        id: TZ.WT.TB.IU
+        name: Igunga District
+      - order: '162'
+        id: TZ.WT.TB.KL
+        name: Kaliua District
+      - order: '163'
+        id: TZ.WT.TB.NZ
+        name: Nzega District
+      - order: '164'
+        id: TZ.WT.TB.SK
+        name: Sikonge District
+      - order: '165'
+        id: TZ.WT.TB.TB
+        name: Tabora District
+      - order: '166'
+        id: TZ.WT.TB.UR
+        name: Urambo District
+      - order: '167'
+        id: TZ.WT.TB.UY
+        name: Uyui District

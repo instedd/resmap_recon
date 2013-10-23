@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
   protected
 
   def setup_templates
-    @templates = ['Kenya MFL']
+    @templates = ['Kenya MFL', 'Tanzania MFL']
   end
 
   def apply_template(project, template)
@@ -49,6 +49,8 @@ class ProjectsController < ApplicationController
     hierarchy = nil
     if template == 'Kenya MFL'
       hierarchy = prepare_hierarchy(YAML::load_file(File.join(Rails.root, "config", "kenya_hierarchy.yml")))
+    elsif template == 'Tanzania MFL'
+      hierarchy = prepare_hierarchy(YAML::load_file(File.join(Rails.root, "config", "tanzania_hierarchy.yml")))
     end
 
     layer = collection.find_or_create_layer_by_name('Main')

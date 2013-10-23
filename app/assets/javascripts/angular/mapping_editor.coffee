@@ -1,6 +1,7 @@
 angular.module('MappingEditor',['HierarchySelection'])
 
 .controller 'MappingEditorCtrl', ($scope, $http) ->
+  $scope.mapping_property_loading = false
 
   $scope.mapping_property = $scope.source_field_options.filter((e)->
     e.id == $scope.source_property
@@ -10,6 +11,7 @@ angular.module('MappingEditor',['HierarchySelection'])
   $scope.$watch 'mapping_property', ->
     url = "/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/update_mapping_property"
     if $scope.mapping_property && $scope.mapping_property.id != $scope.source_property
+      $scope.mapping_property_loading = true
       $http.post(url, {mapping_property_id: $scope.mapping_property.id}).success ->
         location.reload()
 
