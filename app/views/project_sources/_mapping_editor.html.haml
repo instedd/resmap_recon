@@ -8,9 +8,9 @@
         .recon-panel
           %table.table.table-bordered
             %tr
-              %th Source Division
+              %th Source {{mapping_property.name}}
               %th Number of Records
-              %th Geo-political division
+              %th MFL Geo-Political Division
 
             %tr(ng-repeat='mapping_entry in unclassified_mapping' ng-controller='MappingEntryCtrl')
               %td
@@ -30,9 +30,9 @@
         .recon-panel
           %table.table.table-bordered
             %tr
-              %th Source Division
+              %th Source {{mapping_property.name}}
               %th Number of Records
-              %th Geo-political division
+              %th MFL Geo-Political Division
 
             %tr(ng-repeat='mapping_entry in classified_mapping' ng-controller='MappingEntryCtrl')
               %td

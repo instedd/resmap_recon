@@ -15,13 +15,13 @@
             %a.brand{:href => project_path(@project)}
               = @project.name
           - else
-            %a.brand{:href => root_url} MFL-Curation-Tool
+            %a.brand{:href => root_url} MFL Reconciliation Tool
 
           .nav-collapse.collapse.pull-right
             %ul.nav
               - if current_user
                 %li
-                  = link_to 'View curation projects', projects_path
+                  = link_to 'View projects', projects_path
                 %li.dropdown
                   %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
                     = current_user.email

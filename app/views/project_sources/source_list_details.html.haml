@@ -8,17 +8,17 @@
 
     = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
 
-    %h2 Facilities classification
+    %h2 Facilities Mapped
 
     {{(percentage_classified | number) || 0}}%
-    classified
+    mapped
     .progress
       .bar{style: "width: {{percentage_classified}}%"}
 
-    %p Facilities in source lists need to be classified into the geo-political division.
+    %p Source Lists must be mapped to the MFL Geo-Political Division.
 
     %p
-      Classify by:
+      Source Mapped By:
       %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
 
     = render 'mapping_editor'
