@@ -8,7 +8,7 @@
       .span3
         %h2 Filter by
         %div(ng-controller='HierarchyChooser')
-          %ul.nav.nav-pills
+          %ul.nav.nav-tabs
             %li(ng-class='{active: tree_visible}')
               %a(href='javascript:' ng-click='select_tree()') Tree
             %li(ng-class='{active: list_visible}')
@@ -19,20 +19,6 @@
               = render 'shared/angular/hierarchy_tree'
             .tab-pane(ng-class='{active: list_visible}')
               = render 'pending_list'
-
-
-        / %ul.nav.nav-tabs
-        /   %li
-        /     %a(ng-click='select_tree()' href='javascript:' ng-class="{active:'tree_visible'}") Tree
-        /   %li
-        /     %a(ng-click='select_list()' href='javascript:' ng-class="{active:'list_visible'}") List
-        / / %div(ng-controller='HierarchyChooser')
-        / /   %a(ng-click='select_tree()') Tree
-        / /   |
-        / /   %a(ng-click='select_list()') List
-
-        / %div(ng-show='tree_visible')
-        / %div(ng-show='list_visible')
 
       .span3
         %h2 Review Source Records
