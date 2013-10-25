@@ -149,3 +149,19 @@ angular.module('Curation',[])
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
         .success ->
           on_success()
+
+.controller 'HierarchyChooser', ($scope) ->
+  $scope.tree_visible = true
+  $scope.list_visible = false
+  # debugger
+
+  $scope.select_tree = ->
+    $scope.tree_visible = true
+    $scope.list_visible = false
+
+  $scope.select_list = ->
+    $scope.tree_visible = false
+    $scope.list_visible = true
+
+  $scope.$watch 'tree_visible || list_visible', () ->
+    $scope.expanded = $scope.tree_visible || $scope.list_visible

@@ -13,6 +13,7 @@ class ProjectsController < ApplicationController
 
   def curate
     @hierarchy = @project.target_field.hierarchy
+    @pending_changes_site_list = unify(@project.source_lists.map(&:mapped_hierarchy_counts))
   end
 
   def pending_changes
@@ -79,6 +80,17 @@ class ProjectsController < ApplicationController
 
   def load_project
     @project = load_project_by_id(params[:id])
+  end
+
+  def unify(mapped_counts)
+    unified = {}
+    unified.default = 0
+    mapped_counts.each do |counts|
+      counts.each do |k,v|
+        unified[k] += v
+      end
+    end
+    unified
   end
 
 end

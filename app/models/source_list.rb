@@ -187,4 +187,16 @@ class SourceList < ActiveRecord::Base
     end
   end
 
+  def mapped_hierarchy_counts
+    unseen_changes_counts = mapping_property.uniq_values({project.app_seen_field_name => false}) if mapping_property
+    mapped_counts = {}
+    mapped_counts.default = 0
+    mapping.each do |prop|
+      if !prop[:target_value].nil? && unseen_changes_counts.keys.include?(prop[:source_value])
+        mapped_counts[prop[:target_value]] += unseen_changes_counts[prop[:source_value]]
+      end
+    end
+    mapped_counts
+  end
+
 end
