@@ -25,6 +25,7 @@ angular.module('ProjectSourceAfterCreate', [])
     $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_id}/import_wizard/validate", params)
       .success (data) ->
         $scope.valid_columns_spec = data.valid
+        $scope.validation_errors = data.errors
         $scope.valid_columns_loading = false
         $scope.import_disabled = !$scope.valid_columns_spec
 

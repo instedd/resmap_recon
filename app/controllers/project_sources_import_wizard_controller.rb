@@ -8,7 +8,7 @@ class ProjectSourcesImportWizardController < ApplicationController
 
   def validate
     columns_spec = params[:columns_spec]
-    render json: { valid: @import_wizard.is_column_spec_valid?(columns_spec) }
+    render json: { valid: @import_wizard.is_column_spec_valid?(columns_spec), errors: @import_wizard.column_spec_errors(columns_spec).keys.map(&:humanize).join(', ') }
   end
 
   def start

@@ -2,6 +2,7 @@ class ImportWizard
 
   def initialize(collection)
     @collection = collection
+    @errors = {}
   end
 
   attr_reader :collection
@@ -28,9 +29,18 @@ class ImportWizard
   end
 
   def is_column_spec_valid?(columns_spec)
-    validation = validate_sites_with_columns(columns_spec)
+    if @errors.empty?
+      validation = validate_sites_with_columns(columns_spec)
+      @errors = validation['errors']
+    end
+    @errors.values.all? { |v| v.nil? || v.empty? }
+  end
 
-    validation['errors'].values.all? { |v| v.nil? || v.empty? }
+  def column_spec_errors(columns_spec)
+    errors = @errors.empty? ? validate_sites_with_columns(columns_spec)['errors'] : @errors
+    # Under data errors are the repetitions which cause the column to be wrong for identifier. Clarification is in the view
+    errors = errors.select {|k,v| !v.nil? && !v.empty? && (k =~ /data_errors/).nil? }
+    errors
   end
 
   def status
