@@ -6,8 +6,6 @@ class SourceList < ActiveRecord::Base
   serialize :config, Hash
   has_many :mapping_entries
 
-  delegate :name, to: :as_collection
-
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
 
   before_create :prepare
@@ -16,6 +14,10 @@ class SourceList < ActiveRecord::Base
     AppContext.resmap_api.collections.find(collection_id)
   end
   memoize :as_collection
+
+  def name
+    as_collection.name rescue "error col-id:#{collection_id}"
+  end
 
   def self.config_property(name)
     define_method(name) {
