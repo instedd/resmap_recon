@@ -1,4 +1,7 @@
+require_relative '../app/resmap/rack/api_forwarder.rb'
+
 ResmapRecon::Application.routes.draw do
+  mount ::Resmap::Rack::ApiForwarder.new, at: '/rm'
 
   resource :session, only: [:new, :create, :destroy]
 
