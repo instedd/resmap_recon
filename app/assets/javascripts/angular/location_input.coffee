@@ -70,9 +70,11 @@ angular.module('LocationInput', [])
     scope.$watch "'' + latitude + ';' + longitude", ->
       return if changing_scope_localy
 
-      if (scope.latitude == null || scope.longitude == null) && marker != null
-        marker.setMap(null)
-        marker = null
+      if !scope.latitude || !scope.longitude
+        if marker != null
+          marker.setMap(null)
+          marker = null
+        return
       else
         create_or_move_location_marker()
 

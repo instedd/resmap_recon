@@ -110,6 +110,7 @@ angular.module('Curation',[])
 
   $scope.go_to_search = ->
     $scope.target_site = null
+    $scope.$broadcast('hide')
 
   $scope.go_to_and_reset_search = ->
     $scope.go_to_search()
