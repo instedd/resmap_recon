@@ -10,5 +10,5 @@
 
     %div{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
       %label {{key}}
-      / %div(rm-label code='key')
+      %rm-label(code="key")
       %span(dnd-source='value') {{value}}
