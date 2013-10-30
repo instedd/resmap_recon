@@ -21,11 +21,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def setup_app_context
-    if current_user.nil?
-      AppContext.resmap_api = ResmapApi.public
-    else
-      AppContext.resmap_api = ResmapApi.basic(session[:email], session[:password])
-    end
+    AppContext.resmap_api = ResmapApi.basic(session[:email], session[:password])
   end
 
   def authenticate_user!

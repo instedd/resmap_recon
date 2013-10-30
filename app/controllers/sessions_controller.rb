@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def create
     begin
-      api = ResmapApi.basic(params[:email], params[:password])
+      api = ResourceMap::Api.basic_auth(params[:email], params[:password], Settings.resource_map.host, Settings.resource_map.https)
       api.json('/collections')
 
       session[:email] = params[:email]
@@ -12,9 +12,9 @@ class SessionsController < ApplicationController
 
       User.by_email(params[:email])
       redirect_to root_path
-    rescue
-      flash.now.alert = 'Invalid credentials'
-      render 'new'
+    # rescue
+    #   flash.now.alert = 'Invalid credentials'
+    #   render 'new'
     end
   end
 
