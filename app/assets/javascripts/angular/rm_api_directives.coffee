@@ -1,8 +1,10 @@
 angular.module("RmApiDirectives", ['RmMetadataService'])
 
-.directive "RmLabel", factory = (RmMetadataService) ->
-  restrict: 'A',
-  templateUrl: "rm_label_template",
+.directive "rmLabel", ($parse, RmMetadataService) ->
+  restrict: 'E',
+  templateUrl: 'rm_label_template.html',
   link: (scope, elem, attrs) ->
     console.log('link')
-    RmMetadadataService.label_for_property(attrs.code)
+    codeGet = $parse(attrs.code)
+    # scope.label = 'label:' + attrs.code
+    scope.label = RmMetadataService.label_for_property(codeGet(scope))
