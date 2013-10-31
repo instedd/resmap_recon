@@ -159,6 +159,7 @@ class SourceList < ActiveRecord::Base
       id: id,
       name: name
     }
+    h['collection_id'] = collection_id
     #TODO create properties for seen/master_site_id
     #     and hide "private" fields
 

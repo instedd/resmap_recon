@@ -4,7 +4,13 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
   restrict: 'E',
   templateUrl: 'rm_label_template.html',
   link: (scope, elem, attrs) ->
-    console.log('link')
     codeGet = $parse(attrs.code)
-    # scope.label = 'label:' + attrs.code
-    scope.label = RmMetadataService.label_for_property(codeGet(scope))
+    scope.label = RmMetadataService.label_for_property(scope.collection_id, codeGet(scope))
+
+.directive "rmCollectionContext", ($parse) ->
+  restrict: 'E',
+  transclude: true,
+  template: "<div ng-transclude></div>"
+  link: (scope, elem, attrs) ->
+    idGet = $parse(attrs.id)
+    scope.collection_id = parseInt(idGet(scope))

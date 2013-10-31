@@ -1,24 +1,21 @@
 angular.module('RmApiService', [])
 
-.factory 'RmApiService', ($http) ->
+.factory 'RmApiService', ($http, $q) ->
 
-  label_for_property: (collection_id, property) ->
-    console.log 'api'
-    metadata = metadata()
-    for field in metadata["fields"]
-      label = field.name if field.code == property
-    label
+  s = {
+    fields: (collection_id) ->
+      s.get("collections/#{collection_id}/fields/mapping.json").then (data) ->
+        data.data
 
-  metadata: (collection_id) ->
-    get("collections/#{collection_id}/fields.json").success (data) ->
-      return data
+    get: (route) ->
+      $http.get s.url(route)
 
-  get: (route) ->
-    $http.get url(route)
-
-  post: (route, data) ->
-    $http.post url(route), data
+    post: (route, data) ->
+      $http.post s.url(route), data
 
 
-  url: (route) ->
-    "http://localhost:3000/rm/" + route
+    url: (route) ->
+      "http://localhost:4000/rm/" + route
+  }
+
+  s
