@@ -4,7 +4,7 @@ angular.module('RmApiService', [])
 
   s = {
     fields: (collection_id) ->
-      s.get("collections/#{collection_id}/fields/mapping.json").then (data) ->
+      s.get("collections/#{collection_id}/fields/mapping.json", {cache: true}).then (data) ->
         data.data
 
     get: (route) ->

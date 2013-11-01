@@ -1,0 +1,2 @@
+%input(ng-show='input_type == "yes_no"' type='checkbox' ng-model='value')
+%span(ng-show='input_type == "numeric" || input_type == "text" || input_type == "identifier"' dnd-source='value') {{value}}
