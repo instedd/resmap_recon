@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def setup_app_context
-    AppContext.resmap_api = ResmapApi.basic(session[:email], session[:password])
+    AppContext.resmap_api = ResourceMap::Api.basic_auth(session[:email], session[:password], Settings.resource_map.host, Settings.resource_map.https)
   end
 
   def authenticate_user!
