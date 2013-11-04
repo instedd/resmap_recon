@@ -12,9 +12,9 @@ class SessionsController < ApplicationController
 
       User.by_email(params[:email])
       redirect_to root_path
-    # rescue
-    #   flash.now.alert = 'Invalid credentials'
-    #   render 'new'
+    rescue
+      flash.now.alert = 'Invalid credentials'
+      render 'new'
     end
   end
 
