@@ -5,7 +5,7 @@ module Resmap
         request = ::Rack::Request.new(env)
         email = request.session[:email]
         password = request.session[:password]
-        api = ResmapApi.basic(email, password)
+        api = ResourceMap::Api.basic_auth(params[:email], params[:password], Settings.resource_map.host, Settings.resource_map.https)
 
         [ 200,
           {'Content-Type' => 'application/json'},
