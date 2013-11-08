@@ -26,7 +26,6 @@ angular.module('Curation',[])
     page_request.success (data) ->
       $scope.sites = $scope.sites.concat data.sites
       $scope.next_page_url = data.next_page_url
-      console.log $scope.next_page_url
       $scope.reached_final_page = data.next_page_url == undefined
       $scope.sites_loading = false
 

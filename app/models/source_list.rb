@@ -119,7 +119,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_not_curated_count
-    as_collection.sites.count_where(app_master_site_id => '=')
+    as_collection.sites.where(app_master_site_id => '=').page(1).total_count
   end
 
   def unmapped_sites_csv

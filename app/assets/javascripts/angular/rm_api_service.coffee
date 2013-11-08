@@ -15,7 +15,7 @@ angular.module('RmApiService', [])
 
 
     url: (route) ->
-      "http://localhost:4000/rm/" + route
+      "/rm/" + route
   }
 
   s
