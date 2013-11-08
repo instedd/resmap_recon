@@ -1,21 +1,30 @@
 = back_to_project
 
-%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy: @hierarchy, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code, pending_list: @pending_changes_site_list)}
   - angular_templates 'shared/angular'
 
   %div(ng-controller='CurationPanel')
     .row-fluid
       .span3
         %h2 Filter by
-        = render 'shared/angular/hierarchy_tree'
+        %div(ng-controller='HierarchyChooser')
+          %ul.nav.nav-tabs
+            %li(ng-class='{active: tree_visible}')
+              %a(href='javascript:' ng-click='select_tree()') Tree
+            %li(ng-class='{active: list_visible}')
+              %a(href='javascript:' ng-click='select_list()') List
+
+          .tab-content
+            .tab-pane(ng-class='{active: tree_visible}')
+              = render 'shared/angular/hierarchy_tree'
+            .tab-pane(ng-class='{active: list_visible}')
+              = render 'pending_list'
 
       .span3
         %h2 Review Source Records
 
-        %span(ng-show='sites_loading') Loading...
-
         .recon-panel
-          .accordion(ng-show='selected_node && !sites_loading')
+          .accordion(ng-show='selected_node')
             = render 'pending_sites'
 
           .well(ng-hide='selected_node')

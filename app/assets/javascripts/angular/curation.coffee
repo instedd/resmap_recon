@@ -4,18 +4,34 @@ angular.module('Curation',[])
 
   $scope.selected_node = null
   $scope.sites_loading = false
+  $scope.next_page_url = null
+  $scope.sites = []
+  $scope.reached_final_page = false
 
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
+    $scope.sites.splice(0, $scope.sites.length)
+    $scope.next_page_url = null
     $scope._load_pending_changes()
 
   $scope._load_pending_changes = ->
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
-    $http.get("/projects/#{$scope.project_id}/pending_changes", { params: {target_value: $scope.selected_node.id} })
-      .success (data) ->
-        $scope.sites = data
-        $scope.sites_loading = false
+    if $scope.next_page_url != null
+      page_request = $http.get($scope.next_page_url)
+    else
+      params = { params: {target_value: $scope.selected_node.id} }
+      page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
+
+    page_request.success (data) ->
+      $scope.sites = $scope.sites.concat data.sites
+      $scope.next_page_url = data.next_page_url
+      console.log $scope.next_page_url
+      $scope.reached_final_page = data.next_page_url == undefined
+      $scope.sites_loading = false
+
+  $scope.next_page = ->
+    $scope._load_pending_changes()
 
   $scope.$on 'site-dismissed', (e, site) ->
     # remove site from pending
@@ -110,6 +126,7 @@ angular.module('Curation',[])
 
   $scope.go_to_search = ->
     $scope.target_site = null
+    $scope.$broadcast('hide')
 
   $scope.go_to_and_reset_search = ->
     $scope.go_to_search()
@@ -149,3 +166,19 @@ angular.module('Curation',[])
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
         .success ->
           on_success()
+
+.controller 'HierarchyChooser', ($scope) ->
+  $scope.tree_visible = true
+  $scope.list_visible = false
+  # debugger
+
+  $scope.select_tree = ->
+    $scope.tree_visible = true
+    $scope.list_visible = false
+
+  $scope.select_list = ->
+    $scope.tree_visible = false
+    $scope.list_visible = true
+
+  $scope.$watch 'tree_visible || list_visible', () ->
+    $scope.expanded = $scope.tree_visible || $scope.list_visible

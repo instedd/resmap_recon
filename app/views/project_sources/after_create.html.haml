@@ -21,8 +21,10 @@
               %select(ng-model='identifier_column' ng-options='cs.header for cs in columns_spec')
               %span.help-inline(ng-show='valid_columns_loading')
                 Validating...
-              %span.help-inline(ng-hide='valid_columns_spec')
+              %span.help-inline(ng-show='!valid_columns_spec && validation_errors.length == 0')
                 This column can't be used as identifier
+              %span.help-inline(ng-show='!valid_columns_spec && validation_errors.length > 0')
+                ResourceMap validation error: {{validation_errors}}
 
         %button.btn.btn-primary(ng-disabled="import_disabled" ng-click="import()" ladda-loading="importing" ng-hide="status_finished")
           Import

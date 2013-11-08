@@ -86,20 +86,29 @@ class SourceList < ActiveRecord::Base
     true
   end
 
-  def pending_changes(node_id)
-    values = mapping_entries
-      .with_property(mapping_property_id)
-      .with_target(node_id)
-      .pluck(:source_value)
+  def pending_changes(node_id, next_page_url = nil)
+    res = {sites: []}
+    if next_page_url.blank?
+      values = mapping_entries
+        .with_property(mapping_property_id)
+        .with_target(node_id)
+        .pluck(:source_value)
 
-    res = []
-
-    unless values.empty?
-      res.concat(as_collection.sites
-        .where(
-          app_seen_field_name => false,
-          mapping_property.code => values)
-        .map { |s| site_to_hash(s) })
+      unless values.empty?
+        result = as_collection.sites
+          .where(
+            app_seen_field_name => false,
+            mapping_property.code => values)
+          .page_size(10).page(1)
+      end
+    else
+      result = as_collection.sites.from_url(next_page_url)
+    end
+    unless result.nil?
+      result.each do |s|
+        res[:sites] << site_to_hash(s)
+      end
+      res[:next_page_url] = result.next_page_url if result.next_page_url
     end
 
     res
@@ -116,7 +125,7 @@ class SourceList < ActiveRecord::Base
   def unmapped_sites_csv
     collection = as_collection
     properties = collection.fields.select{|f| !f.name.starts_with?("_")}
-    remaining_fields = ['id', 'name', 'lat', 'long']
+    remaining_fields = ['name', 'lat', 'long']
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name)
       sites_not_curated.each do |site|
@@ -159,6 +168,7 @@ class SourceList < ActiveRecord::Base
       id: id,
       name: name
     }
+    h['collection_id'] = collection_id
     #TODO create properties for seen/master_site_id
     #     and hide "private" fields
 
@@ -187,6 +197,18 @@ class SourceList < ActiveRecord::Base
     else
       0
     end
+  end
+
+  def mapped_hierarchy_counts
+    unseen_changes_counts = mapping_property.uniq_values({project.app_seen_field_name => false}) if mapping_property
+    mapped_counts = {}
+    mapped_counts.default = 0
+    mapping.each do |prop|
+      if !prop[:target_value].nil? && unseen_changes_counts.keys.include?(prop[:source_value])
+        mapped_counts[prop[:target_value]] += unseen_changes_counts[prop[:source_value]]
+      end
+    end
+    mapped_counts
   end
 
 end

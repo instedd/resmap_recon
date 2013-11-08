@@ -46,14 +46,23 @@ class Project < ActiveRecord::Base
     source_collections.detect { |c| c.id == id }
   end
 
-  def pending_changes(node_id)
-    res = []
-    source_lists.each do |s|
-      sites = s.pending_changes(node_id)
-      res << sites
+  def pending_changes(node_id, next_page_hash = {})
+    urls = {}
+    if next_page_hash.empty?
+      src_lists = source_lists
+    else
+      src_lists = self.source_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
+    end
+    res = {sites: []}
+    src_lists.each do |s|
+      source_list_data = s.pending_changes(node_id, next_page_hash[s.id.to_s])
+      res[:sites] << source_list_data[:sites]
+      urls[s.id] = source_list_data[:next_page_url] if source_list_data[:next_page_url].present?
     end
 
-    res.flatten
+    res[:sites] = res[:sites].flatten
+    res[:next_page_hash] = urls if urls.keys.length > 0
+    res
   end
 
   def consolidated_with(master_site_id)

@@ -5,9 +5,10 @@
       %span(dnd-source='site.name') {{site.name}}
 
     %div
-      %label source list
+      %label Source list
       %span(dnd-source='site.source_list.name') {{site.source_list.name}}
 
     %div{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
-      %label {{key}}
+      %rm-label(code="key")
       %span(dnd-source='value') {{value}}
+      / %rm-read-only-input(model='key' value='value')
