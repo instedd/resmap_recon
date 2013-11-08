@@ -47,9 +47,7 @@ class Project < ActiveRecord::Base
   end
 
   def pending_changes(node_id, next_page_hash = {})
-    # binding.pry
     urls = {}
-    puts next_page_hash
     if next_page_hash.empty?
       src_lists = source_lists
     else
