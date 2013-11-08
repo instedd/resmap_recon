@@ -23,10 +23,8 @@
       .span3
         %h2 Review Source Records
 
-        %span(ng-show='sites_loading') Loading...
-
         .recon-panel
-          .accordion(ng-show='selected_node && !sites_loading')
+          .accordion(ng-show='selected_node')
             = render 'pending_sites'
 
           .well(ng-hide='selected_node')

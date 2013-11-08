@@ -86,20 +86,29 @@ class SourceList < ActiveRecord::Base
     true
   end
 
-  def pending_changes(node_id)
-    values = mapping_entries
-      .with_property(mapping_property_id)
-      .with_target(node_id)
-      .pluck(:source_value)
+  def pending_changes(node_id, next_page_url = nil)
+    res = {sites: []}
+    if next_page_url.blank?
+      values = mapping_entries
+        .with_property(mapping_property_id)
+        .with_target(node_id)
+        .pluck(:source_value)
 
-    res = []
-
-    unless values.empty?
-      res.concat(as_collection.sites
-        .where(
-          app_seen_field_name => false,
-          mapping_property.code => values)
-        .map { |s| site_to_hash(s) })
+      unless values.empty?
+        result = as_collection.sites
+          .where(
+            :page_size => 10,
+            app_seen_field_name => false,
+            mapping_property.code => values)
+      end
+    else
+      result = as_collection.sites.from_url(next_page_url)
+    end
+    unless result.nil?
+      result.each do |s|
+        res[:sites] << site_to_hash(s)
+      end
+      res[:next_page_url] = result.next_page_url if result.next_page_url
     end
 
     res
