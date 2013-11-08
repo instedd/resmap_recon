@@ -16,7 +16,7 @@ angular.module('ProjectSourceAfterCreate', [])
     $scope.final_columns_spec = _.cloneDeep($scope.columns_spec)
     # reset resmap initial identifier guess
     for cs in $scope.final_columns_spec
-      cs.kind = 'text' if cs.king == 'identifier'
+      cs.kind = 'text' if cs.kind == 'identifier'
     # set selected columns as identifier
     id_col = _.find($scope.final_columns_spec, {header: $scope.identifier_column.header})
     id_col.kind = 'identifier'
