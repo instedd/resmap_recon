@@ -97,9 +97,9 @@ class SourceList < ActiveRecord::Base
       unless values.empty?
         result = as_collection.sites
           .where(
-            :page_size => 10,
             app_seen_field_name => false,
             mapping_property.code => values)
+          .page_size(10).page(1)
       end
     else
       result = as_collection.sites.from_url(next_page_url)
