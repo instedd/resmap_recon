@@ -38,6 +38,7 @@
         %td {{site.long}}
         %td
           %a(href='javascript:' ng-click='edit()') edit
+          %a(ng-href='/projects/{{project_id}}/master/sites/{{site.id}}/history' target='_blank') history
 
 
     #MasterSiteEditor.modal.hide.modal-big.fade(ng-controller='MasterSiteEditor')
