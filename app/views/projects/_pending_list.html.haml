@@ -1,6 +1,6 @@
 %div(ng-controller='PendingListCtrl')
-  %ul.unstyled.pending-list(ng-repeat='node in list')
-    %li
+  %ul.unstyled
+    %li(ng-repeat='node in list')
       %a.unstyled(ng-click='choose(node)' href='javascript:')
         {{node.path}}
         ({{node.id}})
