@@ -48,7 +48,7 @@ class ProjectMasterSitesController < ApplicationController
       @hierarchy_field = @project.target_field
       @fields_to_export = fields.select { |f| f.id != @hierarchy_field.id }
 
-      csv << [@hierarchy_field.name, 'Facility Name'] + @fields_to_export.map(&:name) + ['Lat', 'Long', 'IsArea']
+      csv << [@hierarchy_field.name, 'Facility Name', 'Source', 'Source ID'] + @fields_to_export.map(&:name) + ['Lat', 'Long', 'IsArea']
       sites = @project.master_collection.sites.all
 
       @hierarchy = @project.target_field.hierarchy
@@ -69,7 +69,7 @@ class ProjectMasterSitesController < ApplicationController
     hierarchy.each do |node|
       p = "#{path}#{'\\' unless path.blank?}#{node['name']}"
 
-      append_hierarchy_to_csv(csv, p)
+      append_hierarchy_to_csv(csv, p, node)
 
       sites.select! do |site|
         if site.to_hash['properties'][@hierarchy_field.code] == node['id']
@@ -86,11 +86,11 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def append_site_to_csv(csv, hierarchy_full_path, site)
-    csv << [hierarchy_full_path, site.to_hash['name']] + @fields_to_export.map{|f| site.to_hash['properties'][f.code]} + [site.to_hash['lat'], site.to_hash['long'], "0"]
+    csv << [hierarchy_full_path, site.to_hash['name'], @project.master_collection.name, site.id] + @fields_to_export.map{|f| site.to_hash['properties'][f.code]} + [site.to_hash['lat'], site.to_hash['long'], "0"]
   end
 
-  def append_hierarchy_to_csv(csv, hierarchy_full_path)
-    csv << [hierarchy_full_path, ""] + @fields_to_export.map{|f| ""} + ["", "", "1"]
+  def append_hierarchy_to_csv(csv, hierarchy_full_path, node)
+    csv << [hierarchy_full_path, "", @project.master_collection.name, node['id']] + @fields_to_export.map{|f| ""} + ["", "", "1"]
   end
 
   def load_project
