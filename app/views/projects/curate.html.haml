@@ -45,17 +45,18 @@
               %div(ng-show='target_site != null')
                 %button.btn.btn-link(ng-click='go_to_search()') Back
 
-                %fieldset
+                %form(name="masterSiteForm" ng-submit="consolidate()" novalidate)
                   .control-group
                     %label Facility Name
-                    %input(type='text' ng-model='target_site.name' dnd-target='target_site.name')
+                    %input(type='text' ng-model='target_site.name' dnd-target='target_site.name' name='name' required)
+                    %span.help-block(ng-show="masterSiteForm.name.$error.required") Name is required
 
                   .control-group
                     %label Latitude & Longitude
                     .input-append
                       %input.input-small(type='text' ng-model='target_site.lat')
                       %input.input-small(type='text' ng-model='target_site.long')
-                      %button.btn(location-edit latitude='target_site.lat' longitude='target_site.long')
+                      %button.btn(type='button' location-edit latitude='target_site.lat' longitude='target_site.long')
                         %i.icon-globe
 
                   - @project.master_collection.fields.each do |field|
@@ -64,12 +65,11 @@
                         %label= field.name
                         %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}", 'dnd-target' =>"target_site.properties.#{field.code}"}
 
-                %div
-                  %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()' ladda-loading='consolidate_loading')
-                    Save & Consolidate
-                  %br
-                  %span
-                    with {{source_site.name}}
+                  %div
+                    %input.btn.btn-inverse(type='submit' value='Save & Consolidate' ng-show='source_site' ladda-loading='consolidate_loading')
+                    %br
+                    %span
+                      with {{source_site.name}}
 
                   .alert(ng-hide='source_site') Select a pending change
 

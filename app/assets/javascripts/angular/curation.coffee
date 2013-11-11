@@ -120,7 +120,7 @@ angular.module('Curation',[])
             $scope._select_target_site(data[0])
 
   $scope.create_target_site = ->
-    $scope.target_site = { id: null, properties: {} }
+    $scope.target_site = { id: null, name: $scope.source_site.name, properties: {} }
     $scope.consolidated_sites = null
 
   $scope.go_to_search = ->
