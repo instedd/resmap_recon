@@ -11,9 +11,11 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
   restrict: 'E',
   transclude: true,
   template: "<div ng-transclude></div>"
-  link: (scope, elem, attrs) ->
-    idGet = $parse(attrs.id)
-    scope.collection_id = parseInt(idGet(scope))
+  compile: ->
+    pre: (scope, elem, attrs) ->
+      idGet = $parse(attrs.id)
+      scope.collection_id = parseInt(idGet(scope))
+
 
 .directive "rmReadOnlyInput", ($parse, RmMetadataService) ->
   restrict: 'E',
@@ -22,3 +24,7 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
     modelGet = $parse(attrs.model)
     # split on '.' to search for field code?
     scope.input_type = RmMetadataService.input_type(scope.collection_id, modelGet(scope))
+
+# .directive "rmHierarchyTree", ($parse, RmMetadataService) ->
+#   restrict: 'E',
+#   templateUrl: 'hierarchy_tree.html'

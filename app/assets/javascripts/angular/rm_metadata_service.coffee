@@ -17,3 +17,8 @@ angular.module('RmMetadataService', ['RmApiService'])
       for field in fields
         type = field.kind if field.code == model
       type
+
+  hierarchy: (collection_id, field_id) ->
+    RmApiService.hierarchy(collection_id, field_id)
+    #.then (result) ->
+    #  result

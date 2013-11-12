@@ -49,6 +49,7 @@
     %h3 Choose geo-political division
   .modal-body
     .recon-panel(ng-show='selected_entry')
+      / %rm-collection-context(id="#{@project.master_collection.id}")
       = render 'shared/angular/hierarchy_tree'
 
     .well(ng-hide='selected_entry')

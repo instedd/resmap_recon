@@ -1,9 +1,13 @@
-angular.module('HierarchyViewer', [])
+angular.module('HierarchyViewer', ['RmMetadataService'])
 
-.controller 'HierarchyTreeCtrl', ($scope) ->
+.controller 'HierarchyTreeCtrl', ($scope, RmMetadataService) ->
 
   # [{"id"=>"A", "name"=>"A", "sub"=>[{"id"=>"A2", "name"=>"A2"}, {"id"=>"A1", "name"=>"A1"}]}, {"id"=>"B", "name"=>"B", "sub"=>[{"id"=>"B2", "name"=>"B2"}, {"id"=>"B1", "name"=>"B1"}]}]
-  $scope.nodes = $scope.hierarchy
+  field_id = $scope.hierarchy_field_id
+  RmMetadataService.hierarchy($scope.collection_id, field_id).then (hierarchy) ->
+    $scope.nodes = hierarchy
+    prepare_nodes($scope.nodes, null)
+
   $scope.nodes_by_id = {}
 
   prepare_nodes = (nodes, parent_id) ->
@@ -14,7 +18,6 @@ angular.module('HierarchyViewer', [])
       if !node.leaf
         prepare_nodes(node.sub, node.id)
 
-  prepare_nodes($scope.nodes, null)
 
   $scope.toggle = (node) ->
     node.expanded = not node.expanded

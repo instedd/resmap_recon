@@ -169,7 +169,6 @@ angular.module('Curation',[])
 .controller 'HierarchyChooser', ($scope) ->
   $scope.tree_visible = true
   $scope.list_visible = false
-  # debugger
 
   $scope.select_tree = ->
     $scope.tree_visible = true

@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   end
 
   def curate
-    @hierarchy = @project.target_field.hierarchy
+    @hierarchy_field_id = @project.target_field.id
     @pending_changes_site_list = unify(@project.source_lists.map(&:mapped_hierarchy_counts))
   end
 
