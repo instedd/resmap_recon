@@ -1,14 +1,15 @@
 %ul.unstyled
   %fieldset
-    %div
-      %label Name
-      %span(dnd-source='site.name') {{site.name}}
+    %rm-collection-context(id='site.collection_id')
+      %div
+        %label Name
+        %span(dnd-source='site.name') {{site.name}}
 
-    %div
-      %label Source list
-      %span(dnd-source='site.source_list.name') {{site.source_list.name}}
+      %div
+        %label Source list
+        %span(dnd-source='site.source_list.name') {{site.source_list.name}}
 
-    %div{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
-      %rm-label(code="key")
-      %span(dnd-source='value') {{value}}
-      / %rm-read-only-input(model='key' value='value')
+      %div{'ng-repeat'=>'(key, value) in site.properties', 'ng-hide'=>"key[0] == '_'"}
+        %rm-label(code="key")
+        %span(dnd-source='value') {{value}}
+        / %rm-read-only-input(model='key' value='value')

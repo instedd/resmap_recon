@@ -18,9 +18,10 @@ angular.module('MasterSitesEditor', ['RmHierarchyService'])
   $scope.$watch 'search', _.throttle(load_sites, 200)
 
 .controller 'MasterSiteRow', ($scope, $rootScope, RmHierarchyService) ->
+  NodeService = RmHierarchyService.for($scope.collection_id, $scope.hierarchy_field_id)
   $scope.$watch "site.properties.#{$scope.hierarchy_target_field_code}", ->
-    node = RmHierarchyService.node_by_id($scope.site.properties[$scope.hierarchy_target_field_code])
-    $scope.site_hierarchy_path = node?.path
+    node = NodeService.node_by_id($scope.site.properties[$scope.hierarchy_target_field_code])
+    $scope.site_hierarchy_node = node
 
   $scope.edit = ->
     $rootScope.$broadcast('edit-master-site', $scope.site)
@@ -28,6 +29,7 @@ angular.module('MasterSitesEditor', ['RmHierarchyService'])
 .controller 'MasterSiteEditor', ($scope, $http, RmHierarchyService) ->
   original_target_site = null
   modal_editor = $('#MasterSiteEditor')
+  skip_modal_hide = false
 
   $scope.$on 'edit-master-site', (e, site) ->
     original_target_site = site
@@ -43,12 +45,13 @@ angular.module('MasterSitesEditor', ['RmHierarchyService'])
     # end
 
   $scope._close = ->
+    skip_modal_hide = true
     modal_editor.modal('hide')
     $scope.$broadcast('hide')
 
   modal_editor.on 'hide', ->
-    $scope.$broadcast('hide')
-    original_target_site = null
+    unless skip_modal_hide
+      $scope.cancel()
 
   $scope.save = ->
     params = {

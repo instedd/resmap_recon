@@ -16,7 +16,6 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
       idGet = $parse(attrs.id)
       scope.collection_id = parseInt(idGet(scope))
 
-
 .directive "rmReadOnlyInput", ($parse, RmMetadataService) ->
   restrict: 'E',
   templateUrl: 'rm_read_only_input_template.html',

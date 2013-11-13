@@ -1,18 +1,17 @@
 .accordion-group(ng-repeat='site in sites' ng-controller='PendingSiteCtrl')
-  %rm-collection-context(id='site.collection_id')
-    .accordion-heading(ng-hide='selected')
-      %a.accordion-toggle(href='javascript:' ng-click='select()')
-        %b {{site.name}}
-        from
-        {{site.source_list.name}}
+  .accordion-heading(ng-hide='selected')
+    %a.accordion-toggle(href='javascript:' ng-click='select()')
+      %b {{site.name}}
+      from
+      {{site.source_list.name}}
 
-    .accordion-body(ng-show='selected')
-      .accordion-inner
-        = render 'display_sites_fields'
+  .accordion-body(ng-show='selected')
+    .accordion-inner
+      = render 'display_sites_fields'
 
-        %div
-          %button.btn(ng-click='dismiss()') Dismiss
-          %button.btn.btn-link(ng-click='cancel()') Cancel
+      %div
+        %button.btn(ng-click='dismiss()') Dismiss
+        %button.btn.btn-link(ng-click='cancel()') Cancel
 
 .accordion-group(ng-click='next_page()' ng-hide='reached_final_page || sites_loading')
   .accordion-heading

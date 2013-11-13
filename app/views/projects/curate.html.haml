@@ -17,7 +17,7 @@
 
             .tab-content
               .tab-pane(ng-class='{active: tree_visible}')
-                %rm-hierarchy-tree(field_id=@hierarchy_field_id)
+                %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
               .tab-pane(ng-class='{active: list_visible}')
                 = render 'pending_list'
 
