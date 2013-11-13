@@ -2,23 +2,30 @@ angular.module('RmMetadataService', ['RmApiService'])
 
 .factory 'RmMetadataService', ($http, RmApiService) ->
 
-  label_for_property: (collection_id, property) ->
-    RmApiService.fields(collection_id).then (result) ->
-      fields = result
-      label = ''
-      for field in fields
-        label = field.name if field.code == property
-      label
 
-  input_type: (collection_id, model) ->
-    RmApiService.fields(collection_id, model).then (result) ->
-      fields = result
-      type = ''
-      for field in fields
-        type = field.kind if field.code == model
-      type
+  s = {
+    fields: (collection_id) ->
+      RmApiService.get("collections/#{collection_id}/fields/mapping.json", {cache: true})
 
-  hierarchy: (collection_id, field_id) ->
-    RmApiService.hierarchy(collection_id, field_id)
-    #.then (result) ->
-    #  result
+    label_for_property: (collection_id, property) ->
+      s.fields(collection_id).then (result) ->
+        fields = result.data
+        label = ''
+        for field in fields
+          label = field.name if field.code == property
+        label
+
+    input_type: (collection_id, model) ->
+      s.fields(collection_id, model).then (result) ->
+        fields = result.data
+        type = ''
+        for field in fields
+          type = field.kind if field.code == model
+        type
+
+    hierarchy: (collection_id, field_id) ->
+      RmApiService.get("collections/#{collection_id}/fields/#{field_id}").then (response) ->
+        response.data.config.hierarchy
+  }
+
+  s

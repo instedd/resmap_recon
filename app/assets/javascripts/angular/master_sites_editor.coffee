@@ -1,4 +1,4 @@
-angular.module('MasterSitesEditor', ['HierarchyService'])
+angular.module('MasterSitesEditor', ['RmHierarchyService'])
 
 .controller 'MasterSitesEditorCtrl', ($scope, $http) ->
   $scope.sites = null
@@ -17,15 +17,15 @@ angular.module('MasterSitesEditor', ['HierarchyService'])
 
   $scope.$watch 'search', _.throttle(load_sites, 200)
 
-.controller 'MasterSiteRow', ($scope, $rootScope, HierarchyService) ->
+.controller 'MasterSiteRow', ($scope, $rootScope, RmHierarchyService) ->
   $scope.$watch "site.properties.#{$scope.hierarchy_target_field_code}", ->
-    node = HierarchyService.node_by_id($scope.site.properties[$scope.hierarchy_target_field_code])
+    node = RmHierarchyService.node_by_id($scope.site.properties[$scope.hierarchy_target_field_code])
     $scope.site_hierarchy_path = node?.path
 
   $scope.edit = ->
     $rootScope.$broadcast('edit-master-site', $scope.site)
 
-.controller 'MasterSiteEditor', ($scope, $http, HierarchyService) ->
+.controller 'MasterSiteEditor', ($scope, $http, RmHierarchyService) ->
   original_target_site = null
   modal_editor = $('#MasterSiteEditor')
 

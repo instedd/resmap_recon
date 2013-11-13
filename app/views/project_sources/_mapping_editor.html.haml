@@ -49,8 +49,8 @@
     %h3 Choose geo-political division
   .modal-body
     .recon-panel(ng-show='selected_entry')
-      / %rm-collection-context(id="#{@project.master_collection.id}")
-      = render 'shared/angular/hierarchy_tree'
+      %rm-collection-context(id="#{@project.master_collection.id}")
+        %rm-hierarchy-tree(field_id="#{@project.target_field.id}")
 
     .well(ng-hide='selected_entry')
       Select a source value to edit mapping

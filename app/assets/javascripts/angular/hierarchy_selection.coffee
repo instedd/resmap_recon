@@ -1,6 +1,6 @@
-angular.module('HierarchySelection', ['HierarchyService'])
+angular.module('HierarchySelection', ['RmHierarchyService'])
 
-.controller 'HierarchySelectionCtrl', ($scope, $http, HierarchyService) ->
+.controller 'HierarchySelectionCtrl', ($scope, $http, RmHierarchyService) ->
   original_entry = null
   modal_editor = $('#HierarchySelection')
 

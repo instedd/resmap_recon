@@ -4,7 +4,7 @@ class NodeService
     @nodes_by_id = {}
     @_load_nodes()
 
-  root_nodes: ->
+  roots: ->
     @root_nodes
 
   node_by_id: (id) ->
@@ -12,7 +12,6 @@ class NodeService
 
   _load_nodes: ->
     @RmMetadataService.hierarchy(@collection_id, @field_id).then (hierarchy) =>
-      Array.prototype.push.apply(@root_nodes, hierarchy)
       @_prepare_nodes(hierarchy, null)
 
   _prepare_nodes: (nodes, parent_id) ->
@@ -26,6 +25,8 @@ class NodeService
         )
         index = @nodes_by_id[parent_id].sub.indexOf(child)
         @nodes_by_id[parent_id].sub[index] = node
+      else
+        @root_nodes.push(node)
 
       @nodes_by_id[node.id] = node
       node.parent_id = parent_id
@@ -39,9 +40,9 @@ class NodeService
       if !node.leaf
         @_prepare_nodes(node.sub, node.id)
 
-angular.module('HierarchyService', ['RmMetadataService'])
+angular.module('RmHierarchyService', ['RmMetadataService'])
 
-.factory 'HierarchyService', ($rootScope, RmMetadataService) ->
+.factory 'RmHierarchyService', ($rootScope, RmMetadataService) ->
 
   return {
     for: (collection_id, field_id) ->

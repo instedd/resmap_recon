@@ -42,7 +42,7 @@ class ProjectSourcesController < ApplicationController
       redirect_to after_create_project_source_path(@project, @source)
     end
 
-    @hierarchy = @project.target_field.hierarchy
+    @hierarchy_field_id = @project.target_field.id
     @curation_progress = "#{@source.curation_progress}%"
   end
 

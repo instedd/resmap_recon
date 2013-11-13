@@ -1,7 +1,7 @@
-angular.module('PendingList', ['HierarchyService'])
+angular.module('PendingList', ['RmHierarchyService'])
 
-.controller 'PendingListCtrl', ($scope, $http, HierarchyService) ->
-  NodeService = HierarchyService.for($scope.collection_id, $scope.hierarchy_field_id)
+.controller 'PendingListCtrl', ($scope, $http, RmHierarchyService) ->
+  NodeService = RmHierarchyService.for($scope.collection_id, $scope.hierarchy_field_id)
   $scope.list = []
   for code, count of $scope.pending_list
     node = NodeService.node_by_id(code)

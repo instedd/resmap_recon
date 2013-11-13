@@ -25,6 +25,10 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
     # split on '.' to search for field code?
     scope.input_type = RmMetadataService.input_type(scope.collection_id, modelGet(scope))
 
-# .directive "rmHierarchyTree", ($parse, RmMetadataService) ->
-#   restrict: 'E',
-#   templateUrl: 'hierarchy_tree.html'
+.directive "rmHierarchyTree", ($parse, RmMetadataService) ->
+  restrict: 'E',
+  templateUrl: 'rm_hierarchy_tree.html'
+  compile: ->
+    pre: (scope, elem, attrs) ->
+      idGet = $parse(attrs.fieldId)
+      scope.hierarchy_field_id = parseInt(idGet(scope))
