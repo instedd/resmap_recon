@@ -29,6 +29,14 @@ body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
+#globalLoading {
+  padding: 1px 6px 1px;
+  margin-top: 9px;
+  background: lightyellow;
+  border-radius: 2px;
+  display: none;
+}
+
 tr.active {
   background-color: $linkColor;
   a {

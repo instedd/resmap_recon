@@ -20,6 +20,9 @@
 
           .nav-collapse.collapse.pull-right
             %ul.nav
+              %li
+                #globalLoading
+                  Loading...
               - if current_user
                 %li
                   = link_to 'View projects', projects_path
