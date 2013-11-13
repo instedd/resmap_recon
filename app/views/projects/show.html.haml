@@ -1,7 +1,12 @@
 .row-fluid
+
   .span9
     %h2 Step 1. Define MFL Schema
-    = link_to 'Review MFL Schema in Resource Map →', @project.master_collection.layers_url, target: '_blank'
+
+    %p
+      = link_to 'Review MFL Schema in Resource Map →', @project.master_collection.layers_url, target: '_blank'
+    %p
+      = link_to 'Import CSV to MFL →', @project.master_collection.import_wizard_url, target: '_blank'
 
     %h2 Step 2. Import/Review Source List
     = render 'source_lists'
