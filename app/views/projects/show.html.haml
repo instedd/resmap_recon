@@ -40,19 +40,22 @@
     .well
       .row-fluid
         .project-info-facilities
-          %span
+          %span.huge
             %strong
               = @project.master_collection.sites.count
-            %span
-              master facilities
+          %span
+            master facilities
+      %br
       .row-fluid
         .project-info-users
-          %span
+          %span.huge
             %strong
               = @project.users.count
           %span
             members collaborating
+
       %br
+
       %p
         = link_to "Recent activity", "http://resmap-stg.instedd.org/activity", target: '_blank'
       %p
