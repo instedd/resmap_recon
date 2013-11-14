@@ -3,10 +3,19 @@
   .span9
     %h2 Step 1. Define MFL Schema
 
-    %p
-      = link_to 'Review MFL Schema in Resource Map →', @project.master_collection.layers_url, target: '_blank'
-    %p
-      = link_to 'Import CSV to MFL →', @project.master_collection.import_wizard_url, target: '_blank'
+    .row-fluid
+      .span4
+        .well.well-small.well-white
+          %p
+            = link_to 'Review MFL Schema in Resource Map →', @project.master_collection.layers_url, target: '_blank'
+      .span4
+        .well.well-small.well-white
+          %p
+            = link_to 'Import CSV to MFL →', @project.master_collection.import_wizard_url, target: '_blank'
+
+      .span3
+        %i.icon-info-sign
+        Do you like have initial data for MFL? The import will guide you to create schema also.
 
     %h2 Step 2. Import/Review Source List
     = render 'source_lists'
@@ -21,6 +30,7 @@
       = link_to 'Reconcile Source Lists', curate_project_path(@project)
 
     %h2 Step 4. Export MFL
+
     %p
       = link_to 'Review and Edit MFL Data', project_master_sites_path(@project)
     %p
@@ -28,4 +38,24 @@
 
   .span3
     .well
-      = link_to 'Invite user to collaborate', project_members_path(@project)
+      .row-fluid
+        .project-info-facilities
+          %span
+            %strong
+              = @project.master_collection.sites.count
+            %span
+              master facilities
+      .row-fluid
+        .project-info-users
+          %span
+            %strong
+              = @project.users.count
+          %span
+            members collaborating
+      %br
+      %p
+        = link_to "Recent activity", "http://resmap-stg.instedd.org/activity", target: '_blank'
+      %p
+        = link_to "View mfl in resource map", @project.master_collection.show_url, target: '_blank'
+      %p
+        = link_to 'Invite user to collaborate', project_members_path(@project)
