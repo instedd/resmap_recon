@@ -1,40 +1,45 @@
 %div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.id}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id)}
   - angular_templates 'shared/angular'
 
-  %div{'ng-controller' => 'MappingEditorCtrl'}
-    = back_to_project
-    %h1
-      = @source.name
+  .row-fluid
+    .span9
+      %div{'ng-controller' => 'MappingEditorCtrl'}
+        = back_to_project
+        %h1
+          = @source.name
 
-    = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
+        = link_to unmapped_csv_download_project_source_path(@project, @source), class: "btn btn-large" do
+          %i.icon-download-alt
+          Export not curated data
 
-    %h2 Facilities Mapped
+        = link_to '#', class: "btn btn-large disabled" do
+          %i.icon-upload
+          Upload new version
 
-    {{(percentage_classified | number) || 0}}%
-    mapped
-    .progress
-      .bar{style: "width: {{percentage_classified}}%"}
+        = link_to '#', class: "btn btn-large" do
+          %i.icon-fast-forward
+          Promote facilities to MFL
 
-    %p Source Lists must be mapped to the MFL Geo-Political Division.
+        %h2 Facilities Mapping
 
-    %p
-      Source Mapped By:
-      %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
+        = "#{@curation_progress || "0%"} curated, "
+        {{(percentage_classified | number) || 0}}%
+        mapped
 
-      %span(ng-show='mapping_property_loading') Loading ...
+        .progress
+          .bar.bar-success{style: "width: #{@curation_progress}"}
+          .bar{style: "width: {{percentage_classified}}%"}
 
-    = render 'mapping_editor'
+        %p Source Lists must be mapped to the MFL Geo-Political Division.
 
-    %h2 Facilities curation
+        %p
+          Source Mapped By:
+          %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
 
-    = "#{@curation_progress || "0%"} curated"
-    .progress
-      .bar{style: "width: #{@curation_progress}"}
+          %span(ng-show='mapping_property_loading') Loading ...
 
-    = link_to unmapped_csv_download_project_source_path(@project, @source), class: "btn btn-success btn-large" do
-      %i.icon-white.icon-download-alt
-      Export not curated data
+        = render 'mapping_editor'
 
-    = link_to '#', class: "btn btn-success btn-large disabled" do
-      %i.icon-white.icon-upload
-      Upload new version
+    .span3
+      .well
+        = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
