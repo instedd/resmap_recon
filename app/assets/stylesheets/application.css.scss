@@ -168,7 +168,7 @@ a.unstyled {
   }
 }
 
-form
+form {
   .ng-invalid {
     border-color:#AA0000;
   }
@@ -176,7 +176,9 @@ form
   span.help-block {
     color:#AA0000;
   }
+}
 
-.huge{
-  font-size:300%;
+.huge {
+  font-size: 300%;
+  font-weight: bold;
 }
