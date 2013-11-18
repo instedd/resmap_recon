@@ -25,6 +25,7 @@ angular.module('MappingEditorApp', ['Rails','MappingEditor', 'HierarchyViewer', 
 angular.module('CurationApp', ['Rails','DndValue','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda', 'PendingList', 'RmApiDirectives']);
 angular.module('MasterSitesEditorApp', ['Rails','DndValue','MasterSitesEditor', 'HierarchyViewer', 'LocationInput', 'RmApiDirectives']);
 angular.module('HierarchySelectionApp', ['Rails','HierarchySelection']);
+angular.module('FacilityPromotionApp', ['Rails', 'FacilityPromotion', 'RmApiDirectives']);
 
 $(function(){
   Ladda.bind('.ladda');

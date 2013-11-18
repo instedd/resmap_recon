@@ -68,6 +68,13 @@ class ProjectSourcesController < ApplicationController
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 
+  def promote_facilities
+  end
+
+  def promote_site
+    render nothing: true
+  end
+
   protected
 
   def load_project

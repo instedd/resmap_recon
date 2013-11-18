@@ -22,6 +22,8 @@ ResmapRecon::Application.routes.draw do
         post 'update_mapping_entry'
         post 'update_mapping_property'
         get 'unmapped_csv_download'
+        get 'promote_facilities'
+        post 'promote_site'
 
         get 'after_create'
 

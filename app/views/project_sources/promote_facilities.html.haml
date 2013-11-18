@@ -1,0 +1,25 @@
+%div{'ng-app'=>'FacilityPromotionApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, collection_id: @source.collection_id)}
+
+  .row-fluid
+    .span9
+      %div{'ng-controller' => 'FacilityPromotionCtrl'}
+        %rm-collection-context{id: @source.collection_id}
+          = link_to '← back to source list', source_list_details_project_source_path(@project, @source)
+          %h1
+            = @source.name
+
+          %div
+            {{count}} sites to promote
+
+          %div
+            %a.btn.btn-success.btn-large{'ng-click' => 'promote()'}
+              %i.icon-play.icon-white
+              Start
+
+          %br
+          .progress-indication
+            .progress
+              .bar{style: 'width: {{promoted_percentage}};'}
+            %div
+              {{promoted}} of {{count}} sites promoted
+
