@@ -45,8 +45,8 @@
             %a(ng-href='/projects/{{project_id}}/master/sites/{{site.id}}/history' target='_blank') history
 
       %ul.pager
-        %li
-          %a(href="javascript:" ng-click='go_to_previous_page()' ng-disabled = 'has_previous_page')Previous
+        %li(ng-class='{disabled: !has_previous_page}')
+          %a(href="javascript:" ng-click='go_to_previous_page()' )Previous
         %li
           %a(href="javascript:" ng-click='go_to_next_page()' ng-disabled = 'has_next_page') Next
 
