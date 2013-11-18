@@ -3,6 +3,8 @@ angular.module('MasterSitesEditor', ['RmHierarchyService', 'RmApiService'])
 .controller 'MasterSitesEditorCtrl', ($scope, $http, RmApiService) ->
   $scope.sites = null
   $scope.search = ''
+  $scope.has_previous_page = false
+  $scope.has_next_page = false
 
   load_sites = ->
     $scope.sites = null
@@ -18,16 +20,28 @@ angular.module('MasterSitesEditor', ['RmHierarchyService', 'RmApiService'])
       $scope.page_data = response.data
       if $scope.page_data.nextPage?
         $scope.page_data.nextPage = $scope.page_data.nextPage.replace(/^http:\/\/[^\/]*\//,"")
+        $scope.has_next_page = true
+      else
+        $scope.has_next_page = false
       if $scope.page_data.previousPage?
         $scope.page_data.previousPage = $scope.page_data.previousPage.replace(/^http:\/\/[^\/]*\//,"")
+        $scope.has_previous_page = true
+      else
+        $scope.has_previous_page = false
       $scope.sites = response.data.sites
       $scope.loading = false
 
     # RmApiService.get("api/collections/996.json?page=2&page_size=2")
     # $http.get("/projects/#{$scope.project_id}/master/sites/search", params: params)
     #   .success (data) ->
+
   $scope.go_to_next_page = ->
-    console.log('going to next page')
+    if $scope.page_data.nextPage?
+      load_sites_from_url($scope.page_data.nextPage)
+
+  $scope.go_to_previous_page = ->
+    if $scope.page_data.previousPage?
+      load_sites_from_url($scope.page_data.previousPage)
 
   $scope.$watch 'search', _.throttle(load_sites, 200)
 
