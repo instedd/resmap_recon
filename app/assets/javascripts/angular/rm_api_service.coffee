@@ -4,15 +4,19 @@ angular.module('RmApiService', [])
 
   s = {
 
-    get: (route) ->
-      $http.get s.url(route)
+    get: (route, params) ->
+      $http.get s.url(route, params)
 
     post: (route, data) ->
       $http.post s.url(route), data
 
 
-    url: (route) ->
-      "/rm/" + route
+    url: (route, params) ->
+      res = "/rm/" + route
+      if params?
+        res += '?' + $.param(params)
+
+      res
   }
 
   s

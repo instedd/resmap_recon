@@ -14,8 +14,17 @@ module Resmap
 
         [ 200,
           {'Content-Type' => 'application/json'},
-          [api.get(env['PATH_INFO'], query)]
+          [rewrite_response(env, request, api, api.get(env['PATH_INFO'], query))]
         ]
+      end
+
+      protected
+
+      def rewrite_response(env, request, api, body)
+        api_mount = "#{URI(request.url).scheme}://#{request.host_with_port}#{env['SCRIPT_NAME']}/"
+        api_url = api.url
+
+        body.gsub(api_url, api_mount)
       end
     end
   end
