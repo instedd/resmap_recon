@@ -156,6 +156,21 @@ class SourceList < ActiveRecord::Base
     site.update_property(app_seen_field_name, true)
   end
 
+
+  def promote_to_master(site_id)
+    # TODO
+    # grab site info
+    # raise exception if the site is already consolidated.
+    # build master site info: name/lat/long & common_properties_with_master
+    # create master site
+  end
+
+  # returns array of codes of properties that are shared among
+  # this source_list's collection and the master collection
+  def common_properties_with_master
+    # TODO
+  end
+
   def consolidated_with(master_site_id)
     as_collection.sites
       .where(app_master_site_id => master_site_id)
