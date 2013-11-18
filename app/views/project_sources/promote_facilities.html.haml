@@ -6,15 +6,19 @@
         %rm-collection-context{id: @source.collection_id}
           = link_to '← back to source list', source_list_details_project_source_path(@project, @source)
           %h1
+            Promote sites in
             = @source.name
 
           %div
             {{count}} sites to promote
 
           %div
-            %a.btn.btn-success.btn-large{'ng-click' => 'promote()'}
+            %a.btn.btn-success.btn-large{'ng-click' => 'start()'}
               %i.icon-play.icon-white
               Start
+            %span{'ng-show' => 'working'}
+              %i.icon-warning-sign
+              The process will stop if you navigate away or close your browser window
 
           %br
           .progress-indication
