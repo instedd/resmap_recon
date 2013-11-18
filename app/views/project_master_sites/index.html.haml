@@ -6,14 +6,14 @@
 %div{'ng-app'=>'MasterSitesEditorApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy_field_id: @project.target_field.id, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code)}
   - angular_templates 'shared/angular'
 
-  %div(ng-controller='MasterSitesEditorCtrl')
-    %rm-collection-context(id="#{@project.master_collection.id}")
+  %rm-collection-context(id="#{@project.master_collection.id}")
+    %div(ng-controller='MasterSitesEditorCtrl')
       .pull-left
         there are a total of
         %b {{page_data.count}}
         facilities
-      .pull-right
-        %form.form-search
+      %form.pull-right
+        .form-search
           %input.search-query(ng-model='search' placeholder='Search facility')
 
       %table.table.table-bordered
