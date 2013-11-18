@@ -161,8 +161,9 @@ class SourceList < ActiveRecord::Base
     # TODO
     # grab site info
     # raise exception if the site is already consolidated.
-    # build master site info: name/lat/long & common_properties_with_master
+    # build master site info: name/lat/long & common_properties_with_master & mapped geo-location
     # create master site
+    # mark as consolidated
   end
 
   # returns array of codes of properties that are shared among
