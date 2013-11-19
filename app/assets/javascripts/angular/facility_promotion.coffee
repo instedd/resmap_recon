@@ -6,6 +6,7 @@ angular.module('FacilityPromotion',['RmApiService'])
   $scope.processed = 0
   $scope.failed = 0
   $scope.working = false
+  $scope.done = false
 
   RmApiService.get("api/collections/#{$scope.collection_id}.json").success (data) ->
     $scope.sites = data.sites
@@ -38,3 +39,4 @@ angular.module('FacilityPromotion',['RmApiService'])
     $scope.processed_percentage = "#{$scope.processed * 100 / $scope.count}%"
     if $scope.processed == $scope.count
       $scope.working = false
+      $scope.done = true

@@ -73,7 +73,12 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_site
-    render json: {status: 'ok'}
+    if @source.promote_to_master(params[:site_id])
+      status = 'ok'
+    else
+      status = 'fail'
+    end
+    render json: {status: status}
   end
 
   protected

@@ -20,6 +20,10 @@
             %span{'ng-show' => 'working'}
               %i.icon-warning-sign
               The process will stop if you navigate away or close your browser window
+            %div.inline{'ng-show' => 'done'}
+              = link_to project_path(@project), class: "btn btn-primary btn-large" do
+                %i.icon-white.icon-ok
+                Done! Back to project
 
           %br
           .progress-indication
@@ -29,7 +33,7 @@
               {{processed}} of {{count}} sites processed
               %span{'ng-show' => 'failed > 0'} - {{failed}} have failed
 
-          %h3 Properties promoted to master
+          %h3 Properties to be promoted to master
 
           %ul.unstyled
           - ['Name', 'Latitude', 'Longitude'].each do |label|
