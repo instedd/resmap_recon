@@ -176,6 +176,15 @@ class SourceList < ActiveRecord::Base
     # build master site info: name/lat/long & common_properties_with_master & mapped geo-location
     # create master site
     # mark as consolidated
+
+    s = self.as_collection.sites.find(site_id)
+    name = s.data['name']
+    lat = s.data['lat']
+    long = s.data['long']
+    properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
+
+    new_site = project.master_collection.sites.create(name:name)
+    new_site.update_properties(lat: lat, long: long, properties: properties)
   end
 
   # returns array of codes of properties that are shared among
