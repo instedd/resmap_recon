@@ -72,7 +72,7 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_site
-    render nothing: true
+    render json: {status: 'ok'}
   end
 
   protected

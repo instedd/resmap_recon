@@ -23,7 +23,8 @@
           %br
           .progress-indication
             .progress
-              .bar{style: 'width: {{promoted_percentage}};'}
+              .bar{style: 'width: {{processed_percentage}};'}
             %div
-              {{promoted}} of {{count}} sites promoted
+              {{processed}} of {{count}} sites processed
+              %span{'ng-show' => 'failed > 0'} - {{failed}} have failed
 
