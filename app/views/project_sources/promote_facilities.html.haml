@@ -1,4 +1,5 @@
 %div{'ng-app'=>'FacilityPromotionApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, collection_id: @source.collection_id)}
+  - angular_templates 'shared/angular'
 
   .row-fluid
     .span9
@@ -27,4 +28,15 @@
             %div
               {{processed}} of {{count}} sites processed
               %span{'ng-show' => 'failed > 0'} - {{failed}} have failed
+
+          %h3 Properties promoted to master
+
+          %ul.unstyled
+          - ['Name', 'Latitude', 'Longitude'].each do |label|
+            %li= "#{label} → #{label}"
+          - @source.common_properties_with_master.each do |code|
+            %li
+              %rm-label.inline{code: code}
+              →
+              %rm-label.inline{code: code}
 
