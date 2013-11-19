@@ -69,6 +69,7 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_facilities
+    @sites_to_promote_url = AppContext.resmap_url_to_recon(@source.sites_to_promote.url)
   end
 
   def promote_site

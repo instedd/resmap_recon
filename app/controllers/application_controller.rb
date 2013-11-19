@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
 
   def setup_app_context
     AppContext.resmap_api = ResourceMap::Api.basic_auth(session[:email], session[:password], Settings.resource_map.host, Settings.resource_map.https)
+    AppContext.setup_url_rewrite_from_request(request)
   end
 
   def authenticate_user!
