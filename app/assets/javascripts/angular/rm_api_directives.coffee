@@ -40,7 +40,7 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
     ngModelGet = $parse($attrs.ngModel)
     ngModelSet = ngModelGet.assign
 
-    ngLoadingModelGet = $parse($attrs.ngModel)
+    ngLoadingModelGet = $parse($attrs.ngLoadingModel)
     ngLoadingModelSet = ngLoadingModelGet.assign
 
     load_sites_from_url = (url) ->
