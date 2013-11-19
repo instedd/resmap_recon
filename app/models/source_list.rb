@@ -169,7 +169,7 @@ class SourceList < ActiveRecord::Base
   # returns array of codes of properties that are shared among
   # this source_list's collection and the master collection
   def common_properties_with_master
-    # TODO
+    (self.as_collection.fields.map &:code) & (self.project.master_collection.fields.map &:code)
   end
 
   def consolidated_with(master_site_id)
