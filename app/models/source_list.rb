@@ -123,7 +123,11 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_to_promote
-    sites_pending.where(app_master_site_id => '=')
+    values = mapping_entries
+      .with_property(mapping_property_id)
+      .pluck(:source_value)
+
+    sites_pending.where(app_master_site_id => '=', mapping_property.code => values)
   end
 
   def sites_not_curated
