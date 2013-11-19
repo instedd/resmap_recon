@@ -69,6 +69,11 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_facilities
+    if @source.mapping_property_id.nil?
+      render 'mapping_property_not_set'
+      return
+    end
+
     @sites_to_promote_url = AppContext.resmap_url_to_recon(@source.sites_to_promote.url)
   end
 

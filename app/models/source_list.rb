@@ -170,21 +170,24 @@ class SourceList < ActiveRecord::Base
 
 
   def promote_to_master(site_id)
-    # TODO
     # grab site info
-    # raise exception if the site is already consolidated.
-    # build master site info: name/lat/long & common_properties_with_master & mapped geo-location
-    # create master site
-    # mark as consolidated
-
     s = self.as_collection.sites.find(site_id)
+
+    # TODO raise exception if the site is already consolidated.
+
+    # build master site info: name/lat/long & common_properties_with_master
+    # TODO & mapped geo-location
     name = s.data['name']
     lat = s.data['lat']
     long = s.data['long']
     properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
 
+    # create master site
     new_site = project.master_collection.sites.create(name:name)
     new_site.update_properties(lat: lat, long: long, properties: properties)
+
+    # mark as consolidated
+    self.consolidate_with(site_id, new_site.id)
   end
 
   # returns array of codes of properties that are shared among
