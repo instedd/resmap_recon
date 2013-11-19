@@ -1,0 +1,7 @@
+%ul.pager
+  %li(ng-class='{disabled: !has_previous_page}')
+    %a(href="javascript:" ng-click='go_to_previous_page()' )
+      Previous
+  %li(ng-class='{disabled: !has_next_page}')
+    %a(href="javascript:" ng-click='go_to_next_page()' )
+      Next

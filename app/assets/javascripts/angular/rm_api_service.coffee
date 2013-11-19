@@ -12,7 +12,11 @@ angular.module('RmApiService', [])
 
 
     url: (route, params) ->
-      res = "/rm/" + route
+      if /^http:|^https:|^\/rm\//.test(route)
+        res = route
+      else
+        res = "/rm/" + route
+
       if params?
         res += '?' + $.param(params)
 

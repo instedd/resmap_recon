@@ -1,44 +1,17 @@
 angular.module('MasterSitesEditor', ['RmHierarchyService', 'RmApiService'])
 
 .controller 'MasterSitesEditorCtrl', ($scope, $http, RmApiService) ->
-  $scope.sites = null
+  $scope.page_data = null
   $scope.search = ''
   $scope.has_previous_page = false
   $scope.has_next_page = false
 
   load_sites = ->
-    $scope.sites = null
-    $scope.loading = true
     params = {page_size: 20}
     if !_.isEmpty($scope.search)
       params.search = $scope.search
 
-    load_sites_from_url(RmApiService.url("api/collections/#{$scope.collection_id}.json", params))
-
-  load_sites_from_url = (url) ->
-    $http.get(url).then (response) ->
-      $scope.page_data = response.data
-
-      if $scope.page_data.nextPage?
-        $scope.has_next_page = true
-      else
-        $scope.has_next_page = false
-
-      if $scope.page_data.previousPage?
-        $scope.has_previous_page = true
-      else
-        $scope.has_previous_page = false
-
-      $scope.sites = response.data.sites
-      $scope.loading = false
-
-  $scope.go_to_next_page = ->
-    if $scope.page_data.nextPage?
-      load_sites_from_url($scope.page_data.nextPage)
-
-  $scope.go_to_previous_page = ->
-    if $scope.page_data.previousPage?
-      load_sites_from_url($scope.page_data.previousPage)
+    $scope.$broadcast 'rm-pager-load-sites', RmApiService.url("api/collections/#{$scope.collection_id}.json", params)
 
   $scope.$watch 'search', _.throttle(load_sites, 200)
 

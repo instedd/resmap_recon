@@ -32,7 +32,7 @@
           %td{'colspan' => @project.master_collection.fields.count + 2}
             Loading...
 
-        %tr(ng-repeat='site in sites' ng-controller='MasterSiteRow')
+        %tr(ng-repeat='site in page_data.sites' ng-controller='MasterSiteRow')
           %td {{site_hierarchy_node.path}}
           %td {{site.name}}
           - @project.master_collection.fields.each do |field|
@@ -44,11 +44,8 @@
             %a(href='javascript:' ng-click='edit()') edit
             %a(ng-href='/projects/{{project_id}}/master/sites/{{site.id}}/history' target='_blank') history
 
-      %ul.pager
-        %li(ng-class='{disabled: !has_previous_page}')
-          %a(href="javascript:" ng-click='go_to_previous_page()' )Previous
-        %li(ng-class='{disabled: !has_next_page}')
-          %a(href="javascript:" ng-click='go_to_next_page()' ) Next
+
+      %rm-pager(ng-model='page_data' ng-loading-model='loading')
 
       #MasterSiteEditor.modal.hide.modal-big.fade(ng-controller='MasterSiteEditor')
         .modal-header

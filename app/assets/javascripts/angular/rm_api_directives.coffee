@@ -32,3 +32,42 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
     pre: (scope, elem, attrs) ->
       idGet = $parse(attrs.fieldId)
       scope.hierarchy_field_id = parseInt(idGet(scope))
+
+.directive "rmPager", () ->
+  restrict: 'E'
+  templateUrl: 'rm_pager_template.html',
+  controller: ($scope, $attrs, $parse, RmApiService) ->
+    ngModelGet = $parse($attrs.ngModel)
+    ngModelSet = ngModelGet.assign
+
+    ngLoadingModelGet = $parse($attrs.ngModel)
+    ngLoadingModelSet = ngLoadingModelGet.assign
+
+    load_sites_from_url = (url) ->
+      ngModelSet($scope, null)
+      $scope.$emit 'rm-pager-loading'
+      ngLoadingModelSet($scope, true)
+      RmApiService.get(url).success (data) ->
+        ngModelSet($scope, data)
+        $scope.$emit 'rm-pager-loaded'
+        ngLoadingModelSet($scope, false)
+
+    $scope.$on 'rm-pager-load-sites', (e, url) ->
+      load_sites_from_url(url)
+
+    $scope.go_to_next_page = ->
+      if $scope.has_next_page
+        load_sites_from_url($scope.page_data.nextPage)
+
+    $scope.go_to_previous_page = ->
+      if $scope.has_previous_page
+        load_sites_from_url($scope.page_data.previousPage)
+
+    $scope.$watch "#{$attrs.ngModel} | json", ->
+      page_data = ngModelGet($scope)
+      if page_data?
+        $scope.has_next_page = page_data.nextPage?
+        $scope.has_previous_page = page_data.previousPage?
+      else
+        $scope.has_next_page = false
+        $scope.has_previous_page = false
