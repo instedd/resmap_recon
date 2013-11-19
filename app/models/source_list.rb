@@ -114,12 +114,20 @@ class SourceList < ActiveRecord::Base
     res
   end
 
-  def sites_not_curated
-    as_collection.sites.where(app_master_site_id => '=')
+  def sites_pending
+    as_collection.sites.where(app_seen_field_name => false)
   end
 
-  def sites_not_curated_count
-    as_collection.sites.where(app_master_site_id => '=').page(1).total_count
+  def sites_pending_count
+    sites_pending.total_count
+  end
+
+  def sites_to_promote
+    sites_pending.where(app_master_site_id => '=')
+  end
+
+  def sites_not_curated
+    as_collection.sites.where(app_master_site_id => '=')
   end
 
   def unmapped_sites_csv
@@ -194,7 +202,7 @@ class SourceList < ActiveRecord::Base
   def curation_progress
     total_count = as_collection.sites.count
     if total_count != 0
-      100 - (sites_not_curated_count * 100 / total_count)
+      100 - (sites_pending_count * 100 / total_count)
     else
       0
     end

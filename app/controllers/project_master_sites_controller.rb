@@ -13,9 +13,10 @@ class ProjectMasterSitesController < ApplicationController
     elsif params[:search].present?
       sites = sites.where(search: params[:search])
     else
-      sites = sites.all
+      raise 'Either id or search must be present'
     end
 
+    # TODO support paging
     render json: sites.map(&:to_hash)
   end
 
