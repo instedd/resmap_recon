@@ -180,15 +180,17 @@ class SourceList < ActiveRecord::Base
     name = s.data['name']
     lat = s.data['lat']
     long = s.data['long']
-    properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
 
-    mapped_source_value = "Chato DC" # TODO change...
-    mapped_target_value = source_list.mapping_entries
+    mapped_source_value = s.data['properties'][mapping_property.code]
+
+    mapped_target_value = self.mapping_entries
         .with_property(mapping_property_id)
         .with_source(mapped_source_value)
         .pluck(:target_value)
         .first
 
+    properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
+    properties[project.target_field.code] = target_value
     # create master site
     new_site = project.master_collection.sites.create(name:name)
     new_site.update_properties(lat: lat, long: long, properties: properties)
