@@ -180,8 +180,10 @@ class SourceList < ActiveRecord::Base
 
     # TODO raise exception if the site is already consolidated.
 
-    # build master site info: name/lat/long & common_properties_with_master
-    # TODO & mapped geo-location
+    # build master site info:
+    #  * name/lat/long
+    #  * common_properties_with_master
+    #  * mapped geo-political hierarchy
     name = s.data['name']
     lat = s.data['lat']
     long = s.data['long']

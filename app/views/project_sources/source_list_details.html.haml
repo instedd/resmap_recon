@@ -23,13 +23,13 @@
 
         %h2 Facilities Mapping
 
-        = "#{@curation_progress || "0%"} curated, "
+        = "#{@curation_progress || 0}% curated, "
         {{(percentage_classified | number) || 0}}%
         mapped
 
         .progress
           .bar.bar-success{style: "width: #{@curation_progress}"}
-          .bar{style: "width: {{percentage_classified}}%"}
+          .bar{style: "width: {{percentage_classified - #{@curation_progress}}}%"}
 
         %p Source Lists must be mapped to the MFL Geo-Political Division.
 

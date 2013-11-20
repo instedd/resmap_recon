@@ -11,7 +11,11 @@ class ProjectMasterSitesController < ApplicationController
     if params[:id].present?
       sites = [sites.find(params[:id])]
     elsif params[:search].present?
-      sites = sites.where(search: params[:search])
+      sites = sites
+          .where(search: params[:search])
+          .where(@project.target_field.code => params[:hierarchy])
+          .page_size(50)
+          .page(1)
     else
       raise 'Either id or search must be present'
     end

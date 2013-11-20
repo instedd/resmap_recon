@@ -43,7 +43,7 @@ class ProjectSourcesController < ApplicationController
     end
 
     @hierarchy_field_id = @project.target_field.id
-    @curation_progress = "#{@source.curation_progress}%"
+    @curation_progress = @source.curation_progress
   end
 
   def review_mapping

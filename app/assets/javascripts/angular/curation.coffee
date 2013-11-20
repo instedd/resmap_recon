@@ -76,12 +76,13 @@ angular.module('Curation',[])
       $scope.sites = null
     else
       $scope.search_loading = true
-      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {search: $scope.search}})
+      params = { search: $scope.search, hierarchy: $scope.selected_node.id }
+      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: params})
         .success (data) ->
           $scope.sites = data
         $scope.search_loading = false
 
-  $scope.$watch 'search', _.throttle($scope._search_sites, 200)
+  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
   $scope.select = (site) ->
     $scope.$emit 'site-search-selected', site
