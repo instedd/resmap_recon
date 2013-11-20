@@ -34,6 +34,14 @@ class SourceList < ActiveRecord::Base
     as_collection.field_by_id(mapping_property_id)
   end
 
+  def current_mapping_entries
+    if mapping_property_id.nil?
+      []
+    else
+      mapping_entries.with_property(mapping_property_id)
+    end
+  end
+
   def mapping
     return {} if mapping_property_id.nil?
     entries = mapping_entries.with_property(mapping_property_id).all

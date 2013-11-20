@@ -69,7 +69,7 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_facilities
-    if @source.mapping_property_id.nil?
+    if @source.current_mapping_entries.count == 0
       render 'mapping_property_not_set'
       return
     end
