@@ -10,15 +10,16 @@
             Promote sites in
             = @source.name
 
-          .alert.alert-warning
-            %i.icon-warning-sign
-            This process can be executed in only one source list.
+          - if @project.no_source_list_was_promoted?
+            .alert.alert-warning
+              %i.icon-warning-sign
+              This process can be executed in only one source list.
 
           %div
             {{count}} sites to promote
 
           %div
-            %a.btn.btn-success.btn-large{'ng-click' => 'start()'}
+            %a.btn.btn-success.btn-large{'ng-click' => 'start()', 'ng-disabled' => '!can_start'}
               %i.icon-play.icon-white
               Start
             %span{'ng-show' => 'working'}

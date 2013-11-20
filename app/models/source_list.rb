@@ -170,6 +170,11 @@ class SourceList < ActiveRecord::Base
 
 
   def promote_to_master(site_id)
+    if project.promoted_source_list_id != self.id
+      project.promoted_source_list_id = self.id
+      project.save!
+    end
+
     # grab site info
     s = self.as_collection.sites.find(site_id)
 
@@ -182,7 +187,6 @@ class SourceList < ActiveRecord::Base
     long = s.data['long']
 
     mapped_source_value = s.data['properties'][mapping_property.code]
-
     mapped_target_value = self.mapping_entries
         .with_property(mapping_property_id)
         .with_source(mapped_source_value)
@@ -205,6 +209,10 @@ class SourceList < ActiveRecord::Base
   # this source_list's collection and the master collection
   def common_properties_with_master
     (self.as_collection.fields.map &:code) & (self.project.master_collection.fields.map &:code)
+  end
+
+  def can_promote?
+    project.no_source_list_was_promoted? || project.promoted_source_list_id == self.id
   end
 
   def consolidated_with(master_site_id)

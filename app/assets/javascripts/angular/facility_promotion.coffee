@@ -7,6 +7,7 @@ angular.module('FacilityPromotion',['RmApiService'])
   $scope.failed = 0
   $scope.working = false
   $scope.done = false
+  $scope.can_start = false
 
   # grab site information
   # and go to last page
@@ -22,6 +23,9 @@ angular.module('FacilityPromotion',['RmApiService'])
       RmApiService.get($scope.sites_to_promote_url + "&page=" + data.totalPages).success (data) ->
         $scope.sites = data.sites
         $scope.next_url = data.previousPage
+        $scope.can_start = true
+    else
+      $scope.can_start = true
 
 
   $scope.start = ->

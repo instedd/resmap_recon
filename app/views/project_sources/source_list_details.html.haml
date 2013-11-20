@@ -16,9 +16,10 @@
           %i.icon-upload
           Upload new version
 
-        = link_to promote_facilities_project_source_path(@project, @source), class: "btn btn-large" do
-          %i.icon-fast-forward
-          Promote facilities to MFL
+        - if @source.can_promote?
+          = link_to promote_facilities_project_source_path(@project, @source), class: "btn btn-large" do
+            %i.icon-fast-forward
+            Promote facilities to MFL
 
         %h2 Facilities Mapping
 
