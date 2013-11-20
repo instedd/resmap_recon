@@ -194,7 +194,7 @@ class SourceList < ActiveRecord::Base
         .first
 
     properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
-    properties[project.target_field.code] = target_value
+    properties[project.target_field.code] = mapped_target_value
     # create master site
     new_site = project.master_collection.sites.create(name:name)
     new_site.update_properties(lat: lat, long: long, properties: properties)
