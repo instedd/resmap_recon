@@ -197,6 +197,8 @@ class SourceList < ActiveRecord::Base
 
     # mark as consolidated
     self.consolidate_with(site_id, new_site.id)
+
+    true
   end
 
   # returns array of codes of properties that are shared among
