@@ -5,4 +5,5 @@ class MappingEntry < ActiveRecord::Base
 
   scope :with_property, lambda { |prop| where(source_property: prop) }
   scope :with_target, lambda { |value| where(target_value: value) }
+  scope :with_source, lambda { |value| where(source_value: value) }
 end

@@ -182,6 +182,13 @@ class SourceList < ActiveRecord::Base
     long = s.data['long']
     properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
 
+    mapped_source_value = "Chato DC" # TODO change...
+    mapped_target_value = source_list.mapping_entries
+        .with_property(mapping_property_id)
+        .with_source(mapped_source_value)
+        .pluck(:target_value)
+        .first
+
     # create master site
     new_site = project.master_collection.sites.create(name:name)
     new_site.update_properties(lat: lat, long: long, properties: properties)
