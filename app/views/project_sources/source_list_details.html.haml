@@ -42,4 +42,15 @@
 
     .span3
       .well
-        = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
+        .row-fluid
+          .span12
+            %span.huge
+              = @source.as_collection.sites.count
+            %span
+              facilities
+
+        %br
+
+        .row-fluid
+          .span12
+            = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
