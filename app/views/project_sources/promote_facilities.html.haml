@@ -1,4 +1,4 @@
-%div{'ng-app'=>'FacilityPromotionApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, collection_id: @source.collection_id)}
+%div{'ng-app'=>'FacilityPromotionApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, collection_id: @source.collection_id, sites_to_promote_url: @sites_to_promote_url)}
   - angular_templates 'shared/angular'
 
   .row-fluid
@@ -9,6 +9,10 @@
           %h1
             Promote sites in
             = @source.name
+
+          .alert.alert-warning
+            %i.icon-warning-sign
+            This process can be executed in only one source list.
 
           %div
             {{count}} sites to promote

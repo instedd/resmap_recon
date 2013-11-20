@@ -8,10 +8,21 @@ angular.module('FacilityPromotion',['RmApiService'])
   $scope.working = false
   $scope.done = false
 
-  RmApiService.get("api/collections/#{$scope.collection_id}.json").success (data) ->
+  # grab site information
+  # and go to last page
+  # since the processing will be removing sites from this "list"
+  RmApiService.get($scope.sites_to_promote_url).success (data) ->
     $scope.sites = data.sites
     $scope.count = data.count
-    $scope.next_url = data.nextPage
+    $scope.next_url = null
+
+    # go to last page
+    if data.nextPage?
+      # HACK. asume there is no page=
+      RmApiService.get($scope.sites_to_promote_url + "&page=" + data.totalPages).success (data) ->
+        $scope.sites = data.sites
+        $scope.next_url = data.previousPage
+
 
   $scope.start = ->
     $scope.working = true
@@ -32,7 +43,7 @@ angular.module('FacilityPromotion',['RmApiService'])
   $scope.load_more_sites = ->
     $http.get($scope.next_url).success (data) ->
       $scope.sites = data.sites
-      $scope.next_url = data.nextUrl
+      $scope.next_url = data.previousPage
       $scope.promote_next_site()
 
   $scope.$watch 'processed', () ->
