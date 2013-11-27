@@ -129,6 +129,10 @@ class Project < ActiveRecord::Base
     "_master_site_id_#{app_suffix}_"
   end
 
+  def app_master_hierarchy
+   "_hierarchy_#{app_suffix}_"
+  end
+
   protected
 
   def prepare_source_lists

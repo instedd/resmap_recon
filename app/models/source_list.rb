@@ -6,7 +6,7 @@ class SourceList < ActiveRecord::Base
   serialize :config, Hash
   has_many :mapping_entries
 
-  delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
+  delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, :app_master_hierarchy, to: :project
 
   before_create :prepare
 
@@ -88,10 +88,20 @@ class SourceList < ActiveRecord::Base
 
     layer.ensure_fields [
       { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
-      { name: app_master_site_id, kind: 'numeric' }
+      { name: app_master_site_id, kind: 'numeric' },
+      { name: app_master_hierarchy, kind: 'hierarchy', config: { hierarchy: prepare_hierarchy(project.target_field.hierarchy)} }
     ]
-
     true
+  end
+
+  def prepare_hierarchy(hierarchy)
+    res = {}
+    hierarchy.each_with_index do |n,i|
+      res[i] = { 'id' => n['id'], 'name' => n['name'] }
+      res[i]['sub'] = prepare_hierarchy(n['sub']) unless n['sub'].nil?
+    end
+
+    res
   end
 
   def pending_changes(node_id, next_page_url = nil)
