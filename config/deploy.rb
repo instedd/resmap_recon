@@ -3,6 +3,7 @@ set :repo_url, 'git@bitbucket.org:instedd/resmap_recon.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
+set :deploy_to, '/u/apps/resmap_recon'
 # set :deploy_to, '/var/www/my_app'
 # set :scm, :git
 
