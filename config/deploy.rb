@@ -1,7 +1,10 @@
 set :application, 'resmap_recon'
-set :repo_url, 'git@bitbucket.org:instedd/resmap_recon.git'
+set :repo_url, 'https://bitbucket.org/instedd/resmap_recon.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
+set :rvm_type, :system
+set :rvm_ruby_version, '1.9.3'
 
 set :deploy_to, '/u/apps/resmap_recon'
 # set :deploy_to, '/var/www/my_app'
@@ -11,7 +14,7 @@ set :deploy_to, '/u/apps/resmap_recon'
 # set :log_level, :debug
 # set :pty, true
 
-# set :linked_files, %w{config/database.yml}
+set :linked_files, %w{config/settings.yml}
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
