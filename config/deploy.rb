@@ -14,7 +14,8 @@ set :deploy_to, '/u/apps/resmap_recon'
 # set :log_level, :debug
 # set :pty, true
 
-set :linked_files, %w{config/settings.yml}
+set :linked_files, %w{config/settings.yml config/database.yml}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
