@@ -51,7 +51,7 @@ class Project < ActiveRecord::Base
     source_collections.detect { |c| c.id == id }
   end
 
-  def pending_changes(node_id, next_page_hash = {})
+  def pending_changes(node_id, search, next_page_hash = {})
     urls = {}
     if next_page_hash.empty?
       src_lists = source_lists
@@ -60,7 +60,7 @@ class Project < ActiveRecord::Base
     end
     res = {sites: []}
     src_lists.each do |s|
-      source_list_data = s.pending_changes(node_id, next_page_hash[s.id.to_s])
+      source_list_data = s.pending_changes(node_id, search, next_page_hash[s.id.to_s])
       res[:sites] << source_list_data[:sites]
       urls[s.id] = source_list_data[:next_page_url] if source_list_data[:next_page_url].present?
     end

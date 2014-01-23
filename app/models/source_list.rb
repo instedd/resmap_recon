@@ -94,7 +94,7 @@ class SourceList < ActiveRecord::Base
     true
   end
 
-  def pending_changes(node_id, next_page_url = nil)
+  def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
       values = mapping_entries
@@ -103,11 +103,13 @@ class SourceList < ActiveRecord::Base
         .pluck(:source_value)
 
       unless values.empty?
-        result = as_collection.sites
-          .where(
-            app_seen_field_name => false,
-            mapping_property.code => values)
-          .page_size(10).page(1)
+        query = {
+          app_seen_field_name => false,
+          mapping_property.code => values,
+        }
+        query[:search] = search if search
+
+        result = as_collection.sites.where(query).page_size(10).page(1)
       end
     else
       result = as_collection.sites.from_url(next_page_url)

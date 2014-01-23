@@ -22,9 +22,11 @@
                 = render 'pending_list'
 
       .span3
-        %h2 Review Source Records
+        %h2 Source Records
 
         .recon-panel
+          = render 'search_source_records'
+
           .accordion(ng-show='selected_node')
             = render 'pending_sites'
 
@@ -39,7 +41,7 @@
           .span6
             %h2 Reconcile to MFL
 
-            %div.recon-panel
+            .recon-panel
 
               = render 'search_master_site'
 

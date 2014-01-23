@@ -7,23 +7,42 @@ angular.module('Curation',[])
   $scope.next_page_url = null
   $scope.sites = []
   $scope.reached_final_page = false
+  $scope.source_records_search = null
+
+  # This is to discard old requests if the user searches something and while
+  # the search is being performed, she searches something else.
+  $scope.pending_changes_seq = 0
 
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
+    $scope._reset_and_load_pending_changes()
+
+  $scope.$on 'search-source-records', (e, search) ->
+    if $scope.selected_node
+      $scope.source_records_search = search
+      $scope._reset_and_load_pending_changes()
+
+  $scope._reset_and_load_pending_changes = ->
     $scope.sites.splice(0, $scope.sites.length)
     $scope.next_page_url = null
     $scope._load_pending_changes()
 
   $scope._load_pending_changes = ->
+    $scope.pending_changes_seq += 1
+    seq = $scope.pending_changes_seq
+
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     if $scope.next_page_url != null
       page_request = $http.get($scope.next_page_url)
     else
-      params = { params: {target_value: $scope.selected_node.id} }
+      params = { params: {target_value: $scope.selected_node.id, search: $scope.source_records_search} }
       page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
+      # Check if there's a new request going on
+      return if seq != $scope.pending_changes_seq
+
       $scope.sites = $scope.sites.concat data.sites
       $scope.next_page_url = data.next_page_url
       $scope.reached_final_page = data.next_page_url == undefined
@@ -90,6 +109,15 @@ angular.module('Curation',[])
   $scope.$on 'site-search-clear', ->
     $scope.search = ''
     $scope._search_sites()
+
+.controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
+  $scope.search_loading = false
+  $scope.search = ''
+
+  $scope._search_sites = ->
+    $scope.$emit 'search-source-records', $scope.search
+
+  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
 .controller 'ConsolitateSiteCtrl', ($scope, $http) ->
   $scope.target_site = null
