@@ -20,6 +20,7 @@ angular.module('Curation',[])
   $scope.$on 'search-source-records', (e, search) ->
     if $scope.selected_node
       $scope.source_records_search = search
+      $scope.$broadcast 'search-source-records-changed', search
       $scope._reset_and_load_pending_changes()
 
   $scope._reset_and_load_pending_changes = ->
@@ -109,6 +110,9 @@ angular.module('Curation',[])
   $scope.$on 'site-search-clear', ->
     $scope.search = ''
     $scope._search_sites()
+
+  $scope.$on 'search-source-records-changed', (event, search) ->
+    $scope.search = search
 
 .controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
   $scope.search_loading = false
