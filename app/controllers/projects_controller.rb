@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
 
   def pending_changes
     if params[:next_page_hash].present?
-      changes = @project.pending_changes(nil, params[:search].presence, params[:next_page_hash])
+      changes = @project.pending_changes(nil, nil, params[:next_page_hash])
     else
       changes = @project.pending_changes(params[:target_value], params[:search].presence)
     end
