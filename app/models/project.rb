@@ -30,6 +30,8 @@ class Project < ActiveRecord::Base
   config_property :master_collection_target_field_id
   config_property :promoted_source_list_id
 
+  serialize :hierarchy, MarshalZipSerializable
+
   def no_source_list_was_promoted?
     self.promoted_source_list_id.nil?
   end

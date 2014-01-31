@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131011185846) do
+ActiveRecord::Schema.define(:version => 20140131141418) do
 
   create_table "mapping_entries", :force => true do |t|
     t.integer  "source_list_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20131011185846) do
     t.text     "config"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.binary   "hierarchy"
   end
 
   create_table "source_lists", :force => true do |t|

@@ -74,6 +74,8 @@ class ProjectsController < ApplicationController
 
     project.master_collection_id = collection.id
     project.master_collection_target_field_id = collection.field_by_code('admin_division').id
+
+    project.hierarchy = hierarchy
   end
 
   def prepare_hierarchy(hierarchy)
