@@ -1,4 +1,4 @@
-%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.id}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id)}
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.id}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id, hierarchy: @project.hierarchy)}
   - angular_templates 'shared/angular'
 
   .row-fluid
@@ -27,23 +27,10 @@
 
         %h2 Facilities Mapping
 
-        = "#{@curation_progress || 0}% curated, "
-        {{(percentage_classified | number) || 0}}%
-        mapped
-
-        .progress
-          .bar.bar-success{style: "width: #{@curation_progress}"}
-          .bar{style: "width: {{percentage_classified - #{@curation_progress}}}%"}
-
-        %p Source Lists must be mapped to the MFL Geo-Political Division.
-
-        %p
-          Source Mapped By:
-          %select{'ng-model' => 'mapping_property', 'ng-options' => 'f.name for f in fields'}
-
-          %span(ng-show='mapping_property_loading') Loading ...
-
-        = render 'mapping_editor'
+        .span9
+          %div{'ng-repeat' => 'level in hierarchy_levels'}
+            Level (e.g. {{$index + 1}}: {{level.name}})
+            %select{'ng-model' => 'level.option', 'ng-options' => 'option.name group by option.kind for option in level.options', 'ng-change' => 'recompute_hierarchy_levels($index)'}
 
     .span3
       .well

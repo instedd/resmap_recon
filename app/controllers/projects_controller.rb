@@ -59,10 +59,11 @@ class ProjectsController < ApplicationController
 
     hierarchy = nil
     if template == 'Kenya MFL'
-      hierarchy = prepare_hierarchy(YAML::load_file(File.join(Rails.root, "config", "kenya_hierarchy.yml")))
+      raw_hierarchy = YAML::load_file(File.join(Rails.root, "config", "kenya_hierarchy.yml"))
     elsif template == 'Tanzania MFL'
-      hierarchy = prepare_hierarchy(YAML::load_file(File.join(Rails.root, "config", "tanzania_hierarchy.yml")))
+      raw_hierarchy = YAML::load_file(File.join(Rails.root, "config", "tanzania_hierarchy.yml"))
     end
+    hierarchy = prepare_hierarchy(raw_hierarchy)
 
     layer = collection.find_or_create_layer_by_name('Main')
     layer.ensure_fields [
@@ -75,7 +76,7 @@ class ProjectsController < ApplicationController
     project.master_collection_id = collection.id
     project.master_collection_target_field_id = collection.field_by_code('admin_division').id
 
-    project.hierarchy = hierarchy
+    project.hierarchy = raw_hierarchy
   end
 
   def prepare_hierarchy(hierarchy)

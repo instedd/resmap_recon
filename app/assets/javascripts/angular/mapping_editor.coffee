@@ -1,6 +1,6 @@
-angular.module('MappingEditor',['HierarchySelection'])
+angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
 
-.controller 'MappingEditorCtrl', ($scope, $http) ->
+.controller 'MappingEditorCtrl', ($scope, $http, RmHierarchyService) ->
   $scope.mapping_property_loading = false
 
   $scope.mapping_property = $scope.source_field_options.filter((e)->
@@ -37,6 +37,45 @@ angular.module('MappingEditor',['HierarchySelection'])
   already_classified = 0
   for e in $scope.classified_mapping
     already_classified += e.source_count
+
+  node_service = RmHierarchyService.for_hierarchy($scope.hierarchy)
+
+  $scope.compute_hierarchy_levels = (hierarchy, depth = 0, levels = []) ->
+    level_options = []
+
+    for obj in hierarchy
+      if depth == 0
+        level_options.push kind: 'Fixed value', id: obj.id, name: obj.name
+      if levels.length == depth
+        levels.push name: obj.name, options: level_options
+      if obj.sub
+        $scope.compute_hierarchy_levels obj.sub, depth + 1, levels
+
+    for field_option in $scope.source_field_options
+      level_options.push kind: 'Source field', name: field_option.name
+
+    levels
+
+  $scope.remove_fixed_values = (level) ->
+    level.options = level.options.filter (opt) -> opt.kind != 'Fixed value'
+
+  $scope.recompute_hierarchy_levels = (depth) ->
+    if $scope.hierarchy_levels[depth].option.kind == 'Fixed value'
+      next_level = $scope.hierarchy_levels[depth + 1]
+      if next_level
+        node = node_service.node_by_id($scope.hierarchy_levels[depth].option.id)
+
+        $scope.remove_fixed_values(next_level)
+
+        for obj in node.sub
+          next_level.options.push kind: 'Fixed value', id: obj.id, name: obj.name
+    else
+      depth += 1
+      while depth < $scope.hierarchy_levels.length
+        $scope.remove_fixed_values($scope.hierarchy_levels[depth])
+        depth += 1
+
+  $scope.hierarchy_levels = $scope.compute_hierarchy_levels($scope.hierarchy)
 
   $scope.add_source_values = (array) ->
     sum = 0
