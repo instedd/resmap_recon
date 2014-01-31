@@ -5,10 +5,9 @@ class SourceList < ActiveRecord::Base
   attr_accessible :collection_id, :config, :project
   serialize :config, Hash
   has_many :mapping_entries
+  has_many :site_mappings
 
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
-
-  before_create :prepare
 
   def as_collection
     AppContext.resmap_api.collections.find(collection_id)
@@ -83,17 +82,6 @@ class SourceList < ActiveRecord::Base
     mapping_property.uniq_values
   end
 
-  def prepare
-    layer = as_collection.find_or_create_layer_by_name(app_layer_name)
-
-    layer.ensure_fields [
-      { name: app_seen_field_name, kind: 'yes_no', config: { auto_reset: true } },
-      { name: app_master_site_id, kind: 'numeric' }
-    ]
-
-    true
-  end
-
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
@@ -125,7 +113,9 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_pending
-    as_collection.sites.where(app_seen_field_name => false)
+    # TODO: fix this
+    # as_collection.sites.where(app_seen_field_name => false)
+    as_collection.sites.where({})
   end
 
   def sites_pending_count
@@ -282,4 +272,9 @@ class SourceList < ActiveRecord::Base
     mapped_counts
   end
 
+  def import_sites_from_resource_map
+    as_collection.sites.where({}).each do |site|
+      site_mappings.create! site_id: site.id, name: site.name
+    end
+  end
 end

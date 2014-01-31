@@ -1,29 +1,18 @@
 require 'machinist/active_record'
+require 'sham'
+require 'faker'
 
-# Add your blueprints here.
-#
-# e.g.
-#   Post.blueprint do
-#     title { "Post #{sn}" }
-#     body  { "Lorem ipsum..." }
-#   end
+Sham.define do
+  name { Faker::Name.name }
+  email { Faker::Internet.email }
+  password { Faker::Name.name }
+  username { Faker::Internet.user_name }
+end
 
 Project.blueprint do
-  # Attributes here
+  name
 end
 
 SourceList.blueprint do
-  # Attributes here
-end
-
-MappingEntry.blueprint do
-  # Attributes here
-end
-
-User.blueprint do
-  # Attributes here
-end
-
-UserProjectMembership.blueprint do
-  # Attributes here
+  project
 end

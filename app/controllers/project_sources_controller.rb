@@ -24,6 +24,7 @@ class ProjectSourcesController < ApplicationController
     source_list = SourceList.new project: @project, collection_id: params[:source_list][:collection_id] if params[:source_list] && params[:source_list][:collection_id]
     if source_list.present? && source_list.valid?
       source_list.save
+      source_list.import_sites_from_resource_map
       redirect_to project_path(@project)
     else
       render 'new'
@@ -32,7 +33,12 @@ class ProjectSourcesController < ApplicationController
 
   def after_create
     iw = @source.as_collection.import_wizard
-    raise 'invalid import wizard state' if iw.status != 'file_uploaded'
+
+    if iw.status == 'finished'
+      return redirect_to source_list_details_project_source_path(@project, @source)
+    end
+
+    raise "invalid import wizard state: #{iw.status}" if iw.status != 'file_uploaded'
     @columns_spec = iw.guess_columns_spec
     @sites_to_import = iw.sites_count(@columns_spec)
   end
@@ -40,6 +46,10 @@ class ProjectSourcesController < ApplicationController
   def source_list_details
     if @source.as_collection.import_wizard.status == 'file_uploaded'
       redirect_to after_create_project_source_path(@project, @source)
+    end
+
+    if @source.site_mappings.count == 0
+      @source.import_sites_from_resource_map
     end
 
     @hierarchy_field_id = @project.target_field.id
