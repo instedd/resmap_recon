@@ -67,8 +67,10 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
 
         $scope.remove_fixed_values(next_level)
 
+        fixed_values = []
         for obj in node.sub
-          next_level.options.push kind: 'Fixed value', id: obj.id, name: obj.name
+          fixed_values.push kind: 'Fixed value', id: obj.id, name: obj.name
+        next_level.options.splice 0, 0, fixed_values...
     else
       depth += 1
       while depth < $scope.hierarchy_levels.length
