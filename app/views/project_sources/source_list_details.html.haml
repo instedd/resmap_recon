@@ -27,6 +27,14 @@
 
         %h2 Facilities Mapping
 
+        = "#{@curation_progress || 0}% curated, "
+        {{(percentage_classified | number) || 0}}%
+        mapped
+
+        .progress
+          .bar.bar-success{style: "width: #{@curation_progress}%"}
+          .bar{style: "width: {{percentage_classified - #{@curation_progress}}}%"}
+
         .span9
           %table.table.table-bordered
             %thead
