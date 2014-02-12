@@ -24,6 +24,7 @@ ResmapRecon::Application.routes.draw do
         get 'unmapped_csv_download'
         get 'promote_facilities'
         post 'promote_site'
+        post 'process_automapping'
 
         get 'after_create'
 

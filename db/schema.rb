@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140131183123) do
+ActiveRecord::Schema.define(:version => 20140210180315) do
 
   create_table "mapping_entries", :force => true do |t|
     t.integer  "source_list_id"
@@ -39,8 +39,9 @@ ActiveRecord::Schema.define(:version => 20140131183123) do
     t.string   "name"
     t.string   "mfl_hierarchy"
     t.string   "mfl_site_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "dismissed",      :default => false
   end
 
   create_table "source_lists", :force => true do |t|

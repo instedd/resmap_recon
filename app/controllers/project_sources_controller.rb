@@ -96,6 +96,12 @@ class ProjectSourcesController < ApplicationController
     render json: {status: status}
   end
 
+  def process_automapping
+    chosen_fields = params[:chosen_fields]
+    error_tree = @source.process_automapping(chosen_fields)
+    render json: error_tree
+  end
+
   protected
 
   def load_project

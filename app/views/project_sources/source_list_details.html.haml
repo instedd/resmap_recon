@@ -1,4 +1,4 @@
-%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.id}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id, hierarchy: @project.hierarchy)}
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.code}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id, hierarchy: @project.hierarchy)}
   - angular_templates 'shared/angular'
 
   .row-fluid
@@ -47,7 +47,12 @@
                 %td
                   %select{'ng-model' => 'level.option', 'ng-options' => 'option.name group by option.kind for option in level.options', 'ng-change' => 'recompute_hierarchy_levels($index)'}
 
-          %button.btn.btn-primary.pull-right Map
+          %button.btn.btn-primary.pull-right{'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Map
+
+        .span9
+          %h3 Hierarchy mapping errors
+          %ul
+            %li(ng-repeat='node in error_tree' ng-include="'error_tree_node.html'")
 
     .span3
       .well

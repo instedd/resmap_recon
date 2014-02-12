@@ -113,16 +113,16 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_pending
-    # TODO: fix this
-    # as_collection.sites.where(app_seen_field_name => false)
-    as_collection.sites.where({})
+    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NULL AND dismissed = 0').map(&:site_id)
+    as_collection.sites.where(id: ids)
   end
 
   def sites_pending_count
-    sites_pending.total_count
+    site_mappings.where('mfl_hierarchy IS NULL AND dismissed = 0').count
   end
 
   def sites_to_promote
+    # TODO: Correct to use site mappings
     values = mapping_entries
       .with_property(mapping_property_id)
       .pluck(:source_value)
@@ -131,7 +131,9 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_not_curated
-    as_collection.sites.where(app_master_site_id => '=')
+    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NOT NULL AND dismissed = 0').map(&:site_id)
+    # Recheck, it's returning everything every time
+    as_collection.sites.where(id: ids)
   end
 
   def unmapped_sites_csv
@@ -277,4 +279,59 @@ class SourceList < ActiveRecord::Base
       site_mappings.create! site_id: site.id, name: site.name
     end
   end
+
+  def process_automapping(chosen_fields)
+    error_tree = []
+    sites_pending.each do |site|
+      hier_in_level = project.hierarchy
+      missed = false
+      error_branch = []
+      current_mfl_id = nil
+      chosen_fields.each do |field|
+        next if missed
+        value = field['kind'] == "Fixed value" ? field['name'] : site.properties[field['id']]
+        index = hier_in_level.map{|entry| entry['name']}.index(value)
+        if index
+          current_mfl_id = hier_in_level[index]['id']
+          hier_in_level = hier_in_level[index]['sub']
+          error_branch << value
+        else
+          missed = true
+          error_branch << value
+          error_tree = merge_into(error_tree, array_to_tree(error_branch))
+        end
+      end
+      SiteMapping.find_or_initialize_by_site_id(site.id).tap do |site_mapping|
+        site_mapping.mfl_hierarchy = current_mfl_id
+      end.save if !missed
+    end
+    error_tree
+  end
+
+  private
+
+  def array_to_tree(a)
+    tree = {name: a.first, sub: []}
+    previous = tree[:sub]
+    a[1..-1].each do |el|
+      current = {name: el, sub: []}
+      previous << current
+      previous = current[:sub]
+    end
+    tree
+  end
+
+  def merge_into(tree, branch)
+    branch_to_merge = tree.select{|root| root[:name] == branch[:name]}.first
+    if branch_to_merge
+      index = tree.index{|root| root[:name] == branch[:name]}
+      branch[:sub].each do |child|
+        branch_to_merge[:sub] = merge_into(branch_to_merge[:sub], child)
+      end
+    else
+      tree << branch
+    end
+    tree
+  end
+
 end
