@@ -55,7 +55,7 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
   # $scope.calculate_progress()
 
   $scope.process_automapping = ->
-    data = {chosen_fields: []}
+    data = {chosen_fields: [], corrections: $scope.error_tree}
     i = 0
     for level in $scope.hierarchy_levels
       data.chosen_fields[i] = {kind: level.option.kind, name: level.option.name, id: level.option.id} if level.option
@@ -63,7 +63,6 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
     $scope.loading_error_tree = true
     $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/process_automapping", data)
       .success (data) ->
-        console.log(data)
         $scope.error_tree = data
         $scope.loading_error_tree = false
 

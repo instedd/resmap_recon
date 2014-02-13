@@ -49,10 +49,13 @@
 
           %button.btn.btn-primary.pull-right{'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Map
 
-        .span9
+        .span9#mapping-errors-tree
           %h3 Hierarchy mapping errors
-          %ul
+          %div{'ng-show' => 'error_tree == undefined'} No conflicts yet! Select fields and press map to start automapping
+          %ul{'ng-show' => 'error_tree != undefined'}
             %li(ng-repeat='node in error_tree' ng-include="'error_tree_node.html'")
+
+          %button.btn.btn-primary.pull-right{'ng-show' => 'error_tree != undefined', 'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Apply corrections
 
     .span3
       .well

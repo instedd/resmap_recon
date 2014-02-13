@@ -186,3 +186,12 @@ form {
 .inline {
   display: inline-block;
 }
+
+#mapping-errors-tree {
+  .node {
+    .correction, .fixed {
+      display:inline-block;
+      margin-left:150px;
+    }
+  }
+}

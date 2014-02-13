@@ -280,7 +280,7 @@ class SourceList < ActiveRecord::Base
     end
   end
 
-  def process_automapping(chosen_fields)
+  def process_automapping(chosen_fields, corrections)
     error_tree = []
     sites_pending.each do |site|
       hier_in_level = project.hierarchy
@@ -295,10 +295,19 @@ class SourceList < ActiveRecord::Base
           current_mfl_id = hier_in_level[index]['id']
           hier_in_level = hier_in_level[index]['sub']
           error_branch << value
+        elsif corrections[value]
+          # binding.pry
+          index = hier_in_level.map{|entry| entry['name']}.index(corrections[value])
+          current_mfl_id = hier_in_level[index]['id']
+          hier_in_level = hier_in_level[index]['sub']
+          error_branch << value
+          new_error_branch = array_to_tree_branch(error_branch, hier_in_level, corrections[value])
+          error_tree = merge_into(error_tree, new_error_branch)
         else
           missed = true
           error_branch << value
-          error_tree = merge_into(error_tree, array_to_tree(error_branch))
+          new_error_branch = array_to_tree_branch(error_branch, hier_in_level)
+          error_tree = merge_into(error_tree, new_error_branch)
         end
       end
       SiteMapping.find_or_initialize_by_site_id(site.id).tap do |site_mapping|
@@ -310,13 +319,19 @@ class SourceList < ActiveRecord::Base
 
   private
 
-  def array_to_tree(a)
+  def array_to_tree_branch(a, hier_in_level, fixed='')
     tree = {name: a.first, sub: []}
     previous = tree[:sub]
+    current = {}
     a[1..-1].each do |el|
       current = {name: el, sub: []}
       previous << current
       previous = current[:sub]
+    end
+    if fixed.present?
+      current.merge!({fixed: fixed})
+    else
+      current.merge!({options: hier_in_level.map{|entry| entry['name']}})
     end
     tree
   end

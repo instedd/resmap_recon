@@ -1,7 +1,8 @@
 .node
   {{node.name}}
-  / .correction{'ng-show' => 'node.sub.length == 0'}
-  / ........
-  / %select{'ng-model' => 'node.correction', 'ng-options' => }
+  .correction{'ng-show' => 'node.sub.length == 0 && !node.fixed'}
+    %select{'ng-model' => 'node.correction', 'ng-options' => 'option for option in node.options'}
+  .fixed{'ng-show' => 'node.fixed.length > 0'}
+    {{node.fixed}}
 %ul
   %li(ng-repeat='node in node.sub' ng-include="'error_tree_node.html'")
