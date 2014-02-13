@@ -310,7 +310,7 @@ class SourceList < ActiveRecord::Base
           error_tree = merge_into(error_tree, new_error_branch)
         end
       end
-      SiteMapping.find_or_initialize_by_site_id(site.id).tap do |site_mapping|
+      SiteMapping.find_or_initialize_by_site_id(site.id.to_s).tap do |site_mapping|
         site_mapping.mfl_hierarchy = current_mfl_id
       end.save if !missed
     end
