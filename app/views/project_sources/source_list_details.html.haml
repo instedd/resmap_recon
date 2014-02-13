@@ -1,4 +1,4 @@
-%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.code}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id, hierarchy: @project.hierarchy)}
+%div{'ng-app'=>'MappingEditorApp', 'ng-init'=> init_scope(project_id: @project.id, source_list_id: @source.id, source_property: @source.mapping_property.try(:id), source_field_options: @source.as_collection.fields.map{|f| {name: f.name, id: f.code}}.select{|h| !h[:name].starts_with?("_")}, mapping_hash: @source.mapping, hierarchy_field_id: @hierarchy_field_id, hierarchy: @project.hierarchy, new_hier: [{a: 1}])}
   - angular_templates 'shared/angular'
 
   .row-fluid
