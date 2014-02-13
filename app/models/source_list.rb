@@ -296,7 +296,6 @@ class SourceList < ActiveRecord::Base
           hier_in_level = hier_in_level[index]['sub']
           error_branch << value
         elsif corrections[value]
-          # binding.pry
           index = hier_in_level.map{|entry| entry['name']}.index(corrections[value])
           current_mfl_id = hier_in_level[index]['id']
           hier_in_level = hier_in_level[index]['sub']

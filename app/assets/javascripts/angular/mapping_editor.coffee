@@ -43,8 +43,14 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
       while depth < $scope.hierarchy_levels.length
         $scope.remove_fixed_values($scope.hierarchy_levels[depth])
         depth += 1
+    check_if_complete()
 
   $scope.hierarchy_levels = $scope.compute_hierarchy_levels($scope.hierarchy)
+
+  check_if_complete = () ->
+    $scope.all_fields_chosen = _.all(_.map $scope.hierarchy_levels, (level) ->
+      level.option
+    )
 
   # $scope.calculate_progress = ->
   #   just_classified = $scope.add_source_values(_.filter($scope.unclassified_mapping, (e)-> e.target_value != null))
