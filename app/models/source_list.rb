@@ -113,12 +113,12 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_pending
-    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NULL AND dismissed = 0').map(&:site_id)
+    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NULL AND dismissed = FALSE').map(&:site_id)
     as_collection.sites.where(id: ids)
   end
 
   def sites_pending_count
-    site_mappings.where('mfl_hierarchy IS NULL AND dismissed = 0').count
+    site_mappings.where('mfl_hierarchy IS NULL AND dismissed = FALSE').count
   end
 
   def sites_to_promote
@@ -131,7 +131,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_not_curated
-    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NOT NULL AND dismissed = 0').map(&:site_id)
+    ids = site_mappings.select('site_id').where('mfl_hierarchy IS NOT NULL AND dismissed = FALSE').map(&:site_id)
     # Recheck, it's returning everything every time
     as_collection.sites.where(id: ids)
   end
