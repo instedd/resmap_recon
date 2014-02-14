@@ -69,7 +69,8 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
     $scope.loading_error_tree = true
     $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/process_automapping", data)
       .success (data) ->
-        $scope.error_tree = data
+        $scope.error_tree = data.error_tree
+        $scope.percentage_classified = data.mapping_progress
         $scope.loading_error_tree = false
 
 

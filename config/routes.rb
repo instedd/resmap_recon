@@ -17,7 +17,6 @@ ResmapRecon::Application.routes.draw do
         end
       end
       member do
-        get 'review_mapping'
         get 'source_list_details'
         post 'update_mapping_entry'
         post 'update_mapping_property'

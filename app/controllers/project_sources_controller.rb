@@ -52,14 +52,8 @@ class ProjectSourcesController < ApplicationController
       @source.import_sites_from_resource_map
     end
 
-    @hierarchy_field_id = @project.target_field.id
     @curation_progress = @source.curation_progress
-  end
-
-  def review_mapping
-    if params[:id].present?
-      @hierarchy = @project.target_field.hierarchy
-    end
+    @mapping_progress = @source.mapping_progress
   end
 
   def update_mapping_entry
@@ -99,7 +93,7 @@ class ProjectSourcesController < ApplicationController
   def process_automapping
     corrections = flatten_corrections(params[:corrections]) || {}
     error_tree = @source.process_automapping(params[:chosen_fields], corrections)
-    render json: error_tree
+    render json: {error_tree: error_tree, mapping_progress: @source.mapping_progress}
   end
 
   protected
