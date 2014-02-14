@@ -72,12 +72,6 @@ class SourceList < ActiveRecord::Base
     res.values
   end
 
-  def update_mapping_entry!(entry_params)
-    entry = self.mapping_entries.find_or_initialize_by_source_property_and_source_value(entry_params[:source_property], entry_params[:source_value])
-    entry.target_value = entry_params[:target_value]
-    entry.save!
-  end
-
   def source_values
     mapping_property.uniq_values
   end
@@ -255,21 +249,6 @@ class SourceList < ActiveRecord::Base
     total_count = as_collection.sites.count
     if total_count != 0
       100 - (sites_pending_count * 100 / total_count)
-    else
-      0
-    end
-  end
-
-  def classification_progress
-    total = 0
-    classifed = 0
-    mapping.each do |m|
-      total += m[:source_count]
-      classifed += m[:source_count] if m[:target_value]
-    end
-
-    if total != 0
-      classifed * 100 / total
     else
       0
     end

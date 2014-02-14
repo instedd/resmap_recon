@@ -56,17 +56,6 @@ class ProjectSourcesController < ApplicationController
     @mapping_progress = @source.mapping_progress
   end
 
-  def update_mapping_entry
-    @source.update_mapping_entry!(params[:entry])
-    render nothing: true
-  end
-
-  def update_mapping_property
-    @source.mapping_property_id = params[:mapping_property_id]
-    @source.save!
-    render nothing: true
-  end
-
   def unmapped_csv_download
     csv_string = @source.unmapped_sites_csv
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")

@@ -5,7 +5,7 @@
       .well.well-small.well-white
         = link_to source_list.name, source_list_details_project_source_path(@project, source_list)
         .source-bottom
-          - source_list.classification_progress.tap do |progress|
+          - source_list.mapping_progress.tap do |progress|
             - if progress == 100
               %i.icon-ok
             - else

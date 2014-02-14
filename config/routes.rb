@@ -18,8 +18,6 @@ ResmapRecon::Application.routes.draw do
       end
       member do
         get 'source_list_details'
-        post 'update_mapping_entry'
-        post 'update_mapping_property'
         get 'unmapped_csv_download'
         get 'promote_facilities'
         post 'promote_site'
