@@ -105,8 +105,8 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_pending
-    ids = site_mappings.pending.select('site_id').map(&:site_id)
-    as_collection.sites.where(id: ids)
+    ids = site_mappings.pending.pluck(:site_id)
+    as_collection.sites.where(site_id: ids)
   end
 
   def sites_pending_count
@@ -127,9 +127,8 @@ class SourceList < ActiveRecord::Base
   end
 
   def sites_not_curated
-    ids = site_mappings.not_curated.select('site_id').map(&:site_id)
-    # Recheck, it's returning everything every time
-    as_collection.sites.where(id: ids)
+    ids = site_mappings.not_curated.pluck(:site_id)
+    as_collection.sites.where(site_id: ids)
   end
 
   def unmapped_sites_csv
