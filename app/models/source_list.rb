@@ -70,16 +70,13 @@ class SourceList < ActiveRecord::Base
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
-      # values = mapping_entries
-      #   .with_property(mapping_property_id)
-      #   .with_target(node_id)
-      #   .pluck(:source_value)
       pending_ids = site_mappings.not_curated.where('mfl_hierarchy = ?', node_id).map{|s| s.site_id.to_i}
       unless pending_ids.empty?
         query = {
-          "ohfrid" => pending_ids,
+          "id" => pending_ids,
         }
         query[:search] = search if search
+
         result = as_collection.sites.where(query).page_size(10).page(1)
       end
     else
@@ -144,16 +141,15 @@ class SourceList < ActiveRecord::Base
   end
 
   def dismiss_site(site_id)
-    as_collection
-      .sites.find(site_id)
-      .update_property(app_seen_field_name, true)
+    site = site_mappings.find_by_site_id(site_id)
+    site.dismissed = true
+    site.save!
   end
 
   def consolidate_with(site_id, master_site_id)
-    site = as_collection.sites.find(site_id)
-
-    site.update_property(app_master_site_id, master_site_id)
-    site.update_property(app_seen_field_name, true)
+    site = site_mappings.find_by_site_id(site_id)
+    site.mfl_site_id = master_site_id
+    site.save!
   end
 
 
@@ -206,8 +202,9 @@ class SourceList < ActiveRecord::Base
   end
 
   def consolidated_with(master_site_id)
+    ids = site_mappings.where('mfl_site_id = ?', master_site_id).pluck(:site_id)
     as_collection.sites
-      .where(app_master_site_id => master_site_id)
+      .where(ids: ids)
       .map { |s| site_to_hash(s) }
   end
 
