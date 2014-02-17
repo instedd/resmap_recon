@@ -79,18 +79,16 @@ class SourceList < ActiveRecord::Base
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
-      values = mapping_entries
-        .with_property(mapping_property_id)
-        .with_target(node_id)
-        .pluck(:source_value)
-
-      unless values.empty?
+      # values = mapping_entries
+      #   .with_property(mapping_property_id)
+      #   .with_target(node_id)
+      #   .pluck(:source_value)
+      pending_ids = site_mappings.not_curated.where('mfl_hierarchy = ?', node_id).map{|s| s.site_id.to_i}
+      unless pending_ids.empty?
         query = {
-          app_seen_field_name => false,
-          mapping_property.code => values,
+          "ohfrid" => pending_ids,
         }
         query[:search] = search if search
-
         result = as_collection.sites.where(query).page_size(10).page(1)
       end
     else
@@ -255,15 +253,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def mapped_hierarchy_counts
-    unseen_changes_counts = mapping_property.uniq_values({project.app_seen_field_name => false}) if mapping_property
-    mapped_counts = {}
-    mapped_counts.default = 0
-    mapping.each do |prop|
-      if !prop[:target_value].nil? && unseen_changes_counts.keys.include?(prop[:source_value])
-        mapped_counts[prop[:target_value]] += unseen_changes_counts[prop[:source_value]]
-      end
-    end
-    mapped_counts
+    Hash[site_mappings.not_curated.select('site_mappings.*, count(id) as sum').group('mfl_hierarchy').map{|e| [e.mfl_hierarchy, e.sum]}]
   end
 
   def import_sites_from_resource_map
