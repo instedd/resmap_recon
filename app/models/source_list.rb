@@ -1,9 +1,9 @@
 class SourceList < ActiveRecord::Base
   extend Memoist
+  include Configurable
 
   belongs_to :project
   attr_accessible :collection_id, :config, :project
-  serialize :config, Hash
   has_many :mapping_entries
   has_many :site_mappings
 
@@ -16,15 +16,6 @@ class SourceList < ActiveRecord::Base
 
   def name
     as_collection.name rescue "error col-id:#{collection_id}"
-  end
-
-  def self.config_property(name)
-    define_method(name) {
-      config["#{name}"]
-    }
-    define_method("#{name}=".to_sym) { |value|
-      config["#{name}"] = value
-    }
   end
 
   config_property :mapping_property_id

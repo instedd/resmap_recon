@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   extend Memoist
+  include Configurable
 
   has_many :user_project_memberships
   has_many :users, through: :user_project_memberships,
@@ -10,21 +11,11 @@ class Project < ActiveRecord::Base
     before_add: :ensure_resmap_memberships
 
   attr_accessible :config, :name
-  serialize :config, Hash
   validates :name, :presence => true
 
   after_save :prepare_source_lists
 
   default_scope order('name')
-
-  def self.config_property(name)
-    define_method(name) {
-      config["#{name}"]
-    }
-    define_method("#{name}=".to_sym) { |value|
-      config["#{name}"] = value
-    }
-  end
 
   config_property :master_collection_id
   config_property :master_collection_target_field_id
