@@ -153,7 +153,13 @@ angular.module('Curation',[])
             $scope._select_target_site(data[0])
 
   $scope.create_target_site = ->
-    $scope.target_site = { id: null, name: $scope.source_site.name, properties: {} }
+    $scope.target_site =
+      id: null
+      name: $scope.source_site.name
+      lat: $scope.source_site.lat
+      long: $scope.source_site.long
+      properties: {}
+    $scope.target_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
     $scope.consolidated_sites = null
 
   $scope.go_to_search = ->
@@ -176,14 +182,6 @@ angular.module('Curation',[])
       }
       target_site: $scope.target_site
     }
-
-    if $scope.is_target_site_new()
-      # upon creation
-      # 1. use source_site location
-      # 2. set the hierarchy field
-      $scope.target_site.lat = $scope.source_site.lat
-      $scope.target_site.long = $scope.source_site.long
-      $scope.target_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
 
     on_success = ->
       $scope.go_to_and_reset_search()
