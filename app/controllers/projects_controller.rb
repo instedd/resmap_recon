@@ -57,12 +57,7 @@ class ProjectsController < ApplicationController
   def apply_template(project, template)
     collection = AppContext.resmap_api.collections.create name: project.name
 
-    hierarchy = nil
-    if template == 'Kenya MFL'
-      raw_hierarchy = YAML::load_file(File.join(Rails.root, "config", "kenya_hierarchy.yml"))
-    elsif template == 'Tanzania MFL'
-      raw_hierarchy = YAML::load_file(File.join(Rails.root, "config", "tanzania_hierarchy.yml"))
-    end
+    raw_hierarchy = HierarchyTemplate.load(template)
     hierarchy = prepare_hierarchy(raw_hierarchy)
 
     layer = collection.find_or_create_layer_by_name('Main')
