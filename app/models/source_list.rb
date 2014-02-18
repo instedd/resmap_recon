@@ -162,7 +162,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def curation_progress
-    total_count = as_collection.sites.count
+    total_count = site_mappings.count
     if total_count != 0
       sites_curated_count * 100 / total_count
     else
@@ -171,7 +171,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def mapping_progress
-    total_count = as_collection.sites.count
+    total_count = site_mappings.count
     if total_count != 0
       100 - (sites_pending_count * 100 / total_count)
     else
