@@ -6,6 +6,6 @@ class SiteMapping < ActiveRecord::Base
   validates_presence_of :source_list_id, :name
 
   scope :pending, where('mfl_hierarchy IS NULL AND dismissed = FALSE')
-  scope :not_curated, where('mfl_hierarchy IS NOT NULL AND dismissed = FALSE')
+  scope :not_curated, where('mfl_hierarchy IS NOT NULL AND mfl_site_id IS NULL AND dismissed = FALSE')
   scope :curated, where('mfl_site_id IS NOT NULL')
 end
