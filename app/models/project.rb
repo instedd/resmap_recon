@@ -13,8 +13,6 @@ class Project < ActiveRecord::Base
   attr_accessible :config, :name
   validates :name, :presence => true
 
-  after_save :prepare_source_lists
-
   default_scope order('name')
 
   config_property :master_collection_id
@@ -115,9 +113,4 @@ class Project < ActiveRecord::Base
     "_master_site_id_#{app_suffix}_"
   end
 
-  protected
-
-  def prepare_source_lists
-    source_lists.each &:prepare
-  end
 end
