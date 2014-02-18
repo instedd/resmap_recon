@@ -22,12 +22,13 @@ class ProjectSourcesController < ApplicationController
   end
 
   def create_from_collection
-    source_list = SourceList.new project: @project, collection_id: params[:source_list][:collection_id] if params[:source_list] && params[:source_list][:collection_id]
+    source_list = SourceList.new project: @project, collection_id: params[:source_list][:collection_id] if params[:source_list] && params[:source_list][:collection_id].present?
     if source_list.present? && source_list.valid?
       source_list.save
       source_list.import_sites_from_resource_map
       redirect_to project_path(@project)
     else
+      new
       render 'new'
     end
   end
