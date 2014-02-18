@@ -46,10 +46,9 @@ class Project < ActiveRecord::Base
 
   def pending_changes(node_id, search, next_page_hash = {})
     urls = {}
-    if next_page_hash.empty?
-      src_lists = source_lists
-    else
-      src_lists = self.source_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
+    src_lists = source_lists
+    if next_page_hash.present?
+      src_lists = src_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
     end
     res = {sites: []}
     src_lists.each do |s|
@@ -64,13 +63,7 @@ class Project < ActiveRecord::Base
   end
 
   def consolidated_with(master_site_id)
-    res = []
-    source_lists.each do |s|
-      sites = s.consolidated_with(master_site_id)
-      res << sites
-    end
-
-    res.flatten
+    source_lists.flat_map { |s| s.consolidated_with(master_site_id) }
   end
 
   def dismiss_source_site(source_list_id, site_id)

@@ -97,7 +97,6 @@ class SourceList < ActiveRecord::Base
     site.save!
   end
 
-
   def promote_to_master(site_id)
     if project.promoted_source_list_id != self.id
       project.promoted_source_list_id = self.id
