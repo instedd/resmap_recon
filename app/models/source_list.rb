@@ -115,7 +115,6 @@ class SourceList < ActiveRecord::Base
     name = s.data['name']
     lat = s.data['lat']
     long = s.data['long']
-    puts name, lat, long
 
     mapped_target_value = site_mappings.find_by_site_id(site_id).mfl_hierarchy
 
@@ -143,9 +142,13 @@ class SourceList < ActiveRecord::Base
 
   def consolidated_with(master_site_id)
     ids = site_mappings.where('mfl_site_id = ?', master_site_id).pluck(:site_id)
-    as_collection.sites
-      .where(site_id: ids)
-      .map { |s| site_to_hash(s) }
+    if ids.empty?
+      []
+    else
+      as_collection.sites
+        .where(site_id: ids)
+        .map { |s| site_to_hash(s) }
+    end
   end
 
   def site_to_hash(site)
