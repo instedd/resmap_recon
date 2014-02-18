@@ -4,7 +4,6 @@ class SourceList < ActiveRecord::Base
 
   belongs_to :project
   attr_accessible :collection_id, :config, :project
-  has_many :mapping_entries
   has_many :site_mappings
 
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
@@ -18,55 +17,14 @@ class SourceList < ActiveRecord::Base
     as_collection.name rescue "error col-id:#{collection_id}"
   end
 
-  config_property :mapping_property_id
-
-  def mapping_property
-    as_collection.field_by_id(mapping_property_id)
-  end
-
   def current_site_mappings
     site_mappings.not_curated
-  end
-
-  def mapping
-    return {} if mapping_property_id.nil?
-    entries = mapping_entries.with_property(mapping_property_id).all
-
-    res = {}
-
-    entries.each do |e|
-      res[e.source_value] = {
-        source_value: e.source_value,
-        source_count: 0,
-        target_value: e.target_value
-      }
-    end
-
-    source_values.each do |k,v|
-      if !res.has_key?(k)
-        res[k] = {
-          source_value: k,
-          source_count: v,
-          target_value: nil
-        }
-      else
-        res[k][:source_count] = v
-      end
-    end
-
-    # TODO: could clean unused mapping_entries
-
-    res.values
-  end
-
-  def source_values
-    mapping_property.uniq_values
   end
 
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
-      pending_ids = site_mappings.not_curated.where('mfl_hierarchy = ?', node_id).map{|s| s.site_id.to_i}
+      pending_ids = site_mappings.not_curated.where(mfl_hierarchy: node_id).map{|s| s.site_id.to_i}
       unless pending_ids.empty?
         query = {
           site_id: pending_ids,
@@ -100,12 +58,6 @@ class SourceList < ActiveRecord::Base
   def sites_curated_count
     site_mappings.curated.count
   end
-
-  # def sites_to_promote
-  #   ids = site_mappings.not_curated.pluck(:site_id)
-
-  #   sites_pending.where(app_master_site_id => '=', mapping_property.code => values)
-  # end
 
   def sites_not_curated
     ids = site_mappings.not_curated.pluck(:site_id)
@@ -167,11 +119,6 @@ class SourceList < ActiveRecord::Base
     puts name, lat, long
 
     mapped_target_value = site_mappings.find_by_site_id(site_id).mfl_hierarchy
-    # self.mapping_entries
-    #     .with_property(mapping_property_id)
-    #     .with_source(mapped_source_value)
-    #     .pluck(:target_value)
-    #     .first
 
     properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
     properties[project.target_field.code] = mapped_target_value

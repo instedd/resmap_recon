@@ -11,19 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140210180315) do
-
-  create_table "mapping_entries", :force => true do |t|
-    t.integer  "source_list_id"
-    t.integer  "source_property"
-    t.string   "source_value"
-    t.string   "target_value"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
-  add_index "mapping_entries", ["source_list_id", "source_property", "source_value"], :name => "by_source_value", :unique => true
-  add_index "mapping_entries", ["source_list_id", "source_property", "target_value"], :name => "by_target_value"
+ActiveRecord::Schema.define(:version => 20140218172620) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"

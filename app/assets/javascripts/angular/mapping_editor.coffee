@@ -1,8 +1,6 @@
 angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
 
 .controller 'MappingEditorCtrl', ($scope, $http, RmHierarchyService) ->
-  $scope.mapping_property_loading = false
-
   $scope.fields = $scope.source_field_options
 
   node_service = RmHierarchyService.for_hierarchy($scope.hierarchy)
