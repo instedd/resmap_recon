@@ -16,3 +16,8 @@ end
 SourceList.blueprint do
   project
 end
+
+SiteMapping.blueprint do
+  source_list
+  name
+end
