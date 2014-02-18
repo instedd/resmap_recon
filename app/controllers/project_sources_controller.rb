@@ -4,7 +4,7 @@ class ProjectSourcesController < ApplicationController
   before_filter :load_project
 
   def new
-    @new_source_list = NewSourceList.new
+    @new_source_list ||= NewSourceList.new
     @source_list = SourceList.new project: @project
     @collection_ids = AppContext.resmap_api.collections.all.map{|c| [c.name, c.id]}
   end
@@ -16,6 +16,7 @@ class ProjectSourcesController < ApplicationController
       @source_list = @new_source_list.create_in_project(@project)
       redirect_to after_create_project_source_path(@project, @source_list)
     else
+      new
       render 'new'
     end
   end
