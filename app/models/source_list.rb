@@ -24,12 +24,8 @@ class SourceList < ActiveRecord::Base
     as_collection.field_by_id(mapping_property_id)
   end
 
-  def current_mapping_entries
-    if mapping_property_id.nil?
-      []
-    else
-      mapping_entries.with_property(mapping_property_id)
-    end
+  def current_site_mappings
+    site_mappings.not_curated
   end
 
   def mapping
@@ -73,7 +69,7 @@ class SourceList < ActiveRecord::Base
       pending_ids = site_mappings.not_curated.where('mfl_hierarchy = ?', node_id).map{|s| s.site_id.to_i}
       unless pending_ids.empty?
         query = {
-          "id" => pending_ids,
+          site_id: pending_ids,
         }
         query[:search] = search if search
 
@@ -105,14 +101,11 @@ class SourceList < ActiveRecord::Base
     site_mappings.curated.count
   end
 
-  def sites_to_promote
-    # TODO: Correct to use site mappings
-    values = mapping_entries
-      .with_property(mapping_property_id)
-      .pluck(:source_value)
+  # def sites_to_promote
+  #   ids = site_mappings.not_curated.pluck(:site_id)
 
-    sites_pending.where(app_master_site_id => '=', mapping_property.code => values)
-  end
+  #   sites_pending.where(app_master_site_id => '=', mapping_property.code => values)
+  # end
 
   def sites_not_curated
     ids = site_mappings.not_curated.pluck(:site_id)
@@ -171,13 +164,14 @@ class SourceList < ActiveRecord::Base
     name = s.data['name']
     lat = s.data['lat']
     long = s.data['long']
+    puts name, lat, long
 
-    mapped_source_value = s.data['properties'][mapping_property.code]
-    mapped_target_value = self.mapping_entries
-        .with_property(mapping_property_id)
-        .with_source(mapped_source_value)
-        .pluck(:target_value)
-        .first
+    mapped_target_value = site_mappings.find_by_site_id(site_id).mfl_hierarchy
+    # self.mapping_entries
+    #     .with_property(mapping_property_id)
+    #     .with_source(mapped_source_value)
+    #     .pluck(:target_value)
+    #     .first
 
     properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
     properties[project.target_field.code] = mapped_target_value
@@ -204,7 +198,7 @@ class SourceList < ActiveRecord::Base
   def consolidated_with(master_site_id)
     ids = site_mappings.where('mfl_site_id = ?', master_site_id).pluck(:site_id)
     as_collection.sites
-      .where(ids: ids)
+      .where(site_id: ids)
       .map { |s| site_to_hash(s) }
   end
 

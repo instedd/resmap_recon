@@ -62,12 +62,12 @@ class ProjectSourcesController < ApplicationController
   end
 
   def promote_facilities
-    if @source.current_mapping_entries.count == 0
+    if @source.current_site_mappings.count == 0
       render 'mapping_property_not_set'
       return
     end
 
-    @sites_to_promote_url = AppContext.resmap_url_to_recon(@source.sites_to_promote.url)
+    @sites_to_promote_url = AppContext.resmap_url_to_recon(@source.sites_not_curated.url)
   end
 
   def promote_site
