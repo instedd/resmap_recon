@@ -158,9 +158,7 @@ class SourceList < ActiveRecord::Base
       name: name
     }
     h['collection_id'] = collection_id
-    #TODO create properties for seen/master_site_id
-    #     and hide "private" fields
-
+    h['pending'] = site_mappings.find_by_site_id(site.id).try(:pending?)
     h
   end
 

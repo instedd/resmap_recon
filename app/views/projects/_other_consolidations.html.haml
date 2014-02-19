@@ -13,6 +13,6 @@
   .accordion-group(ng-repeat='site in consolidated_sites')
     .accordion-body.selected
       .accordion-inner
-        .badge.label-warning{'ng-hide'=>"site.properties.#{@project.app_seen_field_name}"} Pending
+        .badge.label-warning{'ng-show'=>"site.pending"} Pending
         .badge.label-success{'ng-show'=>"site.id == source_site.id"} Selected
         = render 'projects/display_sites_fields'
