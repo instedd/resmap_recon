@@ -188,6 +188,9 @@ form {
 }
 
 #mapping-errors-tree {
+  .needs-correction {
+    color: red;
+  }
   .node {
     .correction, .fixed {
       display:inline-block;
