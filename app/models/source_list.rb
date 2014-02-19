@@ -48,7 +48,7 @@ class SourceList < ActiveRecord::Base
 
   def sites_pending
     ids = site_mappings.pending.pluck(:site_id)
-    as_collection.sites.where(site_id: ids)
+    find_sites_from_ids(ids)
   end
 
   def sites_pending_count
@@ -61,7 +61,7 @@ class SourceList < ActiveRecord::Base
 
   def sites_not_curated
     ids = site_mappings.not_curated.pluck(:site_id)
-    as_collection.sites.where(site_id: ids)
+    find_sites_from_ids(ids)
   end
 
   def unmapped_sites_csv
@@ -70,7 +70,7 @@ class SourceList < ActiveRecord::Base
     remaining_fields = ['name', 'lat', 'long']
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name)
-      sites_not_curated.each do |site|
+      sites_pending.each do |site|
         data = site.data
         row = []
         remaining_fields.each do |code|
@@ -142,13 +142,7 @@ class SourceList < ActiveRecord::Base
 
   def consolidated_with(master_site_id)
     ids = site_mappings.where('mfl_site_id = ?', master_site_id).pluck(:site_id)
-    if ids.empty?
-      []
-    else
-      as_collection.sites
-        .where(site_id: ids)
-        .map { |s| site_to_hash(s) }
-    end
+    find_sites_from_ids(ids).map { |s| site_to_hash(s) }
   end
 
   def site_to_hash(site)
@@ -256,6 +250,14 @@ class SourceList < ActiveRecord::Base
       tree << branch
     end
     tree
+  end
+
+  def find_sites_from_ids(ids)
+    if ids.empty?
+      []
+    else
+      as_collection.sites.where(site_id: ids)
+    end
   end
 
 end
