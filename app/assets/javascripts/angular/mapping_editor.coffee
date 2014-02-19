@@ -50,14 +50,6 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
       level.option
     )
 
-  # $scope.calculate_progress = ->
-  #   just_classified = $scope.add_source_values(_.filter($scope.unclassified_mapping, (e)-> e.target_value != null))
-  #   classified_count = already_classified + just_classified
-  #   $scope.percentage_classified = classified_count * 100 / all_count
-
-
-  # $scope.calculate_progress()
-
   $scope.process_automapping = ->
     data = {chosen_fields: [], corrections: $scope.error_tree}
     i = 0

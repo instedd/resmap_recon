@@ -51,14 +51,6 @@ class SourceList < ActiveRecord::Base
     find_sites_from_ids(ids)
   end
 
-  def sites_pending_count
-    site_mappings.pending.count
-  end
-
-  def sites_curated_count
-    site_mappings.curated.count
-  end
-
   def sites_not_curated
     ids = site_mappings.not_curated.pluck(:site_id)
     find_sites_from_ids(ids)
@@ -159,7 +151,7 @@ class SourceList < ActiveRecord::Base
   def curation_progress
     total_count = site_mappings.count
     if total_count != 0
-      sites_curated_count * 100 / total_count
+      site_mappings.curated.count * 100 / total_count
     else
       0
     end
@@ -168,7 +160,7 @@ class SourceList < ActiveRecord::Base
   def mapping_progress
     total_count = site_mappings.count
     if total_count != 0
-      100 - (sites_pending_count * 100 / total_count)
+      (total_count - site_mappings.pending.count) * 100 / total_count
     else
       0
     end
