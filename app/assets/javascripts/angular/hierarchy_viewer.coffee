@@ -5,6 +5,15 @@ angular.module('HierarchyViewer', ['RmHierarchyService'])
   NodeService = RmHierarchyService.for($scope.collection_id, field_id)
   $scope.nodes = NodeService.roots()
 
+  NodeService.on_load ->
+    add_counts = (node, count) ->
+      node.count = (node.count || 0) + count
+      add_counts node.parent, count if node.parent
+
+    for node_id, count of $scope.pending_list
+      node = NodeService.node_by_id(node_id)
+      add_counts node, count
+
   $scope.toggle = (node) ->
     node.expanded = not node.expanded
 
