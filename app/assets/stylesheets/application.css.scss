@@ -188,13 +188,15 @@ form {
 }
 
 #mapping-errors-tree {
+  ul {
+    list-style-type:none;
+  }
   .needs-correction {
     color: red;
   }
   .node {
     .correction, .fixed {
       display:inline-block;
-      margin-left:150px;
     }
   }
 }

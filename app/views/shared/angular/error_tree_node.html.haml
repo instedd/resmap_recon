@@ -1,9 +1,11 @@
-.node
-  %span{'ng-class' => '{"needs-correction": node.sub.length == 0 && !node.fixed}'}
-    {{node.name}}
-  .correction{'ng-show' => 'node.sub.length == 0 && !node.fixed'}
-    %select{'ng-model' => 'node.correction', 'ng-options' => 'option for option in node.options'}
-  .fixed{'ng-show' => 'node.fixed.length > 0'}
-    {{node.fixed}}
-%ul
-  %li(ng-repeat='node in node.sub' ng-include="'error_tree_node.html'")
+.row
+  .node.span6
+    %span{'ng-class' => '{"needs-correction": node.sub.length == 0 && !node.fixed}'}
+      {{node.name}}
+  .span6
+    .correction{'ng-show' => 'node.sub.length == 0 && !node.fixed'}
+      %select{'ng-model' => 'node.correction', 'ng-options' => 'option for option in node.options'}
+    .fixed{'ng-show' => 'node.fixed.length > 0'}
+      {{node.fixed}}
+  %ul
+    %li(ng-repeat='node in node.sub' ng-include="'error_tree_node.html'")
