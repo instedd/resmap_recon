@@ -24,7 +24,7 @@ class SourceList < ActiveRecord::Base
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
-      pending_ids = site_mappings.not_curated.where(mfl_hierarchy: node_id).map{|s| s.site_id.to_i}
+      pending_ids = site_mappings.not_curated.where(mfl_hierarchy: node_id).pluck(:site_id).map &:to_i
       unless pending_ids.empty?
         query = {
           site_id: pending_ids,
@@ -144,6 +144,7 @@ class SourceList < ActiveRecord::Base
       name: name
     }
     h['collection_id'] = collection_id
+    # TODO: this generates an N+1 query when called from pending_changes and consolidated_with
     h['pending'] = site_mappings.find_by_site_id(site.id).try(:pending?)
     h
   end

@@ -43,21 +43,43 @@ class Project < ActiveRecord::Base
   end
 
   def pending_changes(node_id, search, next_page_hash = {})
+    node_ids = search_node_ids_under(node_id)
+
     urls = {}
     src_lists = source_lists
     if next_page_hash.present?
       src_lists = src_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
     end
-    res = {sites: []}
-    src_lists.each do |s|
-      source_list_data = s.pending_changes(node_id, search, next_page_hash[s.id.to_s])
-      res[:sites] << source_list_data[:sites]
+    res = {}
+    res[:sites] = src_lists.flat_map do |s|
+      source_list_data = s.pending_changes(node_ids, search, next_page_hash[s.id.to_s])
       urls[s.id] = source_list_data[:next_page_url] if source_list_data[:next_page_url].present?
+      source_list_data[:sites]
     end
-
-    res[:sites] = res[:sites].flatten
     res[:next_page_hash] = urls if urls.keys.length > 0
     res
+  end
+
+  def search_node_ids_under(node_id, nodes = hierarchy)
+    nodes.each do |node|
+      if node["id"] == node_id
+        return gather_children_ids(node)
+      elsif node["sub"]
+        result = search_node_ids_under(node_id, node["sub"])
+        return result if result
+      end
+    end
+    nil
+  end
+
+  def gather_children_ids(node, ids = [])
+    ids << node["id"]
+    if node["sub"]
+      node["sub"].each do |sub|
+        gather_children_ids sub, ids
+      end
+    end
+    ids
   end
 
   def consolidated_with(master_site_id)
