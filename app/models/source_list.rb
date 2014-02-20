@@ -144,7 +144,7 @@ class SourceList < ActiveRecord::Base
       name: name
     }
     h['collection_id'] = collection_id
-    h['pending'] = site_mappings.find_by_site_id(site.id.to_s).try(:pending?)
+    h['pending'] = site_mappings.find_by_site_id(site.id).try(:pending?)
     h
   end
 
@@ -172,7 +172,7 @@ class SourceList < ActiveRecord::Base
 
   def import_sites_from_resource_map
     as_collection.sites.where({}).each do |site|
-      site_mappings.create! site_id: site.id.to_s, name: site.name
+      site_mappings.create! site_id: site.id, name: site.name
     end
   end
 
@@ -205,7 +205,7 @@ class SourceList < ActiveRecord::Base
           error_tree = merge_into(error_tree, new_error_branch)
         end
       end
-      SiteMapping.find_or_initialize_by_site_id(site.id.to_s).tap do |site_mapping|
+      SiteMapping.find_or_initialize_by_site_id(site.id).tap do |site_mapping|
         site_mapping.mfl_hierarchy = current_mfl_id
       end.save if !missed
     end
