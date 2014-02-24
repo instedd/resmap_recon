@@ -8,6 +8,7 @@ angular.module('Curation',[])
   $scope.sites = []
   $scope.reached_final_page = false
   $scope.source_records_search = null
+  $scope.headers = {}
 
   # This is to discard old requests if the user searches something and while
   # the search is being performed, she searches something else.
@@ -46,6 +47,7 @@ angular.module('Curation',[])
 
       $scope.sites = $scope.sites.concat data.sites
       $scope.next_page_url = data.next_page_url
+      $scope.headers = jQuery.extend($scope.headers, data.headers)
       $scope.reached_final_page = data.next_page_url == undefined
       $scope.sites_loading = false
 

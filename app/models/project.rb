@@ -50,11 +50,12 @@ class Project < ActiveRecord::Base
     if next_page_hash.present?
       src_lists = src_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
     end
-    res = {}
-    res[:sites] = src_lists.flat_map do |s|
+    res = {sites: [], headers: {}}
+    src_lists.each do |s|
       source_list_data = s.pending_changes(node_ids, search, next_page_hash[s.id.to_s])
+      res[:sites] << source_list_data[:sites]
+      res[:headers] = res[:headers].merge(source_list_data[:headers]) if source_list_data[:headers].present?
       urls[s.id] = source_list_data[:next_page_url] if source_list_data[:next_page_url].present?
-      source_list_data[:sites]
     end
     res[:next_page_hash] = urls if urls.keys.length > 0
     res

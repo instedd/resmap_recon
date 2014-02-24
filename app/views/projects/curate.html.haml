@@ -21,24 +21,25 @@
               .tab-pane(ng-class='{active: list_visible}')
                 = render 'pending_list'
 
-      .span3
-        %h2 Source Records
-
-        .recon-panel
-          = render 'search_source_records'
-
-          .accordion(ng-show='selected_node')
-            = render 'pending_sites'
-
-          .well(ng-hide='selected_node')
-            Select a category to filter by.
-
-          .well(ng-show='selected_node && !sites_loading && sites.length == 0')
-            There are no sites updates!
-
-      .span6(ng-controller='ConsolitateSiteCtrl')
+      .span9
         .row-fluid
-          .span6
+          .span12
+            %h2 Source Records
+
+            .recon-panel
+              = render 'search_source_records'
+
+              = render 'pending_sites'
+
+              .well(ng-hide='selected_node')
+                Select a category to filter by.
+
+              .well(ng-show='selected_node && !sites_loading && sites.length == 0')
+                There are no sites updates!
+
+        .row-fluid
+          .span12(ng-controller='ConsolitateSiteCtrl')
+
             %h2 Reconcile to MFL
 
             .recon-panel
@@ -75,6 +76,3 @@
                       with {{source_site.name}}
 
                   .alert(ng-hide='source_site') Select a pending change
-
-          .span6(ng-show='target_site != null')
-            = render 'other_consolidations'

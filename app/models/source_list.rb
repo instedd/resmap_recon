@@ -41,6 +41,8 @@ class SourceList < ActiveRecord::Base
         res[:sites] << site_to_hash(s)
       end
       res[:next_page_url] = result.next_page_url if result.next_page_url
+      res[:headers] = {}
+      as_collection.fields.each{|f| res[:headers][f.code] = f.name}
     end
 
     res
