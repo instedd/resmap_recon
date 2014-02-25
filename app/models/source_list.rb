@@ -181,13 +181,13 @@ class SourceList < ActiveRecord::Base
 
   def process_automapping(chosen_fields, corrections)
     error_tree = []
+    count = 0
     sites_pending.each do |site|
       hier_in_level = project.hierarchy
       missed = false
       error_branch = []
       current_mfl_id = nil
       chosen_fields.each do |field|
-        next if missed
         value = field['kind'] == "Fixed value" ? field['name'] : site.properties[field['id']]
         index = hier_in_level.map{|entry| entry['name']}.index(value)
         if index
@@ -206,13 +206,17 @@ class SourceList < ActiveRecord::Base
           error_branch << value
           new_error_branch = array_to_tree_branch(error_branch, hier_in_level)
           error_tree = merge_into(error_tree, new_error_branch)
+          break
         end
       end
-      SiteMapping.find_or_initialize_by_site_id(site.id).tap do |site_mapping|
-        site_mapping.mfl_hierarchy = current_mfl_id
-      end.save if !missed
+      unless missed
+        mapping = SiteMapping.find_or_initialize_by_site_id(site.id)
+        mapping.mfl_hierarchy = current_mfl_id
+        mapping.save!
+        count += 1
+      end
     end
-    error_tree
+    [error_tree, count]
   end
 
   private

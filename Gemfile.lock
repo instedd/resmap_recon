@@ -1,6 +1,6 @@
 GIT
   remote: https://bitbucket.org/instedd/alto_guisso.git
-  revision: 94f02db8f24d2017e2d19f14cf17d3af5ebc7b44
+  revision: 4402cee5dff7b2dbf25f6ad775165ad82bd14fe7
   branch: master
   specs:
     alto_guisso (0.0.1)
@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://bitbucket.org/instedd/resource_map_api_client.git
-  revision: f4e9bb3ff31e78532ad81f41740c316b0f4e5159
+  revision: 3f32ecd2f9a7861b7f5ff2138ca370dd35675e75
   branch: master
   specs:
     resource_map_api_client (0.0.1)

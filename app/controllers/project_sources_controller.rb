@@ -83,8 +83,8 @@ class ProjectSourcesController < ApplicationController
 
   def process_automapping
     corrections = flatten_corrections(params[:corrections]) || {}
-    error_tree = @source.process_automapping(params[:chosen_fields], corrections)
-    render json: {error_tree: error_tree, mapping_progress: @source.mapping_progress}
+    error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)
+    render json: {error_tree: error_tree, count: count, mapping_progress: @source.mapping_progress}
   end
 
   protected

@@ -51,7 +51,17 @@
             %span{'ng-show' => '!all_fields_chosen'} Choose a value or a field for every level
             %button.btn.btn-primary{'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree', 'ng-disabled' => '!all_fields_chosen'} Map
 
-        .span9#mapping-errors-tree
+        .span9{'ng-show' => 'mapped_count != undefined'}
+          %h3 Hierarchy mapping results
+
+          %span{'ng-show' => 'mapped_count == 0'}
+            No sites mapped.
+          %span{'ng-show' => 'mapped_count == 1'}
+            1 site mapped successfully.
+          %span{'ng-show' => 'mapped_count > 1'}
+            {{mapped_count}} site mapped successfully.
+
+        .span9#mapping-errors-tree{'ng-show' => 'mapped_count != undefined'}
           %h3 Hierarchy mapping errors
           %div{'ng-show' => 'error_tree == undefined'} No conflicts yet! Select fields and press map to start automapping
           .row-fluid{'ng-show' => 'error_tree != undefined'}

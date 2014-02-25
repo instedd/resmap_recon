@@ -64,8 +64,9 @@ describe SourceList do
         {"regionname" => "Dodoma Region", "district" => "Bahi District"},
       ]
 
-      result = source_list.process_automapping(chosen_fields, {})
+      result, count = source_list.process_automapping(chosen_fields, {})
       result.should eq([])
+      count.should eq(1)
 
       SiteMapping.first.mfl_hierarchy.should eq("TZ.CL.DO.BA")
     end
@@ -75,7 +76,8 @@ describe SourceList do
         {"regionname" => "Dodoma Region", "district" => "Caqui District"},
       ]
 
-      result = source_list.process_automapping(chosen_fields, {})
+      result, count = source_list.process_automapping(chosen_fields, {})
+      count.should eq(0)
       result.should eq([
         {
           name: "Tanzania",
