@@ -13,7 +13,7 @@ class ProjectMasterSitesController < ApplicationController
     elsif params[:search].present?
       sites = sites
           .where(search: params[:search])
-          .where(@project.target_field.code => params[:hierarchy])
+          .where("#{@project.target_field.code}[under]" => params[:hierarchy])
           .page_size(50)
           .page(1)
     else
