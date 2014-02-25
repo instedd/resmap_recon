@@ -43,7 +43,7 @@ class Project < ActiveRecord::Base
   end
 
   def pending_changes(node_id, search, next_page_hash = {})
-    node_ids = search_node_ids_under(node_id)
+    node_ids = node_id ? search_node_ids_under(node_id) : nil
 
     urls = {}
     src_lists = source_lists

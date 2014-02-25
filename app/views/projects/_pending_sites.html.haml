@@ -1,15 +1,16 @@
-%table.table.table-bordered.curation-table(ng-show='sites.length > 0')
-  %thead
-    %th Name
-    %th Source List
-    %th(ng-repeat='header in headers') {{header}}
-    %th Dismiss
-  %tr(ng-repeat='site in sites' ng-controller='PendingSiteCtrl')
-    /%rm-collection-context(id='site.collection_id')
-    = render 'display_sites_fields'
+%div(ng-show='sites.length > 0')
+  %table.table.table-bordered.curation-table
+    %thead
+      %th Name
+      %th Source List
+      %th(ng-repeat='header in headers') {{header}}
+      %th Dismiss
+    %tr(ng-repeat='site in sites' ng-controller='PendingSiteCtrl')
+      /%rm-collection-context(id='site.collection_id')
+      = render 'display_sites_fields'
 
-.accordion-group(ng-click='next_page()' ng-hide='reached_final_page || sites_loading')
-  .accordion-heading
-    %a.accordion-toggle Load more...
+  .accordion-group(ng-click='next_page()' ng-hide='reached_final_page || sites_loading')
+    .accordion-heading
+      %a.accordion-toggle Load more...
 
-%span(ng-show='sites_loading') Loading...
+  %span(ng-show='sites_loading') Loading...

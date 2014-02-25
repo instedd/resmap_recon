@@ -38,7 +38,7 @@ angular.module('Curation',[])
     if $scope.next_page_url != null
       page_request = $http.get($scope.next_page_url)
     else
-      params = { params: {target_value: $scope.selected_node.id, search: $scope.source_records_search} }
+      params = { params: {target_value: $scope.selected_node?.id, search: $scope.source_records_search} }
       page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
@@ -68,6 +68,8 @@ angular.module('Curation',[])
 
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
+
+  $scope._reset_and_load_pending_changes( )
 
 .controller 'PendingSiteCtrl', ($scope, $http) ->
   $scope.selected = false

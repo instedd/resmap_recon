@@ -24,7 +24,9 @@ class SourceList < ActiveRecord::Base
   def pending_changes(node_id, search, next_page_url = nil)
     res = {sites: []}
     if next_page_url.blank?
-      pending_ids = site_mappings.not_curated.where(mfl_hierarchy: node_id).pluck(:site_id).map &:to_i
+      db_query = site_mappings.not_curated
+      db_query = db_query.where(mfl_hierarchy: node_id) if node_id
+      pending_ids = db_query.pluck(:site_id).map &:to_i
       unless pending_ids.empty?
         query = {
           site_id: pending_ids,
