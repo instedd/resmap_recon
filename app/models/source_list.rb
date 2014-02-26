@@ -184,6 +184,7 @@ class SourceList < ActiveRecord::Base
   def process_automapping(chosen_fields, corrections)
     error_tree = []
     count = 0
+
     sites_pending.each do |site|
       hier_in_level = project.hierarchy
       missed = false
