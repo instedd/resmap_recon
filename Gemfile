@@ -56,6 +56,10 @@ group :test do
   gem 'faker'
 end
 
+group :profile do
+  gem 'ruby-prof'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
