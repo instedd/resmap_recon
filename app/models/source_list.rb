@@ -258,7 +258,7 @@ class SourceList < ActiveRecord::Base
     if ids.empty?
       []
     else
-      as_collection.sites.where(site_id: ids)
+      as_collection.sites.where(site_id: ids, page_size: 1000)
     end
   end
 
