@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
     else
       changes = @project.pending_changes(params[:target_value], params[:search].presence)
     end
-    data = {sites: changes[:sites], headers: changes[:headers]}
+    data = {sites: changes[:sites]}
     if changes[:next_page_hash].present?
       data[:next_page_url] = pending_changes_project_path(@project, next_page_hash: changes[:next_page_hash])
     end
