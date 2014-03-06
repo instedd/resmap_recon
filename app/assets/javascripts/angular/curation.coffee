@@ -13,10 +13,12 @@ angular.module('Curation',[])
   # This is to discard old requests if the user searches something and while
   # the search is being performed, she searches something else.
   $scope.pending_changes_seq = 0
+  $scope.mfl_sites_seq = 0
 
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
     $scope._reset_and_load_pending_changes()
+    $scope.$broadcast('curation-panel-node-chosen', $scope.selected_node)
 
   $scope.$on 'search-source-records', (e, search) ->
     if $scope.selected_node
@@ -32,7 +34,7 @@ angular.module('Curation',[])
   $scope._load_pending_changes = ->
     $scope.pending_changes_seq += 1
     seq = $scope.pending_changes_seq
-
+  
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     if $scope.next_page_url != null
@@ -127,7 +129,41 @@ angular.module('Curation',[])
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
-.controller 'ConsolitateSiteCtrl', ($scope, $http) ->
+.controller 'MasterFacilityListSitesCtrl', ($scope, $http) ->
+  #$scope.mfl_sites = {items: [{foo: 1, bar: 'A'}, {foo: 2, bar: 'B'}, {foo: 3, bar: 'C'}], headers: ['foo', 'bar']}
+  $scope.mfl_sites = {items: [], headers: [], loaded: false}
+  $scope.seq = 0
+  $scope.next_page_url = null
+
+  $scope.$on 'curation-panel-node-chosen', (e, node) ->
+    $scope.load_page()
+
+  $scope.load_page = () ->
+    $scope.seq += 1
+    seq = $scope.seq
+
+    if $scope.next_page_url != null
+      page_request = $http.get($scope.next_page_url)
+    else
+      params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
+      page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
+
+    page_request.success (data) ->
+      $scope.mfl_sites.items = []
+      $scope.mfl_sites.headers = []
+      $scope.mfl_sites.loaded = true
+      # Check if there's a new request going on
+      #return if seq != $scope.pending_changes_seq
+
+      #$scope.sites = $scope.sites.concat data.sites
+      #$scope.next_page_url = data.next_page_url
+      #$scope.headers = jQuery.extend($scope.headers, data.headers)
+      #$scope.reached_final_page = data.next_page_url == undefined
+      #$scope.sites_loading = false
+
+  $scope.load_page()
+
+.controller 'ConsolidateSiteCtrl', ($scope, $http) ->
   $scope.target_site = null
   $scope.consolidated_sites = null
   $scope.source_site = null

@@ -10,14 +10,12 @@ class ProjectMasterSitesController < ApplicationController
     sites = @project.master_collection.sites
     if params[:id].present?
       sites = [sites.find(params[:id])]
-    elsif params[:search].present?
-      sites = sites
-          .where(search: params[:search])
-          .where("#{@project.target_field.code}[under]" => params[:hierarchy])
+    else
+      sites = sites.where(search: params[:search]) if params[:search].present?
+          
+      sites = sites.where("#{@project.target_field.code}[under]" => params[:hierarchy])
           .page_size(50)
           .page(1)
-    else
-      raise 'Either id or search must be present'
     end
 
     # TODO support paging

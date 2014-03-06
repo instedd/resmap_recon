@@ -7,24 +7,24 @@
     .row-fluid
       .span3
         %rm-collection-context(id="#{@project.master_collection.id}")
-          %h2 Filter by
+          %h2 Administrative Unit
           %div(ng-controller='HierarchyChooser')
-            %ul.nav.nav-tabs
-              %li(ng-class='{active: tree_visible}')
-                %a(href='javascript:' ng-click='select_tree()') Tree
-              %li(ng-class='{active: list_visible}')
-                %a(href='javascript:' ng-click='select_list()') List
-
-            .tab-content
-              .tab-pane(ng-class='{active: tree_visible}')
-                %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
-              .tab-pane(ng-class='{active: list_visible}')
-                = render 'pending_list'
-
+            %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
+            
       .span9
         .row-fluid
+          .span12(ng-controller='MasterFacilityListSitesCtrl')
+
+            %h2 Master List
+
+            .recon-panel
+              %mfl-grid(mfl-data-source='mfl_sites')
+              /= render 'master_list_grid'
+              
+
+        .row-fluid
           .span12
-            %h2 Source Records
+            %h2 Source Lists
 
             .recon-panel
               = render 'search_source_records'
@@ -36,43 +36,3 @@
 
               .well(ng-show='selected_node && !sites_loading && sites.length == 0')
                 There are no sites updates!
-
-        .row-fluid
-          .span12(ng-controller='ConsolitateSiteCtrl')
-
-            %h2 Reconcile to MFL
-
-            .recon-panel
-
-              = render 'search_master_site'
-
-              %div(ng-show='target_site != null')
-                %button.btn.btn-link(ng-click='go_to_search()') Back
-
-                %form(name="masterSiteForm" ng-submit="consolidate()" novalidate)
-                  .control-group
-                    %label Facility Name
-                    %input(type='text' ng-model='target_site.name' dnd-target='target_site.name' name='name' required)
-                    %span.help-block(ng-show="masterSiteForm.name.$error.required") Name is required
-
-                  .control-group
-                    %label Latitude & Longitude
-                    .input-append
-                      %input.input-small(type='text' ng-model='target_site.lat')
-                      %input.input-small(type='text' ng-model='target_site.long')
-                      %button.btn(type='button' location-edit latitude='target_site.lat' longitude='target_site.long')
-                        %i.icon-globe
-
-                  - @project.master_collection.fields.each do |field|
-                    - if field.id != @project.master_collection_target_field_id
-                      .control-group
-                        %label= field.name
-                        %input{'type'=>'text', 'ng-model'=>"target_site.properties.#{field.code}", 'dnd-target' =>"target_site.properties.#{field.code}"}
-
-                  %div
-                    %input.btn.btn-inverse(type='submit' value='Save & Consolidate' ng-show='source_site' ladda-loading='consolidate_loading')
-                    %br
-                    %span
-                      with {{source_site.name}}
-
-                  .alert(ng-hide='source_site') Select a pending change
