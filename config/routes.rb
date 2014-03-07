@@ -3,7 +3,8 @@ require_relative '../app/resmap/rack/api_forwarder.rb'
 ResmapRecon::Application.routes.draw do
   mount ::Resmap::Rack::ApiForwarder.new, at: '/rm'
 
-  resource :session, only: [:new, :create, :destroy]
+  devise_for :users, controllers: {omniauth_callbacks: "omniauth_callbacks"}
+  guisso_for :user
 
   resources :projects, only: [:index, :show, :new, :create] do
     member do
