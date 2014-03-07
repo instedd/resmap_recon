@@ -8,29 +8,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def current_user
-    @current_user ||= begin
-      if session[:email].blank? || session[:password].blank?
-        nil
-      else
-        User.find_by_email(session[:email])
-      end
-    end
-  end
-
-  helper_method :current_user
-
   def setup_app_context
-    AppContext.resmap_api = ResourceMap::Api.basic_auth(session[:email], session[:password], Settings.resource_map.host, Settings.resource_map.https)
-    AppContext.setup_url_rewrite_from_request(request)
-  end
-
-  def authenticate_user!
-    if current_user.nil?
-      if request.xhr?
-        raise 'Session lost'
-      end
-      redirect_to new_session_path
+    if current_user
+      AppContext.resmap_api = ResourceMap::Api.trusted(current_user.email, Settings.resource_map.host, Settings.resource_map.https)
+      AppContext.setup_url_rewrite_from_request(request)
     end
   end
 
