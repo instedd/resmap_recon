@@ -33,7 +33,7 @@ class SourceList < ActiveRecord::Base
         }
         query[:search] = search if search
 
-        result = as_collection.sites.where(query).page_size(10).page(1)
+        result = as_collection.sites.where(query).page_size(5).page(1)
       end
     else
       result = as_collection.sites.from_url(next_page_url)
