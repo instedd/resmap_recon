@@ -12,9 +12,10 @@
       %div
         %button.btn(ng-click='dismiss()') Dismiss
         %button.btn.btn-link(ng-click='cancel()') Cancel
-  .accordion-group(ng-click='next_page()' ng-hide='reached_final_page || sites_loading')
-    .accordion-heading
-      %a.accordion-toggle Load more...
+
+.accordion-group(ng-click='next_page()' ng-hide='reached_final_page || sites_loading')
+  .accordion-heading
+    %a.accordion-toggle Load more...
 
 .accordion-group(ng-show='sites_loading')
   .accordion-heading
