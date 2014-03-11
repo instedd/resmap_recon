@@ -5,11 +5,13 @@ angular.module('Curation',[])
   $scope.selected_node = null
   $scope.sites_loading = false
   $scope.next_page_url = null
-  $scope.sites = []
   $scope.reached_final_page = false
   $scope.source_records_search = null
-  $scope.headers = {}
 
+  clear_sites = ->
+    $scope.sites = {items: [], headers: [], loaded: false}
+
+  clear_sites()
   # This is to discard old requests if the user searches something and while
   # the search is being performed, she searches something else.
   $scope.pending_changes_seq = 0
@@ -27,14 +29,14 @@ angular.module('Curation',[])
       $scope._reset_and_load_pending_changes()
 
   $scope._reset_and_load_pending_changes = ->
-    $scope.sites.splice(0, $scope.sites.length)
+    $scope.sites.items.splice(0, $scope.sites.items.length)
     $scope.next_page_url = null
     $scope._load_pending_changes()
 
   $scope._load_pending_changes = ->
     $scope.pending_changes_seq += 1
     seq = $scope.pending_changes_seq
-  
+
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     if $scope.next_page_url != null
@@ -47,10 +49,12 @@ angular.module('Curation',[])
       # Check if there's a new request going on
       return if seq != $scope.pending_changes_seq
 
-      $scope.sites = $scope.sites.concat data.sites
+      $scope.sites.items = $scope.sites.items.concat data.sites
       $scope.next_page_url = data.next_page_url
-      $scope.headers = jQuery.extend($scope.headers, data.headers)
+      $scope.sites.headers = data.headers
+
       $scope.reached_final_page = data.next_page_url == undefined
+      $scope.sites.loaded = true
       $scope.sites_loading = false
 
   $scope.next_page = ->
@@ -58,13 +62,13 @@ angular.module('Curation',[])
 
   $scope.$on 'site-dismissed', (e, site) ->
     # remove site from pending
-    index = $scope.sites.indexOf(site)
-    $scope.sites.splice(index, 1)
+    index = $scope.sites.items.indexOf(site)
+    $scope.sites.items.splice(index, 1)
 
     # open next pending site
-    next_site_index = Math.min($scope.sites.length - 1, index)
+    next_site_index = Math.min($scope.sites.items.length - 1, index)
     if next_site_index >= 0
-      $scope.$broadcast 'outside-pending-site-selected', $scope.sites[next_site_index]
+      $scope.$broadcast 'outside-pending-site-selected', $scope.sites.items[next_site_index]
     else
       $scope.$broadcast 'outside-pending-site-selected', null
 
@@ -95,17 +99,17 @@ angular.module('Curation',[])
 .controller 'SearchSiteCtrl', ($scope, $http) ->
   $scope.search_loading = false
   $scope.search = ''
-  $scope.sites = null
+  clear_sites()
 
   $scope._search_sites = ->
     if _.isEmpty($scope.search)
-      $scope.sites = null
+      $scope.sites.items = null
     else
       $scope.search_loading = true
       params = { search: $scope.search, hierarchy: $scope.selected_node.id }
       $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: params})
         .success (data) ->
-          $scope.sites = data
+          $scope.sites.items = data
         $scope.search_loading = false
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)

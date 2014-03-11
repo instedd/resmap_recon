@@ -1,12 +1,16 @@
 %div(ng-show='dataSource.items.length > 0')
   %table.table.table-bordered.curation-table
     %thead
-      %th(ng-repeat='header in dataSource.headers') {{header}}
+      %th Name
+      %th Source List
+      %th(ng-repeat='header in dataSource.headers') {{header.name}}
     %tbody
       %tr(ng-repeat='item in dataSource.items')
+        %td {{item.name}}
+        %td {{item.source_list.name}}
         %td(ng-repeat='header in dataSource.headers')
-          {{item[header]}}
-      		
+          {{item.properties[header.code]}}
+
 %div(ng-show='loading') Loading...
 
-%div(ng-show='!loading && dataSource.items.length == 0') There aren't facilities in this MFL
+%div(ng-show='!loading && dataSource.items.length == 0') There are no facilities to show

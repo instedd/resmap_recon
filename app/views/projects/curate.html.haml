@@ -10,8 +10,21 @@
           %h2 Administrative Unit
           %div(ng-controller='HierarchyChooser')
             %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
-            
+
       .span9
+        .row-fluid
+          .span12
+            %h2 Source Lists
+
+            .recon-panel
+              = render 'search_source_records'
+
+              / = render 'pending_sites'
+              %mfl-grid(mfl-data-source='sites')
+
+              .well(ng-show='selected_node && !sites_loading && sites.items.length == 0')
+                There are no sites updates!
+
         .row-fluid
           .span12(ng-controller='MasterFacilityListSitesCtrl')
 
@@ -20,19 +33,3 @@
             .recon-panel
               %mfl-grid(mfl-data-source='mfl_sites')
               /= render 'master_list_grid'
-              
-
-        .row-fluid
-          .span12
-            %h2 Source Lists
-
-            .recon-panel
-              = render 'search_source_records'
-
-              = render 'pending_sites'
-
-              .well(ng-hide='selected_node')
-                Select a category to filter by.
-
-              .well(ng-show='selected_node && !sites_loading && sites.length == 0')
-                There are no sites updates!
