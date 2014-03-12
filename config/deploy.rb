@@ -6,6 +6,7 @@ set :repo_url, 'https://bitbucket.org/instedd/resmap_recon.git'
 set :rvm_type, :system
 set :rvm_ruby_version, '1.9.3'
 
+set :branch, ENV['REVISION'] || 'master'
 set :deploy_to, '/u/apps/resmap_recon'
 # set :deploy_to, '/var/www/my_app'
 # set :scm, :git
