@@ -119,16 +119,13 @@ angular.module('Curation',[])
       page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
-      $scope.mfl_sites.items = []
-      $scope.mfl_sites.headers = []
-      $scope.mfl_sites.loaded = true
       # Check if there's a new request going on
-      #return if seq != $scope.pending_changes_seq
+      return if seq != $scope.pending_changes_seq
 
-      #$scope.sites = $scope.sites.concat data.sites
-      #$scope.next_page_url = data.next_page_url
-      #$scope.headers = jQuery.extend($scope.headers, data.headers)
-      #$scope.reached_final_page = data.next_page_url == undefined
+      $scope.mfl_sites.items = data.items
+      $scope.mfl_sites.headers = data.headers
+      $scope.mfl_sites.loaded = true
+
       #$scope.sites_loading = false
 
   $scope.load_page()
@@ -148,6 +145,7 @@ angular.module('Curation',[])
         .success (data) ->
           $scope.mfl_sites.items = data.items
           $scope.mfl_sites.headers = data.headers
+          $scope.mfl_sites.loaded = true
           $scope.search_loading = false
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
