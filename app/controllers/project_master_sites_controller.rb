@@ -10,16 +10,19 @@ class ProjectMasterSitesController < ApplicationController
     sites = @project.master_collection.sites
     if params[:id].present?
       sites = [sites.find(params[:id])]
+    elsif !params.has_key?(:hierarchy) && params[:search].empty?
+      sites = sites.all
     else
       sites = sites.where(search: params[:search]) if params[:search].present?
-          
-      sites = sites.where("#{@project.target_field.code}[under]" => params[:hierarchy])
-          .page_size(50)
-          .page(1)
+      sites = sites.where("#{@project.target_field.code}[under]" => params[:hierarchy]) if params[:hierarchy]
+      sites = sites.page_size(50).page(1)
     end
 
+    headers = []
+    @project.master_collection.fields.each{|f| headers << {name: f.name, code: f.code}}
+
     # TODO support paging
-    render json: sites.map(&:to_hash)
+    render json: { items: sites.map(&:to_hash), headers: headers }
   end
 
   def update
