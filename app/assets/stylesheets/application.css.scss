@@ -64,8 +64,7 @@ tr.active {
   }
 }
 
-.recon-panel {
-  overflow:auto;
+.recon-panel { 
 }
 
 .modal-big {
@@ -204,4 +203,5 @@ form {
   th {
     white-space:nowrap;
   }
+  overflow-y: auto;
 }

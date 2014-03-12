@@ -1,16 +1,27 @@
 %div(ng-show='dataSource.items.length > 0')
-  %table.table.table-bordered.curation-table
-    %thead
-      %th Name
-      %th Source List
-      %th(ng-repeat='header in dataSource.headers') {{header.name}}
-    %tbody
-      %tr(ng-repeat='item in dataSource.items')
-        %td {{item.name}}
-        %td {{item.source_list.name}}
-        %td(ng-repeat='header in dataSource.headers')
-          {{item.properties[header.code]}}
+  .span12.curation-table
+    %table.table.table-bordered.table-hover.table-condensed
+      %thead
+        %th Name
+        %th Source List
+        %th(ng-repeat='header in dataSource.headers') {{header.name}}
+      %tbody
+        %tr(ng-repeat='item in dataSource.items')
+          %td {{item.name}}
+          %td {{item.source_list.name}}
+          %td(ng-repeat='header in dataSource.headers')
+            {{item.properties[header.code]}}
+
+  .pagination.pagination-centered.pagination-small
+    %ul
+      %li(ng-class='{disabled: current_page == 1}')
+        %a(href='#') &laquo;
+      %li{'ng-repeat' => 'p in pages', 'ng-class' => '{active: current_page == p}'}
+        %a(href='#') {{p}}
+      %li(ng-class='{disabled: current_page == last_page}')
+        %a(href='#') &raquo;
 
 %div(ng-show='loading') Loading...
 
 %div(ng-show='!loading && dataSource.items.length == 0') There are no facilities to show
+

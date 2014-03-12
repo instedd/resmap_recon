@@ -27,6 +27,9 @@ class ProjectsController < ApplicationController
       data[:next_page_url] = pending_changes_project_path(@project, next_page_hash: changes[:next_page_hash])
     end
 
+    data[:current_page] = 1
+    data[:total_count] = 11
+
     render json: data
   end
 

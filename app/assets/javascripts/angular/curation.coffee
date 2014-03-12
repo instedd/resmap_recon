@@ -52,6 +52,8 @@ angular.module('Curation',[])
       $scope.sites.items = $scope.sites.items.concat data.sites
       $scope.next_page_url = data.next_page_url
       $scope.sites.headers = data.headers
+      $scope.sites.current_page = data.current_page
+      $scope.sites.total_count = data.total_count
 
       $scope.reached_final_page = data.next_page_url == undefined
       $scope.sites.loaded = true
