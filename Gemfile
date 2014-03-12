@@ -8,6 +8,9 @@ gem 'rails', '3.2.13'
 
 gem "pg", :group => :production
 gem 'mysql2'
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-openid'
 gem 'haml-rails'
 gem 'rails_config'
 gem 'rest-client'

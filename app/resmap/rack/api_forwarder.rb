@@ -4,10 +4,11 @@ module Resmap
       def call(env)
         request = ::Rack::Request.new(env)
 
-        email = request.session[:email]
-        password = request.session[:password]
+        raise 'not authenticated' unless request.env['warden'].authenticated?
 
-        AppContext.resmap_api = ResourceMap::Api.basic_auth(email, password, Settings.resource_map.host, Settings.resource_map.https)
+        current_user = request.env['warden'].user
+
+        AppContext.resmap_api = ResourceMap::Api.trusted(current_user.email, Settings.resource_map.host, Settings.resource_map.https)
         AppContext.setup_url_rewrite_from_request(request)
 
         query = nil
