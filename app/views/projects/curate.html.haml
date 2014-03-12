@@ -31,5 +31,7 @@
             %h2 Master List
 
             .recon-panel
+              = render 'search_master_site'
+
               %mfl-grid(mfl-data-source='mfl_sites')
               /= render 'master_list_grid'

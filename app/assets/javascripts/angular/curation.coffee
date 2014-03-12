@@ -8,10 +8,10 @@ angular.module('Curation',[])
   $scope.reached_final_page = false
   $scope.source_records_search = null
 
-  clear_sites = ->
+  $scope.clear_sites = ->
     $scope.sites = {items: [], headers: [], loaded: false}
+  $scope.clear_sites()
 
-  clear_sites()
   # This is to discard old requests if the user searches something and while
   # the search is being performed, she searches something else.
   $scope.pending_changes_seq = 0
@@ -96,48 +96,14 @@ angular.module('Curation',[])
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.selected = site == $scope.site
 
-.controller 'SearchSiteCtrl', ($scope, $http) ->
-  $scope.search_loading = false
-  $scope.search = ''
-  clear_sites()
-
-  $scope._search_sites = ->
-    if _.isEmpty($scope.search)
-      $scope.sites.items = null
-    else
-      $scope.search_loading = true
-      params = { search: $scope.search, hierarchy: $scope.selected_node.id }
-      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: params})
-        .success (data) ->
-          $scope.sites.items = data
-        $scope.search_loading = false
-
-  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
-
-  $scope.select = (site) ->
-    $scope.$emit 'site-search-selected', site
-
-  $scope.$on 'site-search-clear', ->
-    $scope.search = ''
-    $scope._search_sites()
-
-  $scope.$on 'search-source-records-changed', (event, search) ->
-    $scope.search = search
-
-.controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
-  $scope.search_loading = false
-  $scope.search = ''
-
-  $scope._search_sites = ->
-    $scope.$emit 'search-source-records', $scope.search
-
-  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
-
 .controller 'MasterFacilityListSitesCtrl', ($scope, $http) ->
   #$scope.mfl_sites = {items: [{foo: 1, bar: 'A'}, {foo: 2, bar: 'B'}, {foo: 3, bar: 'C'}], headers: ['foo', 'bar']}
-  $scope.mfl_sites = {items: [], headers: [], loaded: false}
+  $scope.clear_mfl_sites = ->
+    $scope.mfl_sites = {items: [], headers: [], loaded: false}
+
   $scope.seq = 0
   $scope.next_page_url = null
+  $scope.clear_mfl_sites()
 
   $scope.$on 'curation-panel-node-chosen', (e, node) ->
     $scope.load_page()
@@ -166,6 +132,42 @@ angular.module('Curation',[])
       #$scope.sites_loading = false
 
   $scope.load_page()
+
+.controller 'SearchSiteCtrl', ($scope, $http) ->
+  $scope.search_loading = false
+  $scope.search = ''
+  $scope.clear_sites()
+
+  $scope._search_sites = ->
+    if _.isEmpty($scope.search)
+      $scope.mfl_sites.items = []
+    else
+      $scope.search_loading = true
+      params = { search: $scope.search, hierarchy: $scope.selected_node?.id }
+      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: params})
+        .success (data) ->
+          $scope.mfl_sites.items = data.items
+          $scope.mfl_sites.headers = data.headers
+          $scope.search_loading = false
+
+  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
+
+  $scope.$on 'site-search-clear', ->
+    $scope.search = ''
+    $scope._search_sites()
+
+  # $scope.$on 'search-source-records-changed', (event, search) ->
+  #   $scope.search = search
+
+.controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
+  $scope.search_loading = false
+  $scope.search = ''
+
+  $scope._search_sites = ->
+    $scope.$emit 'search-source-records', $scope.search
+
+  $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
+
 
 .controller 'ConsolidateSiteCtrl', ($scope, $http) ->
   $scope.target_site = null

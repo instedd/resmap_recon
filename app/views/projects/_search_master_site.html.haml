@@ -3,18 +3,16 @@
 
   %div(ng-show='search_loading') Loading...
 
-  %div(ng-show='!search_loading && sites.length == 0') There are no sites that match the criteria.
-
-  %div(ng-show='!search_loading && sites == null')
+  %div(ng-show='!search_loading && mfl_sites.items.length == 0')
     Search MFL Sites
 
-  %br
-  %br
-  %ul.nav.nav-tabs.nav-stacked(ng-hide='search_loading')
-    %li
-      %a(href='javascript:' ng-hide='source_site == null' ng-click='create_target_site()')
-        %i.icon-plus-sign
-        Create new site in MFL
-    %li(ng-repeat='site in sites')
-      %a(href='javascript:' ng-click='select(site)')
-        {{site.name}}
+%a(href='javascript:' ng-click='create_target_site()')
+  %i.icon-plus-sign
+  Create new site in MFL
+
+%br
+  / %ul.nav.nav-tabs.nav-stacked(ng-hide='search_loading')
+  /   %li
+  /   %li(ng-repeat='site in master_search')
+  /     %a(href='javascript:' ng-click='select(site)')
+  /       {{site.name}}
