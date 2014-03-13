@@ -26,10 +26,9 @@ angular.module('Curation',[])
     $scope.$broadcast('curation-panel-node-chosen', $scope.selected_node)
 
   $scope.$on 'search-source-records', (e, search) ->
-    if $scope.selected_node
-      $scope.source_records_search = search
-      $scope.$broadcast 'search-source-records-changed', search
-      $scope._reset_and_load_pending_changes()
+    $scope.source_records_search = search
+    $scope.$broadcast 'search-source-records-changed', search
+    $scope._reset_and_load_pending_changes()
 
   $scope._reset_and_load_pending_changes = (page_to_load = 1) ->
     $scope.sites.items.splice(0, $scope.sites.items.length)
@@ -46,7 +45,7 @@ angular.module('Curation',[])
       page_request = $http.get($scope.next_page_url)
     else
       params = params:
-        target_value: $scope.selected_node?.id, 
+        target_value: $scope.selected_node?.id,
         search: $scope.source_records_search,
         page: page_to_load,
         source_list_id: $scope.selected_source_list.id
@@ -144,9 +143,6 @@ angular.module('Curation',[])
       page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
-      # Check if there's a new request going on
-      return if seq != $scope.pending_changes_seq
-
       $scope.mfl_sites.items = data.items
       $scope.mfl_sites.headers = data.headers
       $scope.mfl_sites.loaded = true
@@ -179,8 +175,8 @@ angular.module('Curation',[])
     $scope.search = ''
     $scope._search_sites()
 
-  # $scope.$on 'search-source-records-changed', (event, search) ->
-  #   $scope.search = search
+  $scope.$on 'search-source-records-changed', (event, search) ->
+    $scope.search = search
 
 .controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
   $scope.search_loading = false
