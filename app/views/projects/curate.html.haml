@@ -15,13 +15,13 @@
         .row-fluid
           .span12
             .span12
-              %h3#source-list-title Source List: 
+              %h3#source-list-title Source List:
               %mfl-source-list-combo{'mfl-source-lists' => 'source_lists', 'mfl-selection-changed' => 'source_list_changed(new_selected_source_list)'}
-              
+
               %div#source-list-search
                 = render 'search_source_records'
 
-            .recon-panel              
+            .recon-panel
               %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-selection-changed' => 'selection_changed(new_selected_item)'}
 
               .well(ng-show='selected_node && !sites_loading && sites.items.length == 0')
