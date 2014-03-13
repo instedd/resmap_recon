@@ -11,7 +11,7 @@ ResmapRecon::Application.routes.draw do
       get 'curate'
       get 'pending_changes'
     end
-    resources :sources, controller: 'project_sources', only: [:new] do
+    resources :sources, controller: 'project_sources', only: [:new, :index] do
       resources :sites, controller: 'project_sources_sites', only: [] do
         member do
           post 'dismiss'

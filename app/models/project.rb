@@ -42,13 +42,13 @@ class Project < ActiveRecord::Base
     source_collections.detect { |c| c.id == id }
   end
 
-  def pending_changes(node_id, search, page)
+  def pending_changes(source_list_id, node_id, search, page)
     node_ids = node_id ? search_node_ids_under(node_id) : nil
 
     urls = {}
 
     #TODO: receive which source list to use from client
-    l = source_lists.first || []
+    l = source_lists.find(source_list_id) || []
     
     res = l.pending_changes(node_ids, search, page)
 

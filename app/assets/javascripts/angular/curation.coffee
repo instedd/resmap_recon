@@ -8,6 +8,9 @@ angular.module('Curation',[])
   $scope.reached_final_page = false
   $scope.source_records_search = null
 
+  $scope.source_lists = []
+  $scope.selected_source_list = null
+
   $scope.clear_sites = ->
     $scope.sites = {items: [], headers: [], loaded: false}
   $scope.clear_sites()
@@ -45,7 +48,8 @@ angular.module('Curation',[])
       params = params:
         target_value: $scope.selected_node?.id, 
         search: $scope.source_records_search,
-        page: page_to_load
+        page: page_to_load,
+        source_list_id: $scope.selected_source_list.id
 
       page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
@@ -68,6 +72,10 @@ angular.module('Curation',[])
 
   $scope.selection_changed = (new_selected_item) ->
 
+  $scope.source_list_changed = (new_selected_source_list) ->
+    $scope.selected_source_list = new_selected_source_list
+    $scope._reset_and_load_pending_changes()
+    
   $scope.next_page = ->
     $scope._load_pending_changes()
 
@@ -86,7 +94,13 @@ angular.module('Curation',[])
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
 
-  $scope._reset_and_load_pending_changes( )
+  $scope.load_source_lists = () ->
+    req = $http.get("/projects/#{$scope.project_id}/sources")
+
+    req.success (data) ->
+      $scope.source_lists = data
+
+  $scope.load_source_lists()
 
 .controller 'PendingSiteCtrl', ($scope, $http) ->
   $scope.selected = false

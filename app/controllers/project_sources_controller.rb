@@ -58,6 +58,16 @@ class ProjectSourcesController < ApplicationController
     @mapping_progress = @source.mapping_progress
   end
 
+  def index
+    res = @project.source_lists.map do |s|
+      h = s.as_json
+      h["name"] = s.name
+      h
+    end
+
+    render json: res
+  end
+
   def unmapped_csv_download
     csv_string = @source.unmapped_sites_csv
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")

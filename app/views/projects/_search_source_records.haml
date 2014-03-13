@@ -1,5 +1,5 @@
-%div(ng-controller='SearchSourceRecordsCtrl')
-  %input.search-query(ng-model='search')
-
-  %div
-    Search Source Records
+%div.input-append(ng-controller='SearchSourceRecordsCtrl')
+	%input.input-large{'type' => 'text', 'ng-model' => 'search'}
+	%span.add-on
+		%i.icon-search
+	

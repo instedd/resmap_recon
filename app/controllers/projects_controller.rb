@@ -20,7 +20,7 @@ class ProjectsController < ApplicationController
     page = 1
     page = params[:page] if params[:page].present?
 
-    changes = @project.pending_changes(params[:target_value], params[:search].presence, page)
+    changes = @project.pending_changes(params[:source_list_id], params[:target_value], params[:search].presence, page)
     
     data = { sites: changes[:sites], headers: changes[:headers], current_page: changes[:current_page], total_count: changes[:total_count] }
 
