@@ -130,9 +130,6 @@ angular.module('Curation',[])
       page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
-      # Check if there's a new request going on
-      return if seq != $scope.pending_changes_seq
-
       $scope.mfl_sites.items = data.items
       $scope.mfl_sites.headers = data.headers
       $scope.mfl_sites.loaded = true

@@ -40,4 +40,3 @@ angular.module('PaginatedGrid', [])
 
 		scope.$watch 'dataSource', refresh, true
 		scope.$watch 'selected_item', item_selected
-
