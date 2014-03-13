@@ -3,7 +3,10 @@ angular.module('Curation',[])
 .controller 'CurationPanel', ($scope, $http) ->
 
   # Scope attributes
+  # Admin Tree
   $scope.selected_node = null
+  
+  # Source lists
   $scope.sites_loading = false
   $scope.source_records_search = null
   $scope.source_lists = []
@@ -12,29 +15,19 @@ angular.module('Curation',[])
   # Initialization
   $scope.setup = () ->
     $scope.clear_sites()
+    $scope.clear_mfl_sites()
     $scope.load_source_lists()
 
   # Controller methods
   $scope.clear_sites = ->
     $scope.sites = {items: [], headers: [], loaded: false}
 
-  # Child risen event handling
-  $scope.$on 'tree-node-chosen', (e, node) ->
-    $scope.selected_node = node
-    $scope._reset_and_load_pending_changes()
-    $scope.$broadcast('curation-panel-node-chosen', $scope.selected_node)
+  $scope.clear_mfl_sites = ->
+    $scope.mfl_sites = {items: [], headers: [], loaded: false}
 
-  $scope.$on 'search-source-records', (e, search) ->
-    $scope.source_records_search = search
-    $scope.$broadcast 'search-source-records-changed', search
-    $scope._reset_and_load_pending_changes()
-
-  # Controller methods
   $scope._reset_and_load_pending_changes = (page_to_load = 1) ->
-    $scope.sites.items.splice(0, $scope.sites.items.length)
     $scope._load_pending_changes(page_to_load)
 
-  # Controller methods
   $scope._load_pending_changes = (page_to_load = 1) ->
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
@@ -47,7 +40,7 @@ angular.module('Curation',[])
     page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
-      $scope.sites.items = $scope.sites.items.concat data.sites
+      $scope.sites.items = data.sites
       $scope.sites.headers = data.headers
       $scope.sites.current_page = data.current_page
       $scope.sites.total_count = data.total_count
@@ -55,8 +48,24 @@ angular.module('Curation',[])
       $scope.sites.loaded = true
       $scope.sites_loading = false
 
-  # Source list event handling
-  $scope.page_changed = (new_page) ->
+  $scope.load_mfl_page = () ->
+    params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
+    page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
+
+    page_request.success (data) ->
+      $scope.mfl_sites.items = data.items
+      $scope.mfl_sites.headers = data.headers
+      $scope.mfl_sites.loaded = true
+
+  $scope.load_source_lists = () ->
+    req = $http.get("/projects/#{$scope.project_id}/sources")
+
+    req.success (data) ->
+      $scope.source_lists = data
+      $scope.load_mfl_page()
+
+  # Event handling
+  $scope.page_changed = (new_page) -> 
     $scope._reset_and_load_pending_changes new_page
 
   $scope.selection_changed = (new_selected_item) ->
@@ -65,7 +74,16 @@ angular.module('Curation',[])
     $scope.selected_source_list = new_selected_source_list
     $scope._reset_and_load_pending_changes()
 
-  # Child event handling
+  $scope.$on 'tree-node-chosen', (e, node) ->
+    $scope.selected_node = node
+    $scope._reset_and_load_pending_changes()
+
+  $scope.$on 'search-source-records', (e, search) ->
+    $scope.source_records_search = search
+    $scope.$broadcast 'search-source-records-changed', search
+    $scope._reset_and_load_pending_changes()
+    $scope.load_mfl_page()
+
   $scope.$on 'site-dismissed', (e, site) ->
     # remove site from pending
     index = $scope.sites.items.indexOf(site)
@@ -74,15 +92,8 @@ angular.module('Curation',[])
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
 
-  # Controller methods
-  $scope.load_source_lists = () ->
-    req = $http.get("/projects/#{$scope.project_id}/sources")
-
-    req.success (data) ->
-      $scope.source_lists = data
-
+  # Let it begin!
   $scope.setup()
-
 
 .controller 'PendingSiteCtrl', ($scope, $http) ->
   $scope.selected = false
@@ -102,27 +113,6 @@ angular.module('Curation',[])
 
   $scope.$on 'outside-pending-site-selected', (e, site) ->
     $scope.selected = site == $scope.site
-
-.controller 'MasterFacilityListSitesCtrl', ($scope, $http) ->
-  #$scope.mfl_sites = {items: [{foo: 1, bar: 'A'}, {foo: 2, bar: 'B'}, {foo: 3, bar: 'C'}], headers: ['foo', 'bar']}
-  $scope.clear_mfl_sites = ->
-    $scope.mfl_sites = {items: [], headers: [], loaded: false}
-
-  $scope.clear_mfl_sites()
-
-  $scope.$on 'curation-panel-node-chosen', (e, node) ->
-    $scope.load_page()
-
-  $scope.load_page = () ->
-    params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
-    page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
-
-    page_request.success (data) ->
-      $scope.mfl_sites.items = data.items
-      $scope.mfl_sites.headers = data.headers
-      $scope.mfl_sites.loaded = true
-
-  $scope.load_page()
 
 .controller 'SearchSiteCtrl', ($scope, $http) ->
   $scope.search_loading = false
