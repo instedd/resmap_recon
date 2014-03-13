@@ -2,24 +2,23 @@ angular.module('Curation',[])
 
 .controller 'CurationPanel', ($scope, $http) ->
 
+  # Scope attributes
   $scope.selected_node = null
   $scope.sites_loading = false
-  $scope.next_page_url = null
-  $scope.reached_final_page = false
   $scope.source_records_search = null
-
   $scope.source_lists = []
   $scope.selected_source_list = null
 
+  # Initialization
+  $scope.setup = () ->
+    $scope.clear_sites()
+    $scope.load_source_lists()
+
+  # Controller methods
   $scope.clear_sites = ->
     $scope.sites = {items: [], headers: [], loaded: false}
-  $scope.clear_sites()
 
-  # This is to discard old requests if the user searches something and while
-  # the search is being performed, she searches something else.
-  $scope.pending_changes_seq = 0
-  $scope.mfl_sites_seq = 0
-
+  # Child risen event handling
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
     $scope._reset_and_load_pending_changes()
@@ -30,42 +29,33 @@ angular.module('Curation',[])
     $scope.$broadcast 'search-source-records-changed', search
     $scope._reset_and_load_pending_changes()
 
+  # Controller methods
   $scope._reset_and_load_pending_changes = (page_to_load = 1) ->
     $scope.sites.items.splice(0, $scope.sites.items.length)
-    $scope.next_page_url = null
     $scope._load_pending_changes(page_to_load)
 
+  # Controller methods
   $scope._load_pending_changes = (page_to_load = 1) ->
-    $scope.pending_changes_seq += 1
-    seq = $scope.pending_changes_seq
-
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
-    if $scope.next_page_url != null
-      page_request = $http.get($scope.next_page_url)
-    else
-      params = params:
-        target_value: $scope.selected_node?.id,
-        search: $scope.source_records_search,
-        page: page_to_load,
-        source_list_id: $scope.selected_source_list.id
+    params = params:
+      target_value: $scope.selected_node?.id,
+      search: $scope.source_records_search,
+      page: page_to_load,
+      source_list_id: $scope.selected_source_list.id
 
-      page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
+    page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
-      # Check if there's a new request going on
-      return if seq != $scope.pending_changes_seq
-
       $scope.sites.items = $scope.sites.items.concat data.sites
-      $scope.next_page_url = data.next_page_url
       $scope.sites.headers = data.headers
       $scope.sites.current_page = data.current_page
       $scope.sites.total_count = data.total_count
 
-      $scope.reached_final_page = data.next_page_url == undefined
       $scope.sites.loaded = true
       $scope.sites_loading = false
 
+  # Source list event handling
   $scope.page_changed = (new_page) ->
     $scope._reset_and_load_pending_changes new_page
 
@@ -74,32 +64,25 @@ angular.module('Curation',[])
   $scope.source_list_changed = (new_selected_source_list) ->
     $scope.selected_source_list = new_selected_source_list
     $scope._reset_and_load_pending_changes()
-    
-  $scope.next_page = ->
-    $scope._load_pending_changes()
 
+  # Child event handling
   $scope.$on 'site-dismissed', (e, site) ->
     # remove site from pending
     index = $scope.sites.items.indexOf(site)
     $scope.sites.items.splice(index, 1)
 
-    # open next pending site
-    next_site_index = Math.min($scope.sites.items.length - 1, index)
-    if next_site_index >= 0
-      $scope.$broadcast 'outside-pending-site-selected', $scope.sites.items[next_site_index]
-    else
-      $scope.$broadcast 'outside-pending-site-selected', null
-
   $scope.$on 'pending-site-selected', (e, site) ->
     $scope.$broadcast 'outside-pending-site-selected', site
 
+  # Controller methods
   $scope.load_source_lists = () ->
     req = $http.get("/projects/#{$scope.project_id}/sources")
 
     req.success (data) ->
       $scope.source_lists = data
 
-  $scope.load_source_lists()
+  $scope.setup()
+
 
 .controller 'PendingSiteCtrl', ($scope, $http) ->
   $scope.selected = false
@@ -125,29 +108,19 @@ angular.module('Curation',[])
   $scope.clear_mfl_sites = ->
     $scope.mfl_sites = {items: [], headers: [], loaded: false}
 
-  $scope.seq = 0
-  $scope.next_page_url = null
   $scope.clear_mfl_sites()
 
   $scope.$on 'curation-panel-node-chosen', (e, node) ->
     $scope.load_page()
 
   $scope.load_page = () ->
-    $scope.seq += 1
-    seq = $scope.seq
-
-    if $scope.next_page_url != null
-      page_request = $http.get($scope.next_page_url)
-    else
-      params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
-      page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
+    params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
+    page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
       $scope.mfl_sites.items = data.items
       $scope.mfl_sites.headers = data.headers
       $scope.mfl_sites.loaded = true
-
-      #$scope.sites_loading = false
 
   $scope.load_page()
 
