@@ -20,7 +20,7 @@
               = render 'search_source_records'
 
               / = render 'pending_sites'
-              %mfl-grid(mfl-data-source='sites')
+              %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-selection-changed' => 'selection_changed(new_selected_item)'}
 
               .well(ng-show='selected_node && !sites_loading && sites.items.length == 0')
                 There are no sites updates!

@@ -17,18 +17,12 @@ class ProjectsController < ApplicationController
   end
 
   def pending_changes
-    if params[:next_page_hash].present?
-      changes = @project.pending_changes(nil, nil, params[:next_page_hash])
-    else
-      changes = @project.pending_changes(params[:target_value], params[:search].presence)
-    end
-    data = {sites: changes[:sites], headers: changes[:headers]}
-    if changes[:next_page_hash].present?
-      data[:next_page_url] = pending_changes_project_path(@project, next_page_hash: changes[:next_page_hash])
-    end
+    page = 1
+    page = params[:page] if params[:page].present?
 
-    data[:current_page] = 1
-    data[:total_count] = 11
+    changes = @project.pending_changes(params[:target_value], params[:search].presence, page)
+    
+    data = { sites: changes[:sites], headers: changes[:headers], current_page: changes[:current_page], total_count: changes[:total_count] }
 
     render json: data
   end

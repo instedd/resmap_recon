@@ -42,28 +42,30 @@ class Project < ActiveRecord::Base
     source_collections.detect { |c| c.id == id }
   end
 
-  def pending_changes(node_id, search, next_page_hash = {})
+  def pending_changes(node_id, search, page)
     node_ids = node_id ? search_node_ids_under(node_id) : nil
 
     urls = {}
-    src_lists = source_lists
-    if next_page_hash.present?
-      src_lists = src_lists.select { |s| next_page_hash.keys.include?(s.id.to_s) }
-    end
-    res = {sites: [], headers: []}
-    res[:sites] = src_lists.flat_map do |s|
-      source_list_data = s.pending_changes(node_ids, search, next_page_hash[s.id.to_s])
 
-      if source_list_data[:headers].present?
-        source_list_data[:headers].each_pair do |code, name|
-          res[:headers].push({ code: code, name: name })
-        end
+    #TODO: receive which source list to use from client
+    l = source_lists.first || []
+    
+    res = l.pending_changes(node_ids, search, page)
+
+    if res[:headers].present?
+      res[:headers_array] = []
+
+      res[:headers].each_pair do |code, name|
+        res[:headers_array].push({ code: code, name: name })
       end
 
-      urls[s.id] = source_list_data[:next_page_url] if source_list_data[:next_page_url].present?
-      source_list_data[:sites]
+      res[:headers] = res.delete(:headers_array)
+    else
+      res[:headers] = []
     end
-    res[:next_page_hash] = urls if urls.keys.length > 0
+
+    urls[l.id] = res[:next_page_url] if res[:next_page_url].present?    
+
     res
   end
 

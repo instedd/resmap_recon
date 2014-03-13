@@ -2,11 +2,14 @@
   .span12.curation-table
     %table.table.table-bordered.table-hover.table-condensed
       %thead
+        %th
         %th Name
         %th Source List
         %th(ng-repeat='header in dataSource.headers') {{header.name}}
       %tbody
-        %tr(ng-repeat='item in dataSource.items')
+        %tr{'ng-repeat' => 'item in dataSource.items', 'ng-class' => '{info: item.id == $parent.selected_item}'}
+          %td{'style' => 'width:14px;'} 
+            %input{'type' => 'radio', 'ng-model' => '$parent.selected_item', 'ng-value' => 'item.id', 'style' => 'float:left;'}
           %td {{item.name}}
           %td {{item.source_list.name}}
           %td(ng-repeat='header in dataSource.headers')
@@ -14,12 +17,12 @@
 
   .pagination.pagination-centered.pagination-small
     %ul
-      %li(ng-class='{disabled: current_page == 1}')
-        %a(href='#') &laquo;
-      %li{'ng-repeat' => 'p in pages', 'ng-class' => '{active: current_page == p}'}
-        %a(href='#') {{p}}
-      %li(ng-class='{disabled: current_page == last_page}')
-        %a(href='#') &raquo;
+      %li{'ng-class' => '{disabled: current_page == 1}', 'ng-click' => 'previous_page()'}
+        %a{'href' => ''} &laquo;
+      %li{'ng-repeat' => 'p in pages', 'ng-class' => '{active: current_page == p}', 'ng-click' => 'change_page(p, $event)'}
+        %a{'href' => ''} {{p}}
+      %li{'ng-class' => '{disabled: current_page == last_page}', 'ng-click' => 'next_page()'}
+        %a{'href' => ''} &raquo;
 
 %div(ng-show='loading') Loading...
 

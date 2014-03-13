@@ -28,12 +28,12 @@ angular.module('Curation',[])
       $scope.$broadcast 'search-source-records-changed', search
       $scope._reset_and_load_pending_changes()
 
-  $scope._reset_and_load_pending_changes = ->
+  $scope._reset_and_load_pending_changes = (page_to_load = 1) ->
     $scope.sites.items.splice(0, $scope.sites.items.length)
     $scope.next_page_url = null
-    $scope._load_pending_changes()
+    $scope._load_pending_changes(page_to_load)
 
-  $scope._load_pending_changes = ->
+  $scope._load_pending_changes = (page_to_load = 1) ->
     $scope.pending_changes_seq += 1
     seq = $scope.pending_changes_seq
 
@@ -42,7 +42,11 @@ angular.module('Curation',[])
     if $scope.next_page_url != null
       page_request = $http.get($scope.next_page_url)
     else
-      params = { params: {target_value: $scope.selected_node?.id, search: $scope.source_records_search} }
+      params = params:
+        target_value: $scope.selected_node?.id, 
+        search: $scope.source_records_search,
+        page: page_to_load
+
       page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
@@ -58,6 +62,11 @@ angular.module('Curation',[])
       $scope.reached_final_page = data.next_page_url == undefined
       $scope.sites.loaded = true
       $scope.sites_loading = false
+
+  $scope.page_changed = (new_page) ->
+    $scope._reset_and_load_pending_changes new_page
+
+  $scope.selection_changed = (new_selected_item) ->
 
   $scope.next_page = ->
     $scope._load_pending_changes()

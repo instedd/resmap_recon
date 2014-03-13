@@ -21,23 +21,20 @@ class SourceList < ActiveRecord::Base
     site_mappings.not_curated
   end
 
-  def pending_changes(node_id, search, next_page_url = nil)
+  def pending_changes(node_id, search, page)
     res = {sites: []}
-    if next_page_url.blank?
-      db_query = site_mappings.not_curated
-      db_query = db_query.where(mfl_hierarchy: node_id) if node_id
-      pending_ids = db_query.pluck(:site_id).map &:to_i
-      unless pending_ids.empty?
-        query = {
-          site_id: pending_ids,
-        }
-        query[:search] = search if search
+    db_query = site_mappings.not_curated
+    db_query = db_query.where(mfl_hierarchy: node_id) if node_id
+    pending_ids = db_query.pluck(:site_id).map &:to_i
+    unless pending_ids.empty?
+      query = {
+        site_id: pending_ids,
+      }
+      query[:search] = search if search
 
-        result = as_collection.sites.where(query).page_size(5).page(1)
-      end
-    else
-      result = as_collection.sites.from_url(next_page_url)
+      result = as_collection.sites.where(query).page_size(5).page(page)
     end
+    
     unless result.nil?
       result.each do |s|
         res[:sites] << site_to_hash(s)
@@ -45,6 +42,9 @@ class SourceList < ActiveRecord::Base
       res[:next_page_url] = result.next_page_url if result.next_page_url
       res[:headers] = {}
       as_collection.fields.each{|f| res[:headers][f.code] = f.name}
+
+      res[:current_page] = page
+      res[:total_count] = result.total_count
     end
 
     res
