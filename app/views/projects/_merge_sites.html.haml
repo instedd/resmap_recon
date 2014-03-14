@@ -1,0 +1,36 @@
+.row-fluid
+  .span5
+    %fieldset
+      %legend Source Facility
+
+      %div
+        %label Facility Name
+        %span(dnd-source='source_site.name') {{source_site.name}}
+
+      %div{'ng-repeat'=>'(key, value) in source_site.properties'}
+        %label {{header_for(key)}}
+        %span(dnd-source='value') {{value}}
+
+
+  .span5
+    %form
+      %fieldset
+        %legend Master Facility
+
+        .control-group
+          %label Facility Name
+          %input(type='text' ng-model='target_mfl_site.name' dnd-target='target_mfl_site.name')
+
+        .control-group
+          %label Latitude & Longitude
+          .input-append
+            %input.input-small(type='text' ng-model='target_mfl_site.lat')
+            %input.input-small(type='text' ng-model='target_mfl_site.long')
+            %button.btn(location-edit latitude='target_mfl_site.lat' longitude='target_mfl_site.long')
+              %i.icon-globe
+
+        - @project.master_collection.fields.each do |field|
+          - if field.id != @project.master_collection_target_field_id
+            .control-group
+              %label= field.name
+              %input{'type'=>'text', 'ng-model'=>"target_mfl_site.properties.#{field.code}", 'dnd-target' =>"target_mfl_site.properties.#{field.code}"}

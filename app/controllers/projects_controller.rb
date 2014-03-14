@@ -14,6 +14,11 @@ class ProjectsController < ApplicationController
   def curate
     @hierarchy_field_id = @project.target_field.id
     @pending_changes_site_list = unify(@project.source_lists.map(&:mapped_hierarchy_counts))
+    @source_lists = @project.source_lists.map do |s|
+      h = s.as_json
+      h["name"] = s.name
+      h
+    end
   end
 
   def pending_changes
@@ -21,7 +26,7 @@ class ProjectsController < ApplicationController
     page = params[:page] if params[:page].present?
 
     changes = @project.pending_changes(params[:source_list_id], params[:target_value], params[:search].presence, page)
-    
+
     data = { sites: changes[:sites], headers: changes[:headers], current_page: changes[:current_page], total_count: changes[:total_count] }
 
     render json: data

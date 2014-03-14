@@ -1,22 +1,20 @@
-= back_to_project
-
-%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy_field_id: @hierarchy_field_id, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code, pending_list: @pending_changes_site_list)}
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy_field_id: @hierarchy_field_id, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code, pending_list: @pending_changes_site_list, source_lists: @source_lists)}
   - angular_templates 'shared/angular'
 
   %div(ng-controller='CurationPanel')
-    .row-fluid
+    .row-fluid(ng-hide='merging')
       .span3
+        = back_to_project
         %rm-collection-context(id="#{@project.master_collection.id}")
           %h3 Administrative Unit
-          %div(ng-controller='HierarchyChooser')
-            %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
+          %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
 
       .span9
         .row-fluid
           .span12
             .span12
               %h3.same-line-title Source List:
-              %mfl-source-list-combo{'mfl-source-lists' => 'source_lists', 'mfl-selection-changed' => 'source_list_changed(new_selected_source_list)'}
+              %mfl-source-list-combo{'mfl-source-lists' => 'source_lists', 'mfl-selection-changed' => 'source_list_changed(new_selected_source_list)', 'mfl-selected-item' => 'selected_source_list'}
 
               .right-search
                 = render 'search_source_records'
@@ -25,14 +23,16 @@
               %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-selection-changed' => 'selection_changed(new_selected_item)'}
 
               .row-fluid
-                .well(ng-show='selected_node && !sites_loading && sites.items.length == 0')
-                  There are no facilities to curate on list {{selected_source_list.name}} 
+                .well(ng-show='!sites_loading && sites.items.length == 0')
+                  There are no facilities to curate on list {{selected_source_list.name}}
 
         .row-fluid
-          .span12          
+          .span12
             %a(href='javascript:' ng-click='create_target_site()')
               %i.icon-plus-sign
               Create new site in MFL
+            %br
+            %a(href='javascript:' ng-click='toggle_merge()') Merge
 
         .row-fluid
           .span12
@@ -43,3 +43,10 @@
 
             .recon-panel
               %mfl-grid{'mfl-data-source' => 'mfl_sites', 'mfl-page-changed' => 'mfl_page_changed(new_page)', 'mfl-selection-changed' => 'mfl_selection_changed(new_selected_item)'}
+
+    %div(ng-controller='MergePanel' ng-show='merging')
+      .row-fluid
+        .span12
+          %a(href='javascript:' ng-click='toggle_merge()') ← back to grid
+
+      = render 'merge_sites'

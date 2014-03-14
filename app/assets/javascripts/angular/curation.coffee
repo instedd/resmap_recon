@@ -3,20 +3,19 @@ angular.module('Curation',[])
 .controller 'CurationPanel', ($scope, $http) ->
 
   # Scope attributes
+  $scope.merging = false
   # Admin Tree
   $scope.selected_node = null
-  
+
   # Source lists
   $scope.sites_loading = false
   $scope.source_records_search = null
-  $scope.source_lists = []
-  $scope.selected_source_list = null
+  $scope.selected_source_list = $scope.source_lists[0]
 
   # Initialization
   $scope.setup = () ->
     $scope.clear_sites()
     $scope.clear_mfl_sites()
-    $scope.load_source_lists()
 
   # Controller methods
   $scope.clear_sites = ->
@@ -57,18 +56,18 @@ angular.module('Curation',[])
       $scope.mfl_sites.headers = data.headers
       $scope.mfl_sites.loaded = true
 
-  $scope.load_source_lists = () ->
-    req = $http.get("/projects/#{$scope.project_id}/sources")
-
-    req.success (data) ->
-      $scope.source_lists = data
-      $scope.load_mfl_page()
+  $scope.toggle_merge = () ->
+    $scope.merging = !$scope.merging
 
   # Event handling
-  $scope.page_changed = (new_page) -> 
+  $scope.page_changed = (new_page) ->
     $scope._reset_and_load_pending_changes new_page
 
   $scope.selection_changed = (new_selected_item) ->
+    $scope.source_site = new_selected_item
+
+  $scope.mfl_selection_changed = (new_selected_item) ->
+    $scope.target_mfl_site = new_selected_item
 
   $scope.source_list_changed = (new_selected_source_list) ->
     $scope.selected_source_list = new_selected_source_list
@@ -151,34 +150,35 @@ angular.module('Curation',[])
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
 
-.controller 'ConsolidateSiteCtrl', ($scope, $http) ->
-  $scope.target_site = null
-  $scope.consolidated_sites = null
-  $scope.source_site = null
+.controller 'MergePanel', ($scope, $http) ->
+  # $scope.$on 'site-search-selected', (e, site) ->
+  #   $scope._select_target_site(site)
 
-  $scope.$on 'site-search-selected', (e, site) ->
-    $scope._select_target_site(site)
+  # $scope._select_target_site = (site) ->
+  #   $scope.target_site = site
 
-  $scope._select_target_site = (site) ->
-    $scope.target_site = site
+  #   # begin duplicate code consolidated_sites
+  #   $scope.consolidated_sites = null
+  #   return if $scope.target_site.id == null
+  #   $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
+  #     .success (data) ->
+  #       $scope.consolidated_sites = data
+  #   # end
 
-    # begin duplicate code consolidated_sites
-    $scope.consolidated_sites = null
-    return if $scope.target_site.id == null
-    $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
-      .success (data) ->
-        $scope.consolidated_sites = data
-    # end
+  # $scope.$on 'outside-pending-site-selected', (e, site) ->
+  #   $scope.source_site = site
+  #   return if $scope.source_site == null
+  #   master_site_id = site.properties[$scope.app_master_site_id]
+  #   if master_site_id
+  #     $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {id: master_site_id}})
+  #       .success (data) ->
+  #         if data.length == 1
+  #           $scope._select_target_site(data[0])
 
-  $scope.$on 'outside-pending-site-selected', (e, site) ->
-    $scope.source_site = site
-    return if $scope.source_site == null
-    master_site_id = site.properties[$scope.app_master_site_id]
-    if master_site_id
-      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {id: master_site_id}})
-        .success (data) ->
-          if data.length == 1
-            $scope._select_target_site(data[0])
+  $scope.header_for = (code) ->
+    labels = $scope.sites.headers.filter (el) ->
+      el.code == code
+    labels[0].name
 
   $scope.create_target_site = ->
     $scope.target_site =
@@ -190,13 +190,13 @@ angular.module('Curation',[])
     $scope.target_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
     $scope.consolidated_sites = null
 
-  $scope.go_to_search = ->
-    $scope.target_site = null
-    $scope.$broadcast('hide')
+  # $scope.go_to_search = ->
+  #   $scope.target_site = null
+  #   $scope.$broadcast('hide')
 
-  $scope.go_to_and_reset_search = ->
-    $scope.go_to_search()
-    $scope.$broadcast('site-search-clear')
+  # $scope.go_to_and_reset_search = ->
+  #   $scope.go_to_search()
+  #   $scope.$broadcast('site-search-clear')
 
   $scope.is_target_site_new = ->
     $scope.target_site.id == null
@@ -224,18 +224,3 @@ angular.module('Curation',[])
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
         .success ->
           on_success()
-
-.controller 'HierarchyChooser', ($scope) ->
-  $scope.tree_visible = true
-  $scope.list_visible = false
-
-  $scope.select_tree = ->
-    $scope.tree_visible = true
-    $scope.list_visible = false
-
-  $scope.select_list = ->
-    $scope.tree_visible = false
-    $scope.list_visible = true
-
-  $scope.$watch 'tree_visible || list_visible', () ->
-    $scope.expanded = $scope.tree_visible || $scope.list_visible

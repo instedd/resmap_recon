@@ -64,7 +64,7 @@ tr.active {
   }
 }
 
-.recon-panel { 
+.recon-panel {
 }
 
 .modal-big {
@@ -146,7 +146,7 @@ textarea, input, button {
   }
 }
 
-/*.dnd-source {
+.dnd-source {
   @extend .uneditable-input;
   cursor: pointer;
   background-color: #ddd;
@@ -157,7 +157,7 @@ textarea, input, button {
   &.dnd-target-highlight {
     background-color: #f2f2f2 !important;
   }
-}*/
+}
 
 a.unstyled {
   color:black;
