@@ -14,23 +14,25 @@ angular.module('HierarchyViewer', ['RmHierarchyService'])
       node = NodeService.node_by_id(node_id)
       add_counts node, count
 
+    $scope.choose($scope.nodes[0])
+
   $scope.toggle = (node) ->
     node.expanded = not node.expanded
 
-  $scope._set_choosen_node = (node) ->
-    if $scope.choosen_node
-      $scope.choosen_node.choosen = false
-    $scope.choosen_node = node
-    if $scope.choosen_node
-      $scope.choosen_node.choosen = true
+  $scope._set_chosen_node = (node) ->
+    if $scope.chosen_node
+      $scope.chosen_node.chosen = false
+    $scope.chosen_node = node
+    if $scope.chosen_node
+      $scope.chosen_node.chosen = true
 
   $scope.choose = (node) ->
-    $scope._set_choosen_node(node)
+    $scope._set_chosen_node(node)
     $scope.$emit('tree-node-chosen', node)
 
   $scope.$on 'tree-node-open', (e, node_id) ->
     if node_id == null
-      $scope._set_choosen_node(null)
+      $scope._set_chosen_node(null)
       return
 
     # close top level nodes
@@ -49,4 +51,4 @@ angular.module('HierarchyViewer', ['RmHierarchyService'])
 
       n.expanded = true
 
-    $scope._set_choosen_node(NodeService.node_by_id(node_id))
+    $scope._set_chosen_node(NodeService.node_by_id(node_id))

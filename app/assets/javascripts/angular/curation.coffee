@@ -59,6 +59,16 @@ angular.module('Curation',[])
   $scope.toggle_merge = () ->
     $scope.merging = !$scope.merging
 
+  $scope.create_target_site = ->
+    $scope.target_mfl_site =
+      id: null
+      name: $scope.source_site.name
+      lat: $scope.source_site.lat
+      long: $scope.source_site.long
+      properties: {}
+    $scope.target_mfl_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
+    $scope.merging = true
+
   # Event handling
   $scope.page_changed = (new_page) ->
     $scope._reset_and_load_pending_changes new_page
@@ -151,20 +161,6 @@ angular.module('Curation',[])
 
 
 .controller 'MergePanel', ($scope, $http) ->
-  # $scope.$on 'site-search-selected', (e, site) ->
-  #   $scope._select_target_site(site)
-
-  # $scope._select_target_site = (site) ->
-  #   $scope.target_site = site
-
-  #   # begin duplicate code consolidated_sites
-  #   $scope.consolidated_sites = null
-  #   return if $scope.target_site.id == null
-  #   $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}/consolidated_sites")
-  #     .success (data) ->
-  #       $scope.consolidated_sites = data
-  #   # end
-
   # $scope.$on 'outside-pending-site-selected', (e, site) ->
   #   $scope.source_site = site
   #   return if $scope.source_site == null
@@ -180,24 +176,6 @@ angular.module('Curation',[])
       el.code == code
     labels[0].name
 
-  $scope.create_target_site = ->
-    $scope.target_site =
-      id: null
-      name: $scope.source_site.name
-      lat: $scope.source_site.lat
-      long: $scope.source_site.long
-      properties: {}
-    $scope.target_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
-    $scope.consolidated_sites = null
-
-  # $scope.go_to_search = ->
-  #   $scope.target_site = null
-  #   $scope.$broadcast('hide')
-
-  # $scope.go_to_and_reset_search = ->
-  #   $scope.go_to_search()
-  #   $scope.$broadcast('site-search-clear')
-
   $scope.is_target_site_new = ->
     $scope.target_site.id == null
 
@@ -208,13 +186,12 @@ angular.module('Curation',[])
         id: $scope.source_site.id,
         source_list_id: $scope.source_site.source_list.id
       }
-      target_site: $scope.target_site
+      target_site: $scope.target_mfl_site
     }
 
     on_success = ->
-      $scope.go_to_and_reset_search()
-      $scope.$emit('site-dismissed', $scope.source_site)
       $scope.consolidate_loading = false
+      $scope.merging = false
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)

@@ -58,7 +58,7 @@ tr.active {
   .node:hover .choose { display: inline; }
 
   a.node-label { text-decoration: none; color: inherit; }
-  .node.choosen {
+  .node.chosen {
     background-color: $linkColor;
     a { color: $white; }
   }
@@ -219,4 +219,10 @@ form {
 .right-search {
   float:right;
   margin-top:15px;
+}
+
+#merge-panel {
+  fieldset {
+    padding: 5px 10px 9px 10px;
+  }
 }
