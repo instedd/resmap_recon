@@ -161,15 +161,6 @@ angular.module('Curation',[])
 
 
 .controller 'MergePanel', ($scope, $http) ->
-  # $scope.$on 'outside-pending-site-selected', (e, site) ->
-  #   $scope.source_site = site
-  #   return if $scope.source_site == null
-  #   master_site_id = site.properties[$scope.app_master_site_id]
-  #   if master_site_id
-  #     $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: {id: master_site_id}})
-  #       .success (data) ->
-  #         if data.length == 1
-  #           $scope._select_target_site(data[0])
 
   $scope.header_for = (code) ->
     labels = $scope.sites.headers.filter (el) ->
@@ -177,27 +168,31 @@ angular.module('Curation',[])
     labels[0].name
 
   $scope.is_target_site_new = ->
-    $scope.target_site.id == null
+    $scope.target_mfl_site.id == null
 
   $scope.consolidate = ->
     $scope.consolidate_loading = true
     params = {
       source_site: {
         id: $scope.source_site.id,
-        source_list_id: $scope.source_site.source_list.id
+        source_list_id: $scope.selected_source_list.id
       }
       target_site: $scope.target_mfl_site
     }
 
     on_success = ->
       $scope.consolidate_loading = false
-      $scope.merging = false
+      index = $scope.sites.items.indexOf($scope.source_site)
+      $scope.sites.items.splice(index,1)
+      $scope.source_site = null
+      $scope.target_mfl_site = null
+      $scope.toggle_merge()
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
         .success ->
           on_success()
     else
-      $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_site.id}", params)
+      $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_mfl_site.id}", params)
         .success ->
           on_success()
