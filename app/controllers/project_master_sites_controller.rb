@@ -8,21 +8,19 @@ class ProjectMasterSitesController < ApplicationController
 
   def search
     sites = @project.master_collection.sites
+    page = 1
     if params[:id].present?
       sites = [sites.find(params[:id])]
-    elsif !params.has_key?(:hierarchy) && params[:search].empty?
-      sites = sites.all
     else
-      sites = sites.where(search: params[:search]) if params[:search].present?
-      sites = sites.where("#{@project.target_field.code}[under]" => params[:hierarchy]) if params[:hierarchy]
-      sites = sites.page_size(50).page(1)
+      page = params[:page] || 1
+      sites = search_mfl(sites, params[:hierarchy], params[:search], page)
     end
 
     headers = []
     @project.master_collection.fields.each{|f| headers << {name: f.name, code: f.code}}
 
     # TODO support paging
-    render json: { items: sites.map(&:to_hash), headers: headers }
+    render json: { items: sites.map(&:to_hash), headers: headers, current_page: page, total_count: sites.total_count }
   end
 
   def update
@@ -110,5 +108,16 @@ class ProjectMasterSitesController < ApplicationController
       source_list = @project.source_lists.find(params[:source_site][:source_list_id])
       source_list.consolidate_with(params[:source_site][:id], master_site.id)
     end
+  end
+
+  def search_mfl(sites, hierarchy, search, page)
+    if !hierarchy && search.empty?
+      sites = sites.where({})
+    else
+      sites = sites.where(search: search) if search.present?
+      sites = sites.where("#{@project.target_field.code}[under]" => hierarchy) if hierarchy
+    end
+    sites = sites.page_size(5).page(page)
+    sites
   end
 end

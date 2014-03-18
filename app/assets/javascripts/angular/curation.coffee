@@ -47,13 +47,16 @@ angular.module('Curation',[])
       $scope.sites.loaded = true
       $scope.sites_loading = false
 
-  $scope.load_mfl_page = () ->
-    params = { params: {hierarchy: $scope.selected_node?.id, search: ""} }
+  $scope.load_mfl_page = (page_to_load = 1) ->
+    params = { params: {hierarchy: $scope.selected_node?.id, search: "", page: page_to_load} }
     page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
       $scope.mfl_sites.items = data.items
       $scope.mfl_sites.headers = data.headers
+      $scope.mfl_sites.current_page = data.current_page
+      $scope.mfl_sites.total_count = data.total_count
+
       $scope.mfl_sites.loaded = true
 
   $scope.toggle_merge = () ->
@@ -87,6 +90,9 @@ angular.module('Curation',[])
   $scope.mfl_selection_changed = (new_selected_item) ->
     $scope.target_mfl_site = new_selected_item
 
+  $scope.mfl_page_changed = (new_page) ->
+    $scope.load_mfl_page(new_page)
+
   $scope.source_list_changed = (new_selected_source_list) ->
     $scope.selected_source_list = new_selected_source_list
     $scope._reset_and_load_pending_changes()
@@ -94,6 +100,7 @@ angular.module('Curation',[])
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
     $scope._reset_and_load_pending_changes()
+    $scope.load_mfl_page()
 
   $scope.$on 'search-source-records', (e, search) ->
     $scope.source_records_search = search

@@ -34,12 +34,11 @@ class SourceList < ActiveRecord::Base
 
       result = as_collection.sites.where(query).page_size(5).page(page)
     end
-    
+
     unless result.nil?
       result.each do |s|
         res[:sites] << site_to_hash(s)
       end
-      res[:next_page_url] = result.next_page_url if result.next_page_url
       res[:headers] = {}
       as_collection.fields.each{|f| res[:headers][f.code] = f.name}
 

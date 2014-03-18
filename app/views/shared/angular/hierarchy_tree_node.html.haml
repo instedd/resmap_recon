@@ -4,9 +4,7 @@
     {{node.name}}
     (id: {{node.id}})
     %span.badge{'ng-show' => 'node.count'} {{node.count}}
-  %a.choose(href="javascript:" ng-click="chose(node)" ng-show="node.count")
+  %a.choose(href="javascript:" ng-click="choose(node)" ng-show="node.count")
     (choose)
 %ul{"ng-show" => "node.expanded"}
   %li(ng-repeat='node in node.sub' ng-include="'hierarchy_tree_node.html'")
-  / %li{"ng-show" => "node.sub == null"}
-  /  Loading...

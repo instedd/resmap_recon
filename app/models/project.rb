@@ -45,11 +45,9 @@ class Project < ActiveRecord::Base
   def pending_changes(source_list_id, node_id, search, page)
     node_ids = node_id ? search_node_ids_under(node_id) : nil
 
-    urls = {}
-
     #TODO: receive which source list to use from client
     l = source_lists.find(source_list_id) || []
-    
+
     res = l.pending_changes(node_ids, search, page)
 
     if res[:headers].present?
@@ -63,8 +61,6 @@ class Project < ActiveRecord::Base
     else
       res[:headers] = []
     end
-
-    urls[l.id] = res[:next_page_url] if res[:next_page_url].present?    
 
     res
   end
