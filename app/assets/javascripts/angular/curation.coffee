@@ -69,6 +69,15 @@ angular.module('Curation',[])
     $scope.target_mfl_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
     $scope.merging = true
 
+  $scope.dismiss = ->
+    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.selected_source_list.id}/sites/#{$scope.source_site.id}/dismiss")
+      .success ->
+        console.log 'pase'
+        # remove site from pending
+        site = $scope.source_site
+        index = $scope.sites.items.indexOf(site)
+        $scope.sites.items.splice(index, 1)
+
   # Event handling
   $scope.page_changed = (new_page) ->
     $scope._reset_and_load_pending_changes new_page
@@ -93,35 +102,9 @@ angular.module('Curation',[])
     $scope._reset_and_load_pending_changes()
     $scope.load_mfl_page()
 
-  $scope.$on 'site-dismissed', (e, site) ->
-    # remove site from pending
-    index = $scope.sites.items.indexOf(site)
-    $scope.sites.items.splice(index, 1)
-
-  $scope.$on 'pending-site-selected', (e, site) ->
-    $scope.$broadcast 'outside-pending-site-selected', site
-
   # Let it begin!
   $scope.setup()
 
-.controller 'PendingSiteCtrl', ($scope, $http) ->
-  $scope.selected = false
-
-  $scope.dismiss = ->
-    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.site.source_list.id}/sites/#{$scope.site.id}/dismiss")
-      .success ->
-        $scope.$emit('site-dismissed', $scope.site)
-
-  $scope.select = ->
-    $scope.selected = true
-    $scope.$emit 'pending-site-selected', $scope.site
-
-  $scope.cancel = ->
-    $scope.selected = false
-    $scope.$emit 'pending-site-selected', null
-
-  $scope.$on 'outside-pending-site-selected', (e, site) ->
-    $scope.selected = site == $scope.site
 
 .controller 'SearchSiteCtrl', ($scope, $http) ->
   $scope.search_loading = false
