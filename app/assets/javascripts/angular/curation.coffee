@@ -72,7 +72,6 @@ angular.module('Curation',[])
   $scope.dismiss = ->
     $http.post("/projects/#{$scope.project_id}/sources/#{$scope.selected_source_list.id}/sites/#{$scope.source_site.id}/dismiss")
       .success ->
-        console.log 'pase'
         # remove site from pending
         site = $scope.source_site
         index = $scope.sites.items.indexOf(site)
