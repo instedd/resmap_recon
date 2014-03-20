@@ -65,9 +65,11 @@ angular.module('Curation',[])
       $scope.mfl_sites.loaded = true
 
   $scope.toggle_merge = () ->
+    return if $scope.empty_source_or_target()
     $scope.merging = !$scope.merging
 
   $scope.create_target_site = ->
+    return if $scope.source_site_empty()
     $scope.target_mfl_site =
       id: null
       name: $scope.source_site.name
@@ -78,6 +80,7 @@ angular.module('Curation',[])
     $scope.merging = true
 
   $scope.dismiss = ->
+    return if $scope.source_site_empty()
     $http.post("/projects/#{$scope.project_id}/sources/#{$scope.selected_source_list.id}/sites/#{$scope.source_site.id}/dismiss")
       .success ->
         # remove site from pending
@@ -182,8 +185,7 @@ angular.module('Curation',[])
 
     on_success = ->
       $scope.consolidate_loading = false
-      index = $scope.sites.items.indexOf($scope.source_site)
-      $scope.sites.items.splice(index,1)
+      $scope._load_pending_changes($scope.current_page)
       $scope.source_site = null
       $scope.mfl_sites.items.unshift($scope.target_mfl_site)
       $scope.target_mfl_site = null
