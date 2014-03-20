@@ -48,6 +48,10 @@
             .recon-panel
               %mfl-grid{'mfl-data-source' => 'mfl_sites', 'mfl-page-changed' => 'mfl_page_changed(new_page)', 'mfl-selection-changed' => 'mfl_selection_changed(new_selected_item)'}
 
+              .row-fluid
+                .well(ng-show='mfl_sites.items.length == 0')
+                  There are no facilities in the master list
+
     %div(ng-controller='MergePanel' ng-show='merging')
       .row-fluid
         .span12

@@ -30,6 +30,9 @@ angular.module('Curation',[])
     $scope._load_pending_changes(page_to_load)
 
   $scope._load_pending_changes = (page_to_load = 1) ->
+    if $scope.selected_source_list == undefined
+      $scope.sites.loaded = true
+      return
     $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     params = params:
