@@ -28,13 +28,13 @@
 
         .row-fluid
           .span12
-            %a.btn.btn-primary(href='javascript:' ng-click='toggle_merge()')
+            %a.btn.btn-primary(href='javascript:' ng-click='toggle_merge()' ng-disabled='empty_source_or_target()')
               %i.icon-circle-arrow-right.icon-white
               Merge
-            %a.btn.btn-primary(href='javascript:' ng-click='create_target_site()')
+            %a.btn.btn-primary(href='javascript:' ng-click='create_target_site()' ng-disabled='source_site_empty()')
               %i.icon-plus-sign.icon-white
               Create new site in MFL
-            %a.btn.btn-warning(href='javascript:' ng-click='dismiss()')
+            %a.btn.btn-warning(href='javascript:' ng-click='dismiss()' ng-disabled='source_site_empty()')
               %i.icon-remove-sign.icon-white
               Dismiss
 

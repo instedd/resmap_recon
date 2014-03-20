@@ -4,6 +4,8 @@ angular.module('Curation',[])
 
   # Scope attributes
   $scope.merging = false
+  $scope.source_site = null
+  $scope.target_mfl_site = null
   # Admin Tree
   $scope.selected_node = null
 
@@ -79,6 +81,12 @@ angular.module('Curation',[])
         site = $scope.source_site
         index = $scope.sites.items.indexOf(site)
         $scope.sites.items.splice(index, 1)
+
+  $scope.source_site_empty = ->
+    $scope.source_site == null
+
+  $scope.empty_source_or_target = ->
+    $scope.target_mfl_site == null || $scope.source_site_empty()
 
   # Event handling
   $scope.page_changed = (new_page) ->
