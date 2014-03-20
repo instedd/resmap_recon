@@ -182,6 +182,7 @@ angular.module('Curation',[])
       index = $scope.sites.items.indexOf($scope.source_site)
       $scope.sites.items.splice(index,1)
       $scope.source_site = null
+      $scope.mfl_sites.items.unshift($scope.target_mfl_site)
       $scope.target_mfl_site = null
       $scope.toggle_merge()
 
