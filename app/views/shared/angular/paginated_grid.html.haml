@@ -13,7 +13,7 @@
           %td(ng-repeat='header in dataSource.headers')
             {{item.properties[header.code]}}
 
-  .pagination.pagination-centered.pagination-small
+  .pagination.pagination-centered.pagination-small(ng-show='last_page > 1')
     %ul
       %li{'ng-class' => '{disabled: current_page == 1}', 'ng-click' => 'previous_page()'}
         %a{'href' => ''} &laquo;
