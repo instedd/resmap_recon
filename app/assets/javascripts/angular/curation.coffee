@@ -1,11 +1,12 @@
-angular.module('Curation',[])
+angular.module('Curation',['RmHierarchyService'])
 
-.controller 'CurationPanel', ($scope, $http) ->
+.controller 'CurationPanel', ($scope, $http, RmHierarchyService) ->
 
   # Scope attributes
   $scope.merging = false
   $scope.source_site = null
   $scope.target_mfl_site = null
+  NodeService = RmHierarchyService.for($scope.master_collection_id, $scope.hierarchy_field_id)
   # Admin Tree
   $scope.selected_node = null
 
@@ -63,6 +64,11 @@ angular.module('Curation',[])
       $scope.mfl_sites.total_count = data.total_count
 
       $scope.mfl_sites.loaded = true
+
+      for site in $scope.mfl_sites.items
+        node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
+        site.properties[$scope.hierarchy_target_field_code] = node.path
+
 
   $scope.toggle_merge = () ->
     return if $scope.empty_source_or_target()

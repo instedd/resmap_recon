@@ -1,4 +1,4 @@
-%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy_field_id: @hierarchy_field_id, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code, pending_list: @pending_changes_site_list, source_lists: @source_lists)}
+%div{'ng-app'=>'CurationApp', 'ng-init'=> init_scope(project_id: @project.id, hierarchy_field_id: @hierarchy_field_id, app_master_site_id: @project.app_master_site_id, hierarchy_target_field_code: @project.target_field.code, pending_list: @pending_changes_site_list, source_lists: @source_lists, master_collection_id: @project.master_collection.id)}
   - angular_templates 'shared/angular'
 
   %div(ng-controller='CurationPanel')
