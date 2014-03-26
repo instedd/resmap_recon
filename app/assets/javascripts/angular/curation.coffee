@@ -53,6 +53,11 @@ angular.module('Curation',['RmHierarchyService'])
       $scope.sites.loaded = true
       $scope.sites_loading = false
 
+  $scope.hierarchy_codes_to_paths = ->
+    for site in $scope.mfl_sites.items
+        node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
+        site.properties[$scope.hierarchy_target_field_code] = node.path
+
   $scope.load_mfl_page = (page_to_load = 1) ->
     params = { params: {hierarchy: $scope.selected_node?.id, search: "", page: page_to_load} }
     page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
@@ -65,9 +70,7 @@ angular.module('Curation',['RmHierarchyService'])
 
       $scope.mfl_sites.loaded = true
 
-      for site in $scope.mfl_sites.items
-        node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
-        site.properties[$scope.hierarchy_target_field_code] = node.path
+      $scope.hierarchy_codes_to_paths()
 
 
   $scope.toggle_merge = () ->
@@ -75,6 +78,7 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.merging = !$scope.merging
 
   $scope.create_target_site = ->
+    console.log $scope.source_site_empty()
     return if $scope.source_site_empty()
     $scope.target_mfl_site =
       id: null
@@ -149,6 +153,7 @@ angular.module('Curation',['RmHierarchyService'])
           $scope.mfl_sites.headers = data.headers
           $scope.mfl_sites.loaded = true
           $scope.search_loading = false
+          $scope.hierarchy_codes_to_paths()
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
