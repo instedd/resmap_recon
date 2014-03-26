@@ -193,13 +193,13 @@ angular.module('Curation',['RmHierarchyService'])
       $scope.consolidate_loading = false
       $scope._load_pending_changes($scope.current_page)
       $scope.source_site = null
-      $scope.mfl_sites.items.unshift($scope.target_mfl_site)
       $scope.target_mfl_site = null
       $scope.toggle_merge()
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
         .success ->
+          $scope.mfl_sites.items.unshift($scope.target_mfl_site)
           on_success()
     else
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.target_mfl_site.id}", params)
