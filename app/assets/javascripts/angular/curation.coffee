@@ -58,8 +58,8 @@ angular.module('Curation',['RmHierarchyService'])
         node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
         site.properties[$scope.hierarchy_target_field_code] = node.path
 
-  $scope.load_mfl_page = (page_to_load = 1) ->
-    params = { params: {hierarchy: $scope.selected_node?.id, search: "", page: page_to_load} }
+  $scope.load_mfl_page = (page_to_load = 1, search = "") ->
+    params = { params: {hierarchy: $scope.selected_node?.id, search: search, page: page_to_load} }
     page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
     page_request.success (data) ->
@@ -78,7 +78,6 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.merging = !$scope.merging
 
   $scope.create_target_site = ->
-    console.log $scope.source_site_empty()
     return if $scope.source_site_empty()
     $scope.target_mfl_site =
       id: null
@@ -115,7 +114,7 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.target_mfl_site = new_selected_item
 
   $scope.mfl_page_changed = (new_page) ->
-    $scope.load_mfl_page(new_page)
+    $scope.$broadcast 'mfl-page-changed', new_page
 
   $scope.source_list_changed = (new_selected_source_list) ->
     $scope.selected_source_list = new_selected_source_list
@@ -145,15 +144,7 @@ angular.module('Curation',['RmHierarchyService'])
     if _.isEmpty($scope.search)
       $scope.mfl_sites.items = []
     else
-      $scope.search_loading = true
-      params = { search: $scope.search, hierarchy: $scope.selected_node?.id }
-      $http.get("/projects/#{$scope.project_id}/master/sites/search", {params: params})
-        .success (data) ->
-          $scope.mfl_sites.items = data.items
-          $scope.mfl_sites.headers = data.headers
-          $scope.mfl_sites.loaded = true
-          $scope.search_loading = false
-          $scope.hierarchy_codes_to_paths()
+      $scope.load_mfl_page(1, $scope.search)
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
@@ -163,6 +154,9 @@ angular.module('Curation',['RmHierarchyService'])
 
   $scope.$on 'search-source-records-changed', (event, search) ->
     $scope.search = search
+
+  $scope.$on 'mfl-page-changed', (event, new_page) ->
+    $scope.load_mfl_page(new_page, $scope.search)
 
 .controller 'SearchSourceRecordsCtrl', ($scope, $http) ->
   $scope.search_loading = false
