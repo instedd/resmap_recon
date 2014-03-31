@@ -24,7 +24,7 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
   # $scope.remove_fixed_values = (level) ->
   #   level.options = level.options.filter (opt) -> opt.kind != 'Fixed value'
 
-  $scope.recompute_hierarchy_levels = (depth) ->
+  # $scope.recompute_hierarchy_levels = (depth) ->
     # if $scope.hierarchy_levels[depth].option.kind == 'Fixed value'
     #   next_level = $scope.hierarchy_levels[depth + 1]
     #   if next_level
@@ -37,15 +37,15 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
     #       fixed_values.push kind: 'Fixed value', id: obj.id, name: obj.name
     #     next_level.options.splice 0, 0, fixed_values...
     # else
-    depth += 1
-    while depth < $scope.hierarchy_levels.length
-      $scope.remove_fixed_values($scope.hierarchy_levels[depth])
-      depth += 1
-    check_if_complete()
+    # depth += 1
+    # while depth < $scope.hierarchy_levels.length
+    #   $scope.remove_fixed_values($scope.hierarchy_levels[depth])
+    #   depth += 1
+    # $scope.check_if_complete()
 
   $scope.hierarchy_levels = $scope.compute_hierarchy_levels($scope.hierarchy)
 
-  check_if_complete = () ->
+  $scope.check_if_complete = () ->
     $scope.all_fields_chosen = _.all(_.map $scope.hierarchy_levels, (level) ->
       level.option
     )
@@ -66,4 +66,5 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
         $scope.percentage_classified = data.mapping_progress
         $scope.loading_error_tree = false
 
-
+  $scope.reupload = ->
+    # Will delete collection and create new one with same name in ResMap. It'll delete all site mappings associated with upload.
