@@ -64,7 +64,7 @@ describe SourceList do
         {"regionname" => "Dodoma Region", "district" => "Bahi District"},
       ]
 
-      result, count = source_list.process_automapping(chosen_fields, {})
+      result, count = source_list.process_automapping(chosen_fields)
       result.should eq([])
       count.should eq(1)
 
@@ -76,7 +76,7 @@ describe SourceList do
         {"regionname" => "Dodoma Region", "district" => "Caqui District"},
       ]
 
-      result, count = source_list.process_automapping(chosen_fields, {})
+      result, count = source_list.process_automapping(chosen_fields)
       count.should eq(0)
       result.should eq([
         {
