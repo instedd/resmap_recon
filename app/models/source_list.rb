@@ -180,7 +180,8 @@ class SourceList < ActiveRecord::Base
     end
   end
 
-  def process_automapping(chosen_fields, corrections)
+  # def process_automapping(chosen_fields, corrections)
+  def process_automapping(chosen_fields)
     error_tree = []
     count = 0
 
@@ -196,13 +197,13 @@ class SourceList < ActiveRecord::Base
           current_mfl_id = hier_in_level[index]['id']
           hier_in_level = hier_in_level[index]['sub']
           error_branch << value
-        elsif corrections[value]
-          index = hier_in_level.map{|entry| entry['name']}.index(corrections[value])
-          current_mfl_id = hier_in_level[index]['id']
-          hier_in_level = hier_in_level[index]['sub']
-          error_branch << value
-          new_error_branch = array_to_tree_branch(error_branch, hier_in_level, corrections[value])
-          error_tree = merge_into(error_tree, new_error_branch)
+        # elsif corrections[value]
+        #   index = hier_in_level.map{|entry| entry['name']}.index(corrections[value])
+        #   current_mfl_id = hier_in_level[index]['id']
+        #   hier_in_level = hier_in_level[index]['sub']
+        #   error_branch << value
+        #   new_error_branch = array_to_tree_branch(error_branch, hier_in_level, corrections[value])
+        #   error_tree = merge_into(error_tree, new_error_branch)
         else
           missed = true
           error_branch << value

@@ -93,8 +93,9 @@ class ProjectSourcesController < ApplicationController
   end
 
   def process_automapping
-    corrections = flatten_corrections(params[:corrections]) || {}
-    error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)
+    # corrections = flatten_corrections(params[:corrections]) || {}
+    # error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)
+    error_tree, count = @source.process_automapping(params[:chosen_fields])
     render json: {error_tree: error_tree, count: count, mapping_progress: @source.mapping_progress}
   end
 
@@ -105,15 +106,15 @@ class ProjectSourcesController < ApplicationController
     @source = @project.source_lists.find(params[:id]) if params[:id].present?
   end
 
-  def flatten_corrections(error_tree, corrections={})
-    return unless error_tree
-    corrections ||= {}
-    error_tree.each do |branch|
-      corrections[branch[:name]] = branch[:correction] if branch[:correction]
-      corrections[branch[:name]] = branch[:fixed] if branch[:fixed]
-      corrections.merge!(flatten_corrections(branch[:sub], corrections)) if branch[:sub]
-    end
-    corrections
-  end
+  # def flatten_corrections(error_tree, corrections={})
+  #   return unless error_tree
+  #   corrections ||= {}
+  #   error_tree.each do |branch|
+  #     corrections[branch[:name]] = branch[:correction] if branch[:correction]
+  #     corrections[branch[:name]] = branch[:fixed] if branch[:fixed]
+  #     corrections.merge!(flatten_corrections(branch[:sub], corrections)) if branch[:sub]
+  #   end
+  #   corrections
+  # end
 
 end

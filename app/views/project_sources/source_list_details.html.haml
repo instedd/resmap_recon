@@ -68,9 +68,9 @@
             .span6
               %h4 Source Hierarchy
               Nodes in red could not be found in master hierarchy
-            .span6
-              %h4 Master Hierarchy
-              Select corresponding match from dropdown
+            / .span6
+            /   %h4 Master Hierarchy
+            /   Select corresponding match from dropdown
             .row-fluid
               .span12
                 %hr
@@ -78,7 +78,7 @@
                 %ul
                   %li(ng-repeat='node in error_tree' ng-include="'error_tree_node.html'")
 
-          %button.btn.btn-primary.pull-right{'ng-show' => 'error_tree != undefined', 'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Apply corrections
+          / %button.btn.btn-primary.pull-right{'ng-show' => 'error_tree != undefined', 'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Apply corrections
 
     .span3
       .well
