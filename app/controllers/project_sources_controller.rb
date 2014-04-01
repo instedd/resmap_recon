@@ -101,12 +101,16 @@ class ProjectSourcesController < ApplicationController
   end
 
   def reupload_source_list
-    # p params
-    # @source = params[:]
+    @original_source = SourceList.find(params[:id])
+    @original_source.as_collection.destroy
+    @original_source.destroy
 
-    # @new_source_list = NewSourceList.new(params[:new_source_list])
-    # if @new_source_list.valid?
-    #   @source_list = @new_source_list.create_in_project(@project)
+    @new_source_list = NewSourceList.new(params[:new_source_list])
+    if @new_source_list.valid?
+      @source_list = @new_source_list.create_in_project(@project)
+    end
+
+    redirect_to after_create_project_source_path(@project, @source_list)
   end
 
   protected

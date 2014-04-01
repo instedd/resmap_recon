@@ -6,7 +6,7 @@ angular.module('ProjectSourceAfterCreate', [])
   $scope.import_disabled = true
 
   $scope.redirect_in = 5
-  $scope.redirect_url = "/projects/#{$scope.project_id}"
+  $scope.redirect_url = "/projects/#{$scope.project_id}/sources/#{$scope.source_id}/source_list_details"
 
   $scope.$watch 'identifier_column', ->
     $scope.valid_columns_spec = true

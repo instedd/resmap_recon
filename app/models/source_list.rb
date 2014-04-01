@@ -4,7 +4,7 @@ class SourceList < ActiveRecord::Base
 
   belongs_to :project
   attr_accessible :collection_id, :config, :project
-  has_many :site_mappings
+  has_many :site_mappings, dependent: :delete_all
 
   delegate :app_layer_name, :app_seen_field_name, :app_master_site_id, to: :project
 
