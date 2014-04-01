@@ -53,6 +53,11 @@
             %button.btn.btn-primary{'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree', 'ng-disabled' => '!all_fields_chosen'} Map
 
             %button.btn.btn-warning{'ng-click' => 'reupload()', 'ng-show' => 'mapped_count != undefined'} Reupload
+            .hide
+              = simple_form_for @new_source_list, url: reupload_source_list_project_source_path(@project), html: { id: 'reupload-form' } do |f|
+                = f.input :name, as: :hidden
+                = f.input :file, wrapper_html: {id: 'reupload-field'}
+                /, input_html: {onclick: 'this.form.submit();'}
 
 
         .span9{'ng-show' => 'mapped_count != undefined'}

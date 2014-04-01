@@ -68,3 +68,5 @@ angular.module('MappingEditor',['HierarchySelection', 'RmHierarchyService'])
 
   $scope.reupload = ->
     # Will delete collection and create new one with same name in ResMap. It'll delete all site mappings associated with upload.
+    hidden_file_input = $('#reupload-field input')
+    hidden_file_input.click()

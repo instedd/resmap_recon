@@ -57,6 +57,7 @@ class ProjectSourcesController < ApplicationController
 
     @curation_progress = @source.curation_progress
     @mapping_progress = @source.mapping_progress
+    @new_source_list = NewSourceList.new name: @source.as_collection.name
   end
 
   def index
@@ -97,6 +98,15 @@ class ProjectSourcesController < ApplicationController
     # error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)
     error_tree, count = @source.process_automapping(params[:chosen_fields])
     render json: {error_tree: error_tree, count: count, mapping_progress: @source.mapping_progress}
+  end
+
+  def reupload_source_list
+    # p params
+    # @source = params[:]
+
+    # @new_source_list = NewSourceList.new(params[:new_source_list])
+    # if @new_source_list.valid?
+    #   @source_list = @new_source_list.create_in_project(@project)
   end
 
   protected

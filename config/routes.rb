@@ -23,6 +23,7 @@ ResmapRecon::Application.routes.draw do
         get 'promote_facilities'
         post 'promote_site'
         post 'process_automapping'
+        post 'reupload_source_list'
 
         get 'after_create'
 
