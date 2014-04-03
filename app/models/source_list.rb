@@ -184,6 +184,7 @@ class SourceList < ActiveRecord::Base
   def process_automapping(chosen_fields)
     error_tree = []
     count = 0
+    successful_mappings = []
 
     sites_pending.each do |site|
       hier_in_level = project.hierarchy
@@ -213,10 +214,16 @@ class SourceList < ActiveRecord::Base
         end
       end
       unless missed
-        mapping = SiteMapping.find_or_initialize_by_site_id(site.id)
-        mapping.mfl_hierarchy = current_mfl_id
-        mapping.save!
+        successful_mappings << {id: site.id, mfl_id: current_mfl_id}
         count += 1
+      end
+    end
+
+    if count == sites_pending.count
+      successful_mappings.each do |mapping|
+        site_mapping = SiteMapping.find_or_initialize_by_site_id(mapping[:id])
+        site_mapping.mfl_hierarchy = mapping[:mfl_id]
+        site_mapping.save!
       end
     end
     [error_tree, count]
