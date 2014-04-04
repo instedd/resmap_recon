@@ -86,7 +86,14 @@ angular.module('Curation',['RmHierarchyService'])
       long: $scope.source_site.long
       properties: {}
     $scope.target_mfl_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
+    $scope.check_for_duplicate($scope.source_site.name)
     $scope.merging = true
+
+  $scope.check_for_duplicate = (name) ->
+    params = {params : {name: name, hierarchy: $scope.selected_node?.id} }
+    request = $http.get("/projects/#{$scope.project_id}/master/sites/find_duplicates.json", params)
+    request.success (data) ->
+      $scope.target_mfl_site.duplicate = data.duplicate
 
   $scope.dismiss = ->
     return if $scope.source_site_empty()

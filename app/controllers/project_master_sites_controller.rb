@@ -67,6 +67,13 @@ class ProjectMasterSitesController < ApplicationController
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 
+  def find_duplicates
+    sites = @project.master_collection.sites
+    sites = sites.where(name: params[:name])
+    sites = sites.where("#{@project.target_field.code}[under]" => params[:hierarchy]) if params[:hierarchy]
+    render json: {duplicate: sites.count > 0}
+  end
+
   protected
 
   def append_sites_for_node(csv, path, hierarchy, sites)

@@ -16,9 +16,10 @@
     %fieldset
       %legend Master Facility
 
-      .control-group
+      .control-group(ng-class='{error: target_mfl_site.duplicate}')
         %label Facility Name
-        %input(type='text' ng-model='target_mfl_site.name' dnd-target='target_mfl_site.name')
+        %input(type='text' ng-model='target_mfl_site.name' dnd-target='target_mfl_site.name' ng-change='check_for_duplicate(target_mfl_site.name)')
+        %span.help-inline(ng-show='target_mfl_site.duplicate') There already is a facility with this name in this district
 
       .control-group
         %label Latitude & Longitude
