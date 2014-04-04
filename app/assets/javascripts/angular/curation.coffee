@@ -186,6 +186,7 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.target_mfl_site.id == null
 
   $scope.consolidate = ->
+    return if $scope.target_mfl_site.duplicate
     $scope.consolidate_loading = true
     params = {
       source_site: {
