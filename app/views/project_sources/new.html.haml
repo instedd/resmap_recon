@@ -3,6 +3,10 @@
 %h1
   New facility source
 
+%p To upload a list, the spreadsheet must meet several criteria. It must be formatted as a csv, have the facility name column title "name", and have a unique identifier. It is also important that the list includes one column per administrative region data in the official hierarchy (e.g. Country, Region, Province, District, etc.)
+
+%p= link_to "Download a sample csv here", "/sample_source_list.csv"
+
 = simple_form_for @new_source_list, url: create_from_file_project_sources_path(@project) do |f|
 
   Choose a name for a new ResourceMap collection and upload it
