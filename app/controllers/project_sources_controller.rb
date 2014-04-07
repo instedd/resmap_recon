@@ -72,7 +72,7 @@ class ProjectSourcesController < ApplicationController
 
   def unmapped_csv_download
     csv_string = @source.unmapped_sites_csv
-    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@source.name}")
   end
 
   def promote_facilities
