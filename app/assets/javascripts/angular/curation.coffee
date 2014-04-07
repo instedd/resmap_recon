@@ -34,7 +34,6 @@ angular.module('Curation',['RmHierarchyService'])
     if $scope.selected_source_list == undefined
       $scope.sites.loaded = true
       return
-    $scope.$broadcast 'outside-pending-site-selected', null
     $scope.sites_loading = true
     params = params:
       target_value: $scope.selected_node?.id,
@@ -103,12 +102,16 @@ angular.module('Curation',['RmHierarchyService'])
         site = $scope.source_site
         index = $scope.sites.items.indexOf(site)
         $scope.sites.items.splice(index, 1)
+        $scope.lower_counters(site)
 
   $scope.source_site_empty = ->
     $scope.source_site == null
 
   $scope.empty_source_or_target = ->
     $scope.target_mfl_site == null || $scope.source_site_empty()
+
+  $scope.lower_counters = (site) ->
+    $scope.$broadcast 'site-removed', site.mfl_hierarchy
 
   # Event handling
   $scope.page_changed = (new_page) ->
@@ -199,9 +202,10 @@ angular.module('Curation',['RmHierarchyService'])
     on_success = ->
       $scope.consolidate_loading = false
       $scope._load_pending_changes($scope.current_page)
+      $scope.toggle_merge($scope.source_site)
       $scope.source_site = null
       $scope.target_mfl_site = null
-      $scope.toggle_merge()
+      $scope.lower_counters()
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)

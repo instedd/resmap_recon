@@ -148,7 +148,9 @@ class SourceList < ActiveRecord::Base
     }
     h['collection_id'] = collection_id
     # TODO: this generates an N+1 query when called from pending_changes and consolidated_with
-    h['pending'] = site_mappings.find_by_site_id(site.id).try(:pending?)
+    mapping = site_mappings.find_by_site_id(site.id)
+    h['pending'] = mapping.try(:pending?)
+    h['mfl_hierarchy'] = mapping.mfl_hierarchy
     h
   end
 

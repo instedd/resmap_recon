@@ -52,3 +52,10 @@ angular.module('HierarchyViewer', ['RmHierarchyService'])
       n.expanded = true
 
     $scope._set_chosen_node(NodeService.node_by_id(node_id))
+
+  $scope.$on 'site-removed', (e, node_id) ->
+    n_id = node_id
+    while n_id != null && n_id != undefined
+      node = NodeService.node_by_id(n_id)
+      node.count -= 1
+      n_id = node.parent_id
