@@ -97,7 +97,4 @@
           .span12
             = link_to 'view in resourcemap →', @source.as_collection.show_url, target: '_blank'
 
-.hide
-  = simple_form_for @new_source_list, url: reupload_source_list_project_source_path(@project), html: { id: 'reupload-form' } do |f|
-    = f.input :name, as: :hidden
-    = f.input :file, wrapper_html: {id: 'reupload-field'}, input_html: {onchange: 'this.form.submit();'}
+= render partial: 'hidden_reupload_form', locals: {new_source_list: @new_source_list, project: @project}

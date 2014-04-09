@@ -11,7 +11,7 @@ ResmapRecon::Application.routes.draw do
       get 'curate'
       get 'pending_changes'
     end
-    resources :sources, controller: 'project_sources', only: [:new, :index] do
+    resources :sources, controller: 'project_sources', only: [:new, :index, :destroy] do
       resources :sites, controller: 'project_sources_sites', only: [] do
         member do
           post 'dismiss'
@@ -26,6 +26,7 @@ ResmapRecon::Application.routes.draw do
         post 'reupload_source_list'
 
         get 'after_create'
+        get 'invalid'
 
         resource 'import_wizard', controller: 'project_sources_import_wizard', only: [] do
           post 'validate'

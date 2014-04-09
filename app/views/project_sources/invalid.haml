@@ -1,0 +1,21 @@
+.row-fluid
+  .span9
+    %div
+      = back_to_project
+      %h1
+        = @source.name
+
+    %div
+      %p There was a problem with this source list's upload.
+
+      %p
+        %a.btn.btn-large{onclick: "$('#reupload-field input').click()"}
+          %i.icon-upload
+          Upload new version
+
+        = link_to project_source_path(@project, @source), :method => :delete, class: 'btn btn-large' do
+          %i.icon-trash
+          Delete
+
+
+= render partial: 'hidden_reupload_form', locals: {new_source_list: @new_source_list, project: @project}

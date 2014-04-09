@@ -35,29 +35,41 @@ class ProjectSourcesController < ApplicationController
   end
 
   def after_create
-    iw = @source.as_collection.import_wizard
+    begin
+      iw = @source.as_collection.import_wizard
 
-    if iw.status == 'finished'
-      return redirect_to source_list_details_project_source_path(@project, @source)
+      if iw.status == 'finished'
+        return redirect_to source_list_details_project_source_path(@project, @source)
+      end
+
+      raise "invalid import wizard state: #{iw.status}" if iw.status != 'file_uploaded'
+      @columns_spec = iw.guess_columns_spec
+      @sites_to_import = iw.sites_count(@columns_spec)
+    rescue
+      redirect_to invalid_project_source_path(@project, @source)
     end
-
-    raise "invalid import wizard state: #{iw.status}" if iw.status != 'file_uploaded'
-    @columns_spec = iw.guess_columns_spec
-    @sites_to_import = iw.sites_count(@columns_spec)
   end
 
   def source_list_details
-    if @source.as_collection.import_wizard.status == 'file_uploaded'
-      redirect_to after_create_project_source_path(@project, @source)
-    end
+    begin
+      @new_source_list = NewSourceList.new name: @source.as_collection.name
+      if @source.as_collection.import_wizard.status == 'file_uploaded'
+        redirect_to after_create_project_source_path(@project, @source)
+      end
 
-    if @source.site_mappings.count == 0
-      @source.import_sites_from_resource_map
-    end
+      if @source.site_mappings.count == 0
+        @source.import_sites_from_resource_map
+      end
 
-    @curation_progress = @source.curation_progress
-    @mapping_progress = @source.mapping_progress
-    @new_source_list = NewSourceList.new name: @source.as_collection.name
+      @curation_progress = @source.curation_progress
+      @mapping_progress = @source.mapping_progress
+    rescue
+      redirect_to invalid_project_source_path(@project, @source)
+    end
+  end
+
+  def invalid
+    @new_source_list = NewSourceList.new name: @source.name
   end
 
   def index
@@ -111,6 +123,11 @@ class ProjectSourcesController < ApplicationController
     end
 
     redirect_to after_create_project_source_path(@project, @source_list)
+  end
+
+  def destroy
+    @source.destroy
+    redirect_to project_path(@project)
   end
 
   protected
