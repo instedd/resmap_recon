@@ -52,6 +52,7 @@ group :development, :test do
 
   gem 'pry'
   gem 'pry-debugger'
+  gem 'pry-stack_explorer'
 end
 
 group :test do
