@@ -77,7 +77,7 @@ class ProjectsController < ApplicationController
   end
 
   def prepare_hierarchy(hierarchy)
-    res = {}
+    res = []
     hierarchy.each_with_index do |n,i|
       res[i] = { 'id' => n['id'], 'name' => n['name'] }
       res[i]['sub'] = prepare_hierarchy(n['sub']) unless n['sub'].nil?
