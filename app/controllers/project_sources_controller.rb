@@ -82,6 +82,11 @@ class ProjectSourcesController < ApplicationController
     render json: res
   end
 
+  def source_list_sites_with_mfl_id_csv
+    csv_string = @source.sites_with_mfl_id_csv
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@source.name}")
+  end
+
   def unmapped_csv_download
     csv_string = @source.unmapped_sites_csv
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@source.name}")

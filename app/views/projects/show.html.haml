@@ -17,10 +17,13 @@
       /   %i.icon-info-sign
       /   Do you like have initial data for MFL? The import will guide you to create schema also.
 
-    %h2 Step 2. Import/Review Source List
-    = render 'source_lists'
-
+    %h2 Step 2. Import and  Map Source List
     Note: Unmapped records can't be reconciled in Step 3
+
+    %br
+    %br
+
+    = render 'source_lists'
 
     %h2 Step 3. Reconciled Facility Data
     = "#{@curation_progress} reconciled"

@@ -59,25 +59,65 @@ class SourceList < ActiveRecord::Base
     find_sites_from_ids(ids)
   end
 
-  def unmapped_sites_csv
+  def sites_with_mappings
+    mappings = site_mappings.inject({}) do |mapping_dict, mapping|
+      mapping_dict[mapping.site_id] = {"mapping" => mapping, "site" => nil}
+      mapping_dict
+    end
+
+    sites = find_sites_from_ids(mappings.keys)
+    
+    sites.each do |s|
+      mappings[s.id.to_s]["site"] = s
+    end
+
+    mappings
+  end
+
+  def csv_serialize(sites, extra_columns)
     collection = as_collection
     properties = collection.fields.select{|f| !f.name.starts_with?("_")}
-    remaining_fields = ['name', 'lat', 'long']
+    remaining_fields = ['name', 'lat', 'long']    
+
     csv_string = CSV.generate do |csv|
-      csv << remaining_fields + properties.map(&:name)
-      sites_pending.each do |site|
+      csv << remaining_fields + properties.map(&:name) + extra_columns
+      
+      sites.each do |site_projection|
+        site, extras = yield(site_projection)
+
         data = site.data
         row = []
+        
         remaining_fields.each do |code|
           row << data[code]
         end
+
         properties.map(&:code).each do |prop|
           row << data['properties'][prop]
         end
+
+        if extras
+          extras.each do |extra|
+            row << extra
+          end
+        end
+
         csv << row
       end
     end
     csv_string
+  end
+
+  def sites_with_mfl_id_csv
+    csv_serialize sites_with_mappings, ['mfl_id'] do |site_projection|
+      [site_projection[1]["site"], [site_projection[1]["mapping"].mfl_site_id]]
+    end
+  end
+
+  def unmapped_sites_csv
+    csv_serialize sites_pending, [] do |site_projection|
+      [site_projection, nil]
+    end
   end
 
   def dismiss_site(site_id)

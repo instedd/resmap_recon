@@ -4,6 +4,10 @@
     %li
       .well.well-small.well-white
         = link_to source_list.name, source_list_details_project_source_path(@project, source_list)
+        %br
+        = link_to "Download with MFL ID", source_list_sites_with_mfl_id_csv_project_source_path(@project, source_list)
+        %br
+        %br
         .source-bottom
           - source_list.mapping_progress.tap do |progress|
             - if progress == 100
@@ -13,6 +17,7 @@
             = "#{progress}% mapped"
             .progress
               .bar{style: "width: #{progress}%"}
+
 
   %li
     .well.well-small
