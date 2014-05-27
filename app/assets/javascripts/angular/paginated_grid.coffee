@@ -23,6 +23,12 @@ angular.module('PaginatedGrid', [])
 			scope.pages = page_context(scope.current_page, scope.last_page)
 			scope.last_page_in_context = scope.pages[scope.pages.length - 1]
 
+			if scope.selected_item != 0
+				for item in data.items
+					if scope.selected_item.id == item.id
+						scope.selected_item = item
+						break
+
 		item_selected = (new_value, old_value) ->
 			scope.selection_changed(new_selected_item: new_value) if new_value != old_value
 
