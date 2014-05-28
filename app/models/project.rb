@@ -49,6 +49,14 @@ class Project < ActiveRecord::Base
     end     
   end
 
+  def required_hierarchy
+    unless self.hierarchy    
+      pull_hierarchy_field || raise(NoHierarchyDefinedError)
+    end
+
+    self.hierarchy
+  end
+
   def source_collections
     source_lists.map &:as_collection
   end
