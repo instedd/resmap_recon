@@ -53,27 +53,31 @@ class ProjectsController < ApplicationController
   protected
 
   def setup_templates
-    @templates = ['Kenya MFL', 'Tanzania MFL']
+    @templates = ['Kenya MFL', 'Tanzania MFL', 'Other Country']
   end
 
   def apply_template(project, template)
     collection = AppContext.resmap_api.collections.create name: project.name
 
-    raw_hierarchy = HierarchyTemplate.load(template)
-    hierarchy = prepare_hierarchy(raw_hierarchy)
-
-    layer = collection.find_or_create_layer_by_name('Main')
-    layer.ensure_fields [
+    fields_to_create = [
       { name: 'Facility Code', code: 'fcode', kind: 'text' },
       { name: 'Facility Type', code: 'ftype', kind: 'text' },
-      { name: 'Beds', code: 'beds', kind: 'numeric' },
-      { name: 'Administrative Division', code: 'admin_division', kind: 'hierarchy', config: { hierarchy: hierarchy } }
+      { name: 'Beds', code: 'beds', kind: 'numeric' }
     ]
 
-    project.master_collection_id = collection.id
-    project.master_collection_target_field_id = collection.field_by_code('admin_division').id
+    unless template == 'Other Country'
+      raw_hierarchy = HierarchyTemplate.load(template)
+      hierarchy = prepare_hierarchy(raw_hierarchy)
+      fields_to_create.push({ name: 'Administrative Division', code: 'admin_division', kind: 'hierarchy', config: { hierarchy: hierarchy } })
+      project.hierarchy = raw_hierarchy
+    end
 
-    project.hierarchy = raw_hierarchy
+    layer = collection.find_or_create_layer_by_name 'Main'
+    layer.ensure_fields fields_to_create
+
+    project.master_collection_id = collection.id
+    
+    project.master_collection_target_field_id = collection.field_by_code('admin_division').id unless template == 'Other Country'
   end
 
   def prepare_hierarchy(hierarchy)

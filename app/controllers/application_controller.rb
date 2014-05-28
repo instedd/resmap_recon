@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
     GA.tracker = Settings.google_analytics
   end
 
+  rescue_from Project::NoHierarchyDefinedError do |error|
+    render 'shared/no_hierarchy_defined'
+  end
+
   protected
 
   def setup_app_context

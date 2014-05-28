@@ -21,6 +21,8 @@ class Project < ActiveRecord::Base
 
   serialize :hierarchy, MarshalZipSerializable
 
+  class NoHierarchyDefinedError < StandardError; end
+
   def no_source_list_was_promoted?
     self.promoted_source_list_id.nil?
   end
@@ -30,8 +32,21 @@ class Project < ActiveRecord::Base
   end
   memoize :master_collection
 
+  def target_field_defined?
+    begin
+      target_field
+      true
+    rescue NoHierarchyDefinedError
+      false
+    end
+  end
+
   def target_field
-    master_collection.field_by_id(master_collection_target_field_id)
+    if master_collection_target_field_id
+      master_collection.field_by_id(master_collection_target_field_id)
+    else
+      pull_hierarchy_field || raise(NoHierarchyDefinedError)
+    end     
   end
 
   def source_collections
@@ -140,4 +155,19 @@ class Project < ActiveRecord::Base
     "_master_site_id_#{app_suffix}_"
   end
 
+  private
+
+  def pull_hierarchy_field
+    master_collection.reload
+    hierarchy_field = master_collection.field_by_code('admin_division')
+
+    if hierarchy_field && hierarchy_field.id
+      self.master_collection_target_field_id = hierarchy_field.id
+      self.hierarchy = YAML.load(hierarchy_field.hierarchy.to_yaml)
+      self.save!
+      hierarchy_field
+    else
+      nil
+    end
+  end
 end
