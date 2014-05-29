@@ -6,12 +6,17 @@ class ProjectMembersController < ApplicationController
   end
 
   def create
-    email = params[:member][:email]
+    begin
+      email = params[:member][:email]
 
-    invited = User.by_email(email)
-    @project.users << invited
+      invited = User.by_email(email)
+      @project.users << invited
 
-    flash.notice = "#{email} added to project"
+      flash.notice = "#{email} added to project"      
+    rescue
+      flash[:error] = "Couldn't add #{email} to this project. Please ensure there's an active MFL user with that email. Note that for a user to be active, she must have confirmed her email address."
+    end
+
     redirect_to project_members_path(@project)
   end
 
