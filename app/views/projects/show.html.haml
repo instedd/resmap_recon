@@ -38,6 +38,8 @@
       = link_to 'Review and Edit MFL Data', project_master_sites_path(@project)
     %p
       = link_to 'Download a PROMIS .csv', csv_download_project_master_path(@project)
+    %p
+      = link_to 'Download Master Facility List', @project.master_collection.csv_url
 
   .span3
     .well
