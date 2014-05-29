@@ -14,7 +14,10 @@ class ApplicationController < ActionController::Base
 
   def setup_app_context
     if current_user
-      AppContext.resmap_api = ResourceMap::Api.trusted(current_user.email, Settings.resource_map.host, Settings.resource_map.https)
+      AppContext.resmap_api = Rails.cache.fetch("resmap_api_#{current_user.email}", expires_in: 300) do
+        ResourceMap::Api.trusted(current_user.email, Settings.resource_map.host, Settings.resource_map.https)
+      end
+
       AppContext.setup_url_rewrite_from_request(request)
     end
   end
