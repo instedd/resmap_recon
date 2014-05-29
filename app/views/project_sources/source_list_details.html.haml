@@ -38,8 +38,8 @@
         .span9
           %table.table.table-bordered
             %thead
-              %th Level
-              %th Map from
+              %th Admin Level
+              %th Source Field to Map
             %tbody
               %tr{'ng-repeat' => 'level in hierarchy_levels', 'style' => 'vertical-align:middle'}
                 %td
@@ -47,6 +47,11 @@
                 %td
                   / %select{'ng-model' => 'level.option', 'ng-options' => 'option.name group by option.kind for option in level.options', 'ng-change' => 'recompute_hierarchy_levels($index)'}
                   %select{'ng-model' => 'level.option', 'ng-options' => 'option.name for option in level.options', 'ng-change' => 'check_if_complete()'}
+
+          %div
+            This process can take a few minutes, please be patient.
+
+          %br
 
           .map-button.pull-right
             %span{'ng-show' => '!all_fields_chosen'} Choose a value or a field for every level
@@ -69,18 +74,13 @@
           .row-fluid{'ng-show' => 'error_tree != undefined'}
             .span6
               %h4 Source Hierarchy
-              Nodes in red could not be found in master hierarchy
-            / .span6
-            /   %h4 Master Hierarchy
-            /   Select corresponding match from dropdown
+              Some values do not map to the MFL, select a different field to map or edit and re-load your source list
             .row-fluid
               .span12
                 %hr
               .span12
                 %ul
                   %li(ng-repeat='node in error_tree' ng-include="'error_tree_node.html'")
-
-          / %button.btn.btn-primary.pull-right{'ng-show' => 'error_tree != undefined', 'ng-click' => 'process_automapping()', 'ladda-loading' => 'loading_error_tree'} Apply corrections
 
     .span3
       .well

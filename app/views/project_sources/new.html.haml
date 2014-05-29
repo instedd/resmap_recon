@@ -2,24 +2,43 @@
 
 %h1
   New facility source
+  
+%p Choose a name for the list and upload it.  
 
-%p To upload a list, the spreadsheet must meet several criteria. It must be formatted as a csv, have the facility name column title "name", and have a unique identifier. It is also important that the list includes one column per administrative region data in the official hierarchy (e.g. Country, Region, Province, District, etc.)
+%p
+  = link_to "Download a sample csv here", "/sample_source_list.csv"
 
-%p= link_to "Download a sample csv here", "/sample_source_list.csv"
+%br
+.row-fluid
+  .span4
+    = simple_form_for @new_source_list, url: create_from_file_project_sources_path(@project) do |f|
 
-= simple_form_for @new_source_list, url: create_from_file_project_sources_path(@project) do |f|
+      
+      = f.input :name
+      = f.input :file, label: 'File (.csv documents only)'
 
-  Choose a name for a new ResourceMap collection and upload it
-  = f.input :name
-  = f.input :file
+      = submit_ladda_button 'Upload & continue'
 
-  = submit_ladda_button 'Upload & continue'
+    %a.muted(href='#advanced' data-toggle='collapse') advanced
 
-%a.muted(href='#advanced' data-toggle='collapse') advanced
+    #advanced.collapse
+      = simple_form_for @source_list, url: create_from_collection_project_sources_path(@project) do |f|
+        Or choose an existing ResourceMap collection
+        = f.input :collection_id, collection: @collection_ids
 
-#advanced.collapse
-  = simple_form_for @source_list, url: create_from_collection_project_sources_path(@project) do |f|
-    Or choose an existing ResourceMap collection
-    = f.input :collection_id, collection: @collection_ids
+        = submit_ladda_button 'Create & continue'
 
-    = submit_ladda_button 'Create & continue'
+  .span4
+    .alert.alert-info
+      Each source list must have the following:
+      %br
+      %br
+      %div
+        1. A field titled "Name" for the facility name.
+      %div
+        2. A field with a unique indentifier.
+      %div
+      3. Individual fields for each level of the admin hierarchy (i.e., Region, District, etc.). 
+      %br
+      %br
+      Also, make sure that the source list administrative hierarchy matches de MFL hierarchy.

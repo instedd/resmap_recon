@@ -3,18 +3,30 @@ class ProjectSourcesImportWizardController < ApplicationController
   before_filter :load_project
 
   def status
-    render json: { status: @import_wizard.status }
+    begin
+      render json: { status: @import_wizard.status }
+    rescue
+      upload_error
+    end
   end
 
   def validate
-    columns_spec = params[:columns_spec]
-    render json: { valid: @import_wizard.is_column_spec_valid?(columns_spec), errors: @import_wizard.column_spec_errors(columns_spec).keys.map(&:humanize).join(', ') }
+    begin
+      columns_spec = params[:columns_spec]
+      render json: { valid: @import_wizard.is_column_spec_valid?(columns_spec), errors: @import_wizard.column_spec_errors(columns_spec).keys.map(&:humanize).join(', ') }
+    rescue
+      upload_error
+    end     
   end
 
   def start
-    columns_spec = params[:columns_spec]
-    @import_wizard.execute(columns_spec)
-    render nothing: true
+    begin
+      columns_spec = params[:columns_spec]
+      @import_wizard.execute(columns_spec)
+      render nothing: true
+    rescue
+      upload_error
+    end
   end
 
   protected
@@ -25,5 +37,7 @@ class ProjectSourcesImportWizardController < ApplicationController
     @import_wizard = @source.as_collection.import_wizard
   end
 
-
+  def upload_error
+    render 'shared/upload_error'
+  end
 end
