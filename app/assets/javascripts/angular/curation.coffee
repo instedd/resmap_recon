@@ -105,7 +105,7 @@ angular.module('Curation',['RmHierarchyService'])
         $scope.lower_counters(site)
 
   $scope.source_site_empty = ->
-    $scope.source_site == null
+    !$scope.source_site
 
   $scope.empty_source_or_target = ->
     $scope.target_mfl_site == null || $scope.source_site_empty()
@@ -117,8 +117,8 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.page_changed = (new_page) ->
     $scope._reset_and_load_pending_changes new_page
 
-  $scope.selection_changed = (new_selected_item) ->
-    $scope.source_site = new_selected_item
+  $scope.selection_changed = (selected_items) ->
+    $scope.source_site = selected_items[0]
 
   $scope.mfl_selection_changed = (new_selected_item) ->
     $scope.target_mfl_site = new_selected_item

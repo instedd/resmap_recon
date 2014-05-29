@@ -6,9 +6,10 @@
         %th Name
         %th(ng-repeat='header in dataSource.headers') {{header.name}}
       %tbody
-        %tr{'ng-repeat' => 'item in dataSource.items', 'ng-class' => '{info: item == $parent.selected_item}'}
+        %tr{'ng-repeat' => 'item in dataSource.items', 'ng-class' => '{info: selected_items_ids[item.id]}'}
           %td{'style' => 'width:14px;'}
-            %input{'type' => 'radio', 'ng-model' => '$parent.selected_item', 'ng-value' => 'item', 'style' => 'float:left;'}
+            %input{'type' => 'radio', 'ng-show' => '!$parent.multiple_selection', 'ng-model' => '$parent.selected_items_ids[item.id]', 'ng-value' => 'true', 'style' => 'float:left;', 'ng-change' => '$parent.change_item(item)'}
+            %input{'type' => 'checkbox', 'ng-show' => '$parent.multiple_selection', 'ng-model' => '$parent.selected_items_ids[item.id]', 'style' => 'float: left;', 'ng-change' => '$parent.change_item(item)' }
           %td {{item.name}}
           %td(ng-repeat='header in dataSource.headers')
             {{item.properties[header.code]}}

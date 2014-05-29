@@ -6,6 +6,7 @@ angular.module('PaginatedGrid', [])
 		dataSource: '=mflDataSource',
 		page_changed: '&mflPageChanged'
 		selection_changed: '&mflSelectionChanged'
+		multiple_selection: '=mflMultipleSelection'
 	templateUrl: 'paginated_grid.html'
 	link: (scope, elem, attrs) ->
 		last_page = (total_count) ->
@@ -23,15 +24,6 @@ angular.module('PaginatedGrid', [])
 			scope.pages = page_context(scope.current_page, scope.last_page)
 			scope.last_page_in_context = scope.pages[scope.pages.length - 1]
 
-			if scope.selected_item != 0
-				for item in data.items
-					if scope.selected_item.id == item.id
-						scope.selected_item = item
-						break
-
-		item_selected = (new_value, old_value) ->
-			scope.selection_changed(new_selected_item: new_value) if new_value != old_value
-
 		scope.change_page = (new_page) ->
 			scope.page_changed(new_page: new_page) unless new_page == scope.current_page
 
@@ -41,8 +33,23 @@ angular.module('PaginatedGrid', [])
 		scope.next_page = () ->
 			scope.change_page(scope.current_page + 1) unless scope.current_page == scope.last_page
 
+		scope.change_item = (item) ->
+			if scope.multiple_selection
+				if scope.selected_items_ids[item.id]
+					scope.selected_items[item.id] = item
+				else
+					delete scope.selected_items[item.id]
+				selection = (item for _, item of scope.selected_items)
+				scope.selection_changed(selected_items: selection)
+			else
+				scope.selected_items = {}
+				scope.selected_items_ids = {}
+				scope.selected_items[item.id] = item
+				scope.selected_items_ids[item.id] = true
+				scope.selection_changed(selected_items: [item])
+
 		scope.loading = true
-		scope.selected_item = 0
+		scope.selected_items = {}
+		scope.selected_items_ids = {}
 
 		scope.$watch 'dataSource', refresh, true
-		scope.$watch 'selected_item', item_selected

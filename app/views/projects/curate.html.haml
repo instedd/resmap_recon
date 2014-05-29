@@ -20,7 +20,7 @@
                 = render 'search_source_records'
 
             .recon-panel
-              %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-selection-changed' => 'selection_changed(new_selected_item)'}
+              %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-multiple-selection' => 'true', 'mfl-selection-changed' => 'selection_changed(selected_items)'}
 
               .row-fluid
                 .well(ng-show='!sites_loading && sites.items.length == 0')
