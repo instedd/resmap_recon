@@ -8,7 +8,7 @@
         %span(dnd-source='source_site.name') {{source_site.name}}
 
       %div{'ng-repeat'=>'(key, value) in source_site.properties'}
-        %label {{header_for(key)}}
+        %label {{header_for(source_site, key)}}
         %span(dnd-source='value') {{value}}
 
 

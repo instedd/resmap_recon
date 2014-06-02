@@ -16,6 +16,7 @@ angular.module('PaginatedGrid', [])
 			(i for i in [(Math.max(1, current_page - 10))..(Math.min(current_page + 10, last_page))])
 
 		refresh = (data, oldData) ->
+			return unless data
 			if data?.loaded
 				scope.loading = false
 
@@ -51,5 +52,11 @@ angular.module('PaginatedGrid', [])
 		scope.loading = true
 		scope.selected_items = {}
 		scope.selected_items_ids = {}
+
+		scope.$on 'clear-selection', () ->
+			scope.selected_items = {}
+			scope.selected_items_ids = {}
+			scope.selection_changed(selected_items: [])
+
 
 		scope.$watch 'dataSource', refresh, true

@@ -19,6 +19,7 @@ class ProjectsController < ApplicationController
       h["name"] = s.name
       h
     end
+    @source_lists.insert 0, { "name" => "All sources" }
   end
 
   def pending_changes
@@ -76,7 +77,7 @@ class ProjectsController < ApplicationController
     layer.ensure_fields fields_to_create
 
     project.master_collection_id = collection.id
-    
+
     project.master_collection_target_field_id = collection.field_by_code('admin_division').id unless template == 'Other Country'
   end
 

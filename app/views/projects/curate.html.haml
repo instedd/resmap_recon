@@ -19,12 +19,13 @@
               .right-search
                 = render 'search_source_records'
 
-            .recon-panel
-              %mfl-grid{'mfl-data-source' => 'sites', 'mfl-page-changed' => 'page_changed(new_page)', 'mfl-multiple-selection' => 'true', 'mfl-selection-changed' => 'selection_changed(selected_items)'}
+            .recon-panel{'ng-repeat' => 'source in selected_source_lists'}
+              %h5 {{ source.name }}
+              %mfl-grid{'mfl-data-source' => 'source_sites[source.id]', 'mfl-page-changed' => 'page_changed(source.id, new_page)', 'mfl-multiple-selection' => 'true', 'mfl-selection-changed' => 'selection_changed(source.id, selected_items)'}
 
               .row-fluid
-                .well(ng-show='!sites_loading && sites.items.length == 0')
-                  There are no facilities to curate on list {{selected_source_list.name}}
+                .well(ng-show='!source_sites_loading[source.id] && source_sites[source.id].items.length == 0')
+                  There are no facilities to curate on list {{source.name}}
 
         .row-fluid
           .span12

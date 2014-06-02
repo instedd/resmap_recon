@@ -5,6 +5,7 @@ angular.module('Curation',['RmHierarchyService'])
   # Scope attributes
   $scope.merging = false
   $scope.source_site = null
+  $scope.selected_sites = {}
   $scope.target_mfl_site = null
   NodeService = RmHierarchyService.for($scope.master_collection_id, $scope.hierarchy_field_id)
   # Admin Tree
@@ -12,8 +13,9 @@ angular.module('Curation',['RmHierarchyService'])
 
   # Source lists
   $scope.sites_loading = false
+  $scope.source_sites_loading = []
   $scope.source_records_search = null
-  $scope.selected_source_list = $scope.source_lists[0]
+  $scope.selected_source_list = $scope.source_lists[1]
 
   # Initialization
   $scope.setup = () ->
@@ -28,29 +30,44 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.mfl_sites = {items: [], headers: [], loaded: false}
 
   $scope._reset_and_load_pending_changes = (page_to_load = 1) ->
-    $scope._load_pending_changes(page_to_load)
+    if $scope.selected_source_list && $scope.selected_source_list.id
+      $scope.selected_source_lists = [$scope.selected_source_list]
+    else
+      $scope.selected_source_lists = $scope.source_lists.slice(1)
 
-  $scope._load_pending_changes = (page_to_load = 1) ->
+    $scope.source_sites = []
+    new_selected_sites = {}
+    for source in $scope.selected_source_lists
+      $scope.source_sites[source.id] = {items: [], headers: [], loaded: false}
+      $scope._load_pending_changes(source.id)
+      if selected_sites = $scope.selected_sites[source.id]
+        new_selected_sites[source.id] = selected_sites
+
+    $scope.selected_sites = new_selected_sites
+
+  $scope._load_pending_changes = (source_id, page_to_load = 1) ->
     if $scope.selected_source_list == undefined
       $scope.sites.loaded = true
       return
-    $scope.sites_loading = true
+    $scope.source_sites_loading[source_id] = true
     params = params:
       target_value: $scope.selected_node?.id,
       search: $scope.source_records_search,
       page: page_to_load,
-      source_list_id: $scope.selected_source_list.id
+      source_list_id: source_id
 
     page_request = $http.get("/projects/#{$scope.project_id}/pending_changes", params)
 
     page_request.success (data) ->
-      $scope.sites.items = data.sites
-      $scope.sites.headers = data.headers
-      $scope.sites.current_page = data.current_page
-      $scope.sites.total_count = data.total_count
+      $scope.source_sites[source_id] = {
+        items: data.sites,
+        headers: data.headers,
+        current_page: data.current_page
+        total_count: data.total_count
+        loaded: true
+      }
+      $scope.source_sites_loading[source_id] = false
 
-      $scope.sites.loaded = true
-      $scope.sites_loading = false
 
   $scope.hierarchy_codes_to_paths = ->
     for site in $scope.mfl_sites.items
@@ -77,15 +94,15 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.merging = !$scope.merging
 
   $scope.create_target_site = ->
-    return if $scope.source_site_empty()
+    return unless first_site = $scope.first_selected_site()
     $scope.target_mfl_site =
       id: null
-      name: $scope.source_site.name
-      lat: $scope.source_site.lat
-      long: $scope.source_site.long
+      name: first_site.name
+      lat: first_site.lat
+      long: first_site.long
       properties: {}
     $scope.target_mfl_site.properties[$scope.hierarchy_target_field_code] = $scope.selected_node.id
-    $scope.check_for_duplicate($scope.source_site.name)
+    $scope.check_for_duplicate(first_site.name)
     $scope.merging = true
 
   $scope.check_for_duplicate = (name) ->
@@ -104,8 +121,13 @@ angular.module('Curation',['RmHierarchyService'])
         $scope.sites.items.splice(index, 1)
         $scope.lower_counters(site)
 
+  $scope.first_selected_site = ->
+    for _, sites of $scope.selected_sites
+      if sites.length > 0
+        return sites[0]
+
   $scope.source_site_empty = ->
-    !$scope.source_site
+    !$scope.first_selected_site()
 
   $scope.empty_source_or_target = ->
     $scope.target_mfl_site == null || $scope.source_site_empty()
@@ -114,11 +136,12 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.$broadcast 'site-removed', site.mfl_hierarchy
 
   # Event handling
-  $scope.page_changed = (new_page) ->
-    $scope._reset_and_load_pending_changes new_page
+  $scope.page_changed = (source_id, new_page) ->
+    $scope._load_pending_changes source_id, new_page
 
-  $scope.selection_changed = (selected_items) ->
-    $scope.source_site = selected_items[0]
+  $scope.selection_changed = (source_id, selected_items) ->
+    $scope.selected_sites[source_id] = selected_items
+    $scope.source_site = $scope.first_selected_site()
 
   $scope.mfl_selection_changed = (new_selected_item) ->
     $scope.target_mfl_site = new_selected_item
@@ -132,7 +155,8 @@ angular.module('Curation',['RmHierarchyService'])
 
   $scope.$on 'tree-node-chosen', (e, node) ->
     $scope.selected_node = node
-    $scope._reset_and_load_pending_changes()
+    $scope.$broadcast 'clear-selection'
+    # $scope._reset_and_load_pending_changes()
     $scope.load_mfl_page()
 
   $scope.$on 'search-source-records', (e, search) ->
@@ -180,10 +204,10 @@ angular.module('Curation',['RmHierarchyService'])
 
 .controller 'MergePanel', ($scope, $http) ->
 
-  $scope.header_for = (code) ->
-    labels = $scope.sites.headers.filter (el) ->
+  $scope.header_for = (site, code) ->
+    labels = $scope.source_sites[site.source_list.id].headers.filter (el) ->
       el.code == code
-    labels[0].name
+    labels[0].name if labels && labels[0]
 
   $scope.is_target_site_new = ->
     $scope.target_mfl_site.id == null
@@ -191,9 +215,10 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.consolidate = ->
     return if $scope.target_mfl_site.duplicate
     $scope.consolidate_loading = true
+    first_site = $scope.first_selected_site()
     params = {
       source_site: {
-        id: $scope.source_site.id,
+        id: first_site.id,
         source_list_id: $scope.selected_source_list.id
       }
       target_site: $scope.target_mfl_site
@@ -201,11 +226,12 @@ angular.module('Curation',['RmHierarchyService'])
 
     on_success = ->
       $scope.consolidate_loading = false
-      $scope._load_pending_changes($scope.current_page)
-      $scope.toggle_merge($scope.source_site)
-      $scope.source_site = null
+      $scope._reset_and_load_pending_changes()
+      # $scope._load_pending_changes($scope.current_page)
+      $scope.toggle_merge()
+      $scope.selected_sites = {}
       $scope.target_mfl_site = null
-      $scope.lower_counters()
+      $scope.lower_counters(first_site)
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
