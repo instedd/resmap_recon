@@ -225,4 +225,21 @@ form {
   fieldset {
     padding: 5px 10px 9px 10px;
   }
+
+  #source-sites-container {
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+
+  .source-list {
+    display: inline-block;
+    padding-right: 20px;
+
+    .source {
+      width: 280px;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
 }
+

@@ -68,6 +68,11 @@ angular.module('Curation',['RmHierarchyService'])
       }
       $scope.source_sites_loading[source_id] = false
 
+  $scope.source_name = (source_id) ->
+    source_id = parseInt(source_id)
+    for source in $scope.source_lists
+      if source.id == source_id
+        return source.name
 
   $scope.hierarchy_codes_to_paths = ->
     for site in $scope.mfl_sites.items
@@ -140,7 +145,10 @@ angular.module('Curation',['RmHierarchyService'])
     $scope._load_pending_changes source_id, new_page
 
   $scope.selection_changed = (source_id, selected_items) ->
-    $scope.selected_sites[source_id] = selected_items
+    if selected_items && selected_items.length > 0
+      $scope.selected_sites[source_id] = selected_items
+    else
+      delete $scope.selected_sites[source_id]
     $scope.source_site = $scope.first_selected_site()
 
   $scope.mfl_selection_changed = (new_selected_item) ->
@@ -227,7 +235,6 @@ angular.module('Curation',['RmHierarchyService'])
     on_success = ->
       $scope.consolidate_loading = false
       $scope._reset_and_load_pending_changes()
-      # $scope._load_pending_changes($scope.current_page)
       $scope.toggle_merge()
       $scope.selected_sites = {}
       $scope.target_mfl_site = null

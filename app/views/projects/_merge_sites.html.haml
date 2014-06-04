@@ -1,18 +1,17 @@
 .row-fluid#merge-panel
-  .span5
-    %fieldset
-      %legend Source Facility
+  .span8#source-sites-container
+    .source-list{'ng-repeat' => '(source_id, source_sites) in selected_sites'}
+      %legend {{ source_name(source_id) }}
+      .source{'ng-repeat' => 'source_site in source_sites'}
+        %div
+          %label Facility Name
+          %span(dnd-source='source_site.name') {{source_site.name}}
 
-      %div
-        %label Facility Name
-        %span(dnd-source='source_site.name') {{source_site.name}}
+        %div{'ng-repeat'=>'(key, value) in source_site.properties'}
+          %label {{header_for(source_site, key)}}
+          %span(dnd-source='value') {{value}}
 
-      %div{'ng-repeat'=>'(key, value) in source_site.properties'}
-        %label {{header_for(source_site, key)}}
-        %span(dnd-source='value') {{value}}
-
-
-  .span5
+  .span4
     %fieldset
       %legend Master Facility
 
@@ -37,6 +36,6 @@
 
       %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='target_mfl_site.duplicate')
         Save & Consolidate
-      %br
-      %span
-        with {{source_site.name}}
+      / %br
+      / %span
+      /   with {{source_site.name}}
