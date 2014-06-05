@@ -21,6 +21,12 @@ class Project < ActiveRecord::Base
 
   serialize :hierarchy, MarshalZipSerializable
 
+  BASIC_FIELDS = [
+    { name: 'Facility Code', code: 'fcode', kind: 'text' },
+    { name: 'Facility Type', code: 'ftype', kind: 'text' },
+    { name: 'Beds', code: 'beds', kind: 'numeric' }
+  ]
+
   class NoHierarchyDefinedError < StandardError; end
 
   def no_source_list_was_promoted?

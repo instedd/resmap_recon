@@ -2,11 +2,13 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
 
 .directive "rmLabel", ($parse, RmMetadataService) ->
   restrict: 'E',
+  scope: true,
   templateUrl: 'rm_label_template.html',
   link: (scope, elem, attrs) ->
     codeGet = $parse(attrs.code)
     code = codeGet(scope) || attrs.code
     scope.label = RmMetadataService.label_for_property(scope.collection_id, code)
+
 
 .directive "rmCollectionContext", ($parse) ->
   restrict: 'E',

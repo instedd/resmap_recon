@@ -171,6 +171,10 @@ class SourceList < ActiveRecord::Base
     (self.as_collection.fields.map &:code) & (self.project.master_collection.fields.map &:code)
   end
 
+  def properties_not_in_master
+    (self.as_collection.fields.map &:code) - (self.project.master_collection.fields.map &:code)
+  end
+
   def can_promote?
     project.no_source_list_was_promoted? || project.promoted_source_list_id == self.id
   end
@@ -220,6 +224,20 @@ class SourceList < ActiveRecord::Base
     as_collection.sites.where({}).each do |site|
       site_mappings.create! site_id: site.id, name: site.name
     end
+  end
+
+  def promote_properties_to_master(properties_to_promote)
+    master_collection = project.master_collection
+    master_collection_fields = master_collection.fields.map &:code
+
+    props = self.as_collection.fields.select { |f| properties_to_promote.include?(f.code) && !master_collection_fields.include?(f.code) }
+
+    props_to_create_in_master = props.map do |p| 
+      {name: p.name, code: p.code, kind: 'text'}
+    end
+
+    layer = project.master_collection.find_or_create_layer_by_name 'Main'
+    layer.create_fields props_to_create_in_master
   end
 
   # def process_automapping(chosen_fields, corrections)

@@ -42,10 +42,15 @@
 
           %ul.unstyled
           - ['Name', 'Latitude', 'Longitude'].each do |label|
-            %li= "#{label} → #{label}"
+            %label= "#{label} → #{label}"
           - @source.common_properties_with_master.each do |code|
-            %li
-              %rm-label.inline{code: code}
-              →
-              %rm-label.inline{code: code}
-
+            %rm-label.inline{code: code}
+            →
+            %rm-label.inline{code: code}
+            %br
+          - @source.properties_not_in_master.each do |code|
+            %input{type: :checkbox, "ng-model" => "promoted_properties['#{code}']"}
+            %rm-label.inline{code: code}
+            →
+            %rm-label.inline{code: code}
+            %br

@@ -13,8 +13,8 @@ class ProjectMembersController < ApplicationController
       @project.users << invited
 
       flash.notice = "#{email} added to project"      
-    rescue
-      flash[:error] = "Couldn't add #{email} to this project. Please ensure there's an active MFL user with that email. Note that for a user to be active, she must have confirmed her email address."
+    rescue      
+      flash[:error] = "Couldn't add #{email} to this project. Please ensure there's an active MFL user with that email. For a user to be active, they must have created an account and confirmed their email address."
     end
 
     redirect_to project_members_path(@project)

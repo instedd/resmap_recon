@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
     render 'shared/no_hierarchy_defined'
   end
 
+  rescue_from ResourceMap::ResourceMapApiError do |error|
+    Rails.logger.error "#{Date.new} Error accessing Resource Map's API:\nHTTP STATUS: #{error.http_status_code}\nRM ERROR CODE: #{error.error_code}\nDESCRIPTION: #{error.message}"
+    raise error
+  end
+
   protected
 
   def setup_app_context

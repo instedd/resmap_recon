@@ -110,6 +110,11 @@ class ProjectSourcesController < ApplicationController
     render json: {status: status}
   end
 
+  def promote_properties
+    @source.promote_properties_to_master params[:properties_to_promote]
+    render json: {status: 'ok'}
+  end
+
   def process_automapping
     # corrections = flatten_corrections(params[:corrections]) || {}
     # error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)

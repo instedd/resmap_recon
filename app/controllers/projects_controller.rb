@@ -60,11 +60,7 @@ class ProjectsController < ApplicationController
   def apply_template(project, template)
     collection = AppContext.resmap_api.collections.create name: project.name
 
-    fields_to_create = [
-      { name: 'Facility Code', code: 'fcode', kind: 'text' },
-      { name: 'Facility Type', code: 'ftype', kind: 'text' },
-      { name: 'Beds', code: 'beds', kind: 'numeric' }
-    ]
+    fields_to_create = Project::BASIC_FIELDS
 
     unless template == 'Other Country'
       raw_hierarchy = HierarchyTemplate.load(template)

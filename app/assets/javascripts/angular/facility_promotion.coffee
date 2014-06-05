@@ -8,6 +8,7 @@ angular.module('FacilityPromotion',['RmApiService'])
   $scope.working = false
   $scope.done = false
   $scope.can_start = false
+  $scope.promoted_properties = {}
 
   # grab site information
   # and go to last page
@@ -30,8 +31,8 @@ angular.module('FacilityPromotion',['RmApiService'])
 
   $scope.start = ->
     $scope.working = true
-    $scope.promote_next_site()
-
+    $scope.promote_properties()
+    
   $scope.promote_next_site = ->
     site = _.first $scope.sites
     if site
@@ -43,6 +44,12 @@ angular.module('FacilityPromotion',['RmApiService'])
           $scope.promote_next_site()
         else
           $scope.load_more_sites() if $scope.next_url
+
+  $scope.promote_properties = ->
+    props_to_promote = Object.keys $scope.promoted_properties
+    if props_to_promote and props_to_promote.length > 0
+      $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/promote_properties", {properties_to_promote: props_to_promote}).success (data) ->
+        $scope.promote_next_site()
 
   $scope.load_more_sites = ->
     $http.get($scope.next_url).success (data) ->

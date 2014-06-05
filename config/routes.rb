@@ -22,6 +22,7 @@ ResmapRecon::Application.routes.draw do
         get 'source_list_sites_with_mfl_id_csv'
         get 'unmapped_csv_download'
         get 'promote_facilities'
+        post 'promote_properties'
         post 'promote_site'
         post 'process_automapping'
         post 'reupload_source_list'
