@@ -34,7 +34,7 @@
             %label= field.name
             %input{'type'=>'text', 'ng-model'=>"target_mfl_site.properties.#{field.code}", 'dnd-target' =>"target_mfl_site.properties.#{field.code}"}
 
-      %button.btn.btn-inverse(ng-show='source_site' ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='target_mfl_site.duplicate')
+      %button.btn.btn-inverse(ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='target_mfl_site.duplicate')
         Save & Consolidate
       / %br
       / %span
