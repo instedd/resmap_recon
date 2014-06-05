@@ -50,9 +50,7 @@ group :development, :test do
   gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-rvm', '~> 0.1.0'
 
-  gem 'pry'
   gem 'pry-debugger'
-  gem 'pry-stack_explorer'
 end
 
 group :test do
