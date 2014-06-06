@@ -119,14 +119,18 @@ angular.module('Curation',['RmHierarchyService'])
       $scope.target_mfl_site.duplicate = data.duplicate
 
   $scope.dismiss = ->
-    return if $scope.source_site_empty()
-    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.selected_source_list.id}/sites/#{$scope.source_site.id}/dismiss")
+    source_sites = []
+    for _, sites of $scope.selected_sites
+      for site in sites
+        source_sites.push(id: site.id, source_list_id: site.source_list.id, mfl_hierarchy: site.mfl_hierarchy)
+
+    return if source_sites.length == 0
+
+    $http.post("/projects/#{$scope.project_id}/dismiss_source_sites", {source_sites: source_sites})
       .success ->
-        # remove site from pending
-        site = $scope.source_site
-        index = $scope.sites.items.indexOf(site)
-        $scope.sites.items.splice(index, 1)
-        $scope.lower_counters(site)
+        $scope._reset_and_load_pending_changes()
+        for site in sites
+          $scope.lower_counters(site)
 
   $scope.first_selected_site = ->
     for _, sites of $scope.selected_sites

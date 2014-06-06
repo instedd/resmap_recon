@@ -51,6 +51,16 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def dismiss_source_sites
+    project = Project.find(params[:id])
+    params[:source_sites].each do |site|
+      source_list = project.source_lists.find(site[:source_list_id])
+      source_list.dismiss_site(site[:id])
+    end
+
+    render nothing: true
+  end
+
   protected
 
   def setup_templates

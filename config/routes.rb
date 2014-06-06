@@ -10,12 +10,10 @@ ResmapRecon::Application.routes.draw do
     member do
       get 'curate'
       get 'pending_changes'
+      post 'dismiss_source_sites'
     end
     resources :sources, controller: 'project_sources', only: [:new, :index, :destroy] do
       resources :sites, controller: 'project_sources_sites', only: [] do
-        member do
-          post 'dismiss'
-        end
       end
       member do
         get 'source_list_details'
