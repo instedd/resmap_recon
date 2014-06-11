@@ -38,6 +38,9 @@
             %a.btn.btn-warning(href='javascript:' ng-click='dismiss()' ng-disabled='source_site_empty()')
               %i.icon-remove-sign.icon-white
               Dismiss
+            %a.btn.btn-primary(ng-click='view_reconciliations()' ng-disabled='!target_mfl_site')
+              %i.icon-eye-open.icon-white
+              View Reconciliations
 
         .row-fluid
           .span12

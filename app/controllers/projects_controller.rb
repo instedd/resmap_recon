@@ -17,6 +17,7 @@ class ProjectsController < ApplicationController
     @source_lists = @project.source_lists.map do |s|
       h = s.as_json
       h["name"] = s.name
+      h["headers"] = Hash[s.as_collection.fields.map { |field| [field.code, field.name] }]
       h
     end
     @source_lists.insert 0, { "name" => "All sources" }
