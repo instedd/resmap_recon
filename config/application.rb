@@ -70,5 +70,7 @@ module ResmapRecon
       g.template_engine :haml
       g.fixture_replacement :machinist
     end
+
+    config.version_name = (File.read('VERSION').strip rescue File.read('REVISION').strip rescue 'Development')
   end
 end

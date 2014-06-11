@@ -32,6 +32,14 @@ namespace :deploy do
     end
   end
 
+  task :write_version do
+    on roles(:app) do
+      within repo_path do
+        execute :git, "describe --always > #{release_path}/VERSION"
+      end
+    end
+  end
+
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
@@ -42,5 +50,6 @@ namespace :deploy do
   end
 
   after :finishing, 'deploy:cleanup'
+  after :updating, 'deploy:write_version'
   after 'deploy:publishing', 'deploy:restart'
 end
