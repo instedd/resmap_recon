@@ -5,7 +5,7 @@ angular.module('RmMetadataService', ['RmApiService'])
 
   s = {
     fields: (collection_id) ->
-      RmApiService.get("collections/#{collection_id}/fields/mapping.json", {cache: true})
+      RmApiService.get("en/collections/#{collection_id}/fields/mapping.json", {cache: true})
 
     label_for_property: (collection_id, property) ->
       s.fields(collection_id).then (result) ->
@@ -24,7 +24,7 @@ angular.module('RmMetadataService', ['RmApiService'])
         type
 
     hierarchy: (collection_id, field_id) ->
-      RmApiService.get("collections/#{collection_id}/fields/#{field_id}").then (response) ->
+      RmApiService.get("en/collections/#{collection_id}/fields/#{field_id}").then (response) ->
         response.data.config.hierarchy
   }
 
