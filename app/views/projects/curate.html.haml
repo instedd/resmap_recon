@@ -29,7 +29,7 @@
 
         .row-fluid
           .span12
-            %a.btn.btn-primary(href='javascript:' ng-click='toggle_merge()' ng-disabled='empty_source_or_target()')
+            %a.btn.btn-primary(href='javascript:' ng-click='open_merge()' ng-disabled='empty_source_or_target()')
               %i.icon-circle-arrow-right.icon-white
               Merge
             %a.btn.btn-primary(href='javascript:' ng-click='create_target_site()' ng-disabled='source_site_empty()')
@@ -59,6 +59,6 @@
     %div(ng-controller='MergePanel' ng-show='merging')
       .row-fluid
         .span12
-          %a(href='javascript:' ng-click='toggle_merge()') ← back to grid
+          %a(href='javascript:' ng-click='close_merge()') ← back to grid
 
       = render 'merge_sites'

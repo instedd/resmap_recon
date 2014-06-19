@@ -102,7 +102,6 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.view_reconciliations = () ->
     $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_mfl_site.id}/consolidated_sites")
       .success (sites) ->
-        debugger
         mapped_sites = {}
         for site in sites
           mapped_sites[site.source_list.id] ||= []
@@ -112,11 +111,13 @@ angular.module('Curation',['RmHierarchyService'])
         $scope.merge_mfl_site = $scope.target_mfl_site
         $scope.merging = true
 
-  $scope.toggle_merge = () ->
-    return if $scope.empty_source_or_target()
+  $scope.open_merge = () ->
     $scope.merge_source_sites = $scope.selected_sites
     $scope.merge_mfl_site = $scope.target_mfl_site
-    $scope.merging = !$scope.merging
+    $scope.merging = true
+
+  $scope.close_merge = () ->
+    $scope.merging = false
 
   $scope.create_target_site = ->
     return unless first_site = $scope.first_selected_site()
@@ -261,9 +262,10 @@ angular.module('Curation',['RmHierarchyService'])
     on_success = ->
       $scope.consolidate_loading = false
       $scope._reset_and_load_pending_changes()
-      $scope.toggle_merge()
+      $scope.close_merge()
       $scope.clear_selection()
       $scope.lower_counters(first_site)
+
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
