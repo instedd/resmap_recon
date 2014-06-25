@@ -7,42 +7,44 @@
   - angular_templates 'shared/angular'
 
   %rm-collection-context(id="#{@project.master_collection.id}")
-    %div(ng-controller='MasterSitesEditorCtrl')
-      .pull-left
-        there are a total of
-        %b {{page_data.count}}
-        facilities
-      %form.pull-right
-        .form-search
-          %input.search-query(ng-model='search' placeholder='Search facility')
+    .span12(ng-controller='MasterSitesEditorCtrl')
+      .row-fluid
+        .pull-left
+          there are a total of
+          %b {{page_data.count}}
+          facilities
+        %form.pull-right
+          .form-search
+            %input.search-query(ng-model='search' placeholder='Search facility')
 
-      %table.table.table-bordered
-        %tr
-          %th= @project.target_field.name
-          %th Facility Name
-          - @project.master_collection.fields.each do |field|
-            - if field.id != @project.target_field.id
-              %th
-                = field.name
-          %th Latitude
-          %th Longitude
-          %th
+      .row-fluid
+        %table.table.table-bordered
+          %tr
+            %th= @project.target_field.name
+            %th Facility Name
+            - @project.master_collection.fields.each do |field|
+              - if field.id != @project.target_field.id
+                %th
+                  = field.name
+            %th Latitude
+            %th Longitude
+            %th
 
-        %tr(ng-show='loading')
-          %td{'colspan' => @project.master_collection.fields.count + 2}
-            Loading...
+          %tr(ng-show='loading')
+            %td{'colspan' => @project.master_collection.fields.count + 2}
+              Loading...
 
-        %tr(ng-repeat='site in page_data.sites' ng-controller='MasterSiteRow')
-          %td {{site_hierarchy_node.path}}
-          %td {{site.name}}
-          - @project.master_collection.fields.each do |field|
-            - if field.id != @project.target_field.id
-              %td= "{{site.properties.#{field.code}}}"
-          %td {{site.lat}}
-          %td {{site.long}}
-          %td
-            %a(href='javascript:' ng-click='edit()') edit
-            %a(ng-href='/projects/{{project_id}}/master/sites/{{site.id}}/history' target='_blank') history
+          %tr(ng-repeat='site in page_data.sites' ng-controller='MasterSiteRow')
+            %td {{site_hierarchy_node.path}}
+            %td {{site.name}}
+            - @project.master_collection.fields.each do |field|
+              - if field.id != @project.target_field.id
+                %td= "{{site.properties.#{field.code}}}"
+            %td {{site.lat}}
+            %td {{site.long}}
+            %td
+              %a(href='javascript:' ng-click='edit()') edit
+              %a(ng-href='/projects/{{project_id}}/master/sites/{{site.id}}/history' target='_blank') history
 
 
       %rm-pager(ng-model='page_data' ng-loading-model='loading')
