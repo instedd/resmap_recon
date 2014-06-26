@@ -71,7 +71,7 @@ class ProjectsController < ApplicationController
   def apply_template(project, template)
     collection = AppContext.resmap_api.collections.create name: project.name
 
-    fields_to_create = Project::BASIC_FIELDS
+    fields_to_create = Project::BASIC_FIELDS.dup
 
     unless template == 'Other Country'
       raw_hierarchy = HierarchyTemplate.load(template)
@@ -81,9 +81,6 @@ class ProjectsController < ApplicationController
     end
 
     layer = collection.find_or_create_layer_by_name 'Main'
-
-    Rails.logger.info "Ensuring the MFL collection has the following fields: #{fields_to_create}"
-
 
     layer.ensure_fields fields_to_create
 
