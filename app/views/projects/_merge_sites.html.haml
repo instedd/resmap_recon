@@ -7,6 +7,14 @@
           %label Facility Name
           %span(dnd-source='source_site.name') {{source_site.name}}
 
+        %label Latitude & Longitude
+        .input-append
+          %span.input-small(dnd-source='source_site.lat') {{ source_site.lat }}
+          %span.input-small(dnd-source='source_site.long') {{ source_site.long }}
+          %button.btn(location-edit editable='false' latitude='source_site.lat' longitude='source_site.long')
+            %i.icon-globe
+
+
         %div{'ng-repeat'=>'(key, value) in source_site.properties'}
           %label {{header_for(source_site, key)}}
           %span(dnd-source='value') {{value}}
@@ -23,8 +31,8 @@
       .control-group
         %label Latitude & Longitude
         .input-append
-          %input.input-small(type='text' ng-model='merge_mfl_site.lat')
-          %input.input-small(type='text' ng-model='merge_mfl_site.long')
+          %input.input-small(type='text' ng-model='merge_mfl_site.lat' dnd-target='merge_mfl_site.lat')
+          %input.input-small(type='text' ng-model='merge_mfl_site.long' dnd-target='merge_mfl_site.long')
           %button.btn(location-edit latitude='merge_mfl_site.lat' longitude='merge_mfl_site.long')
             %i.icon-globe
 
