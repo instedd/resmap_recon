@@ -81,6 +81,10 @@ class ProjectsController < ApplicationController
     end
 
     layer = collection.find_or_create_layer_by_name 'Main'
+
+    Rails.logger.info "Ensuring the MFL collection has the following fields: #{fields_to_create}"
+
+
     layer.ensure_fields fields_to_create
 
     project.master_collection_id = collection.id
