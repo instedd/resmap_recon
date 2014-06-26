@@ -5,6 +5,7 @@ angular.module('LocationInput', [])
   scope:
     latitude: '='
     longitude: '='
+    editable: '='
   link: (scope, elem, attrs) ->
 
     content = $('<div>')
@@ -42,6 +43,7 @@ angular.module('LocationInput', [])
 
     marker = null
     changing_scope_localy = false
+    scope.is_editable = (if scope.editable? then scope.editable else true)
 
     update_scope_locally = (latLng) ->
       changing_scope_localy = true
@@ -55,7 +57,7 @@ angular.module('LocationInput', [])
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(scope.latitude, scope.longitude),
             map: map,
-            draggable:true,
+            draggable: scope.is_editable,
         })
 
         google.maps.event.addListener marker, 'dragend', ->
@@ -63,9 +65,10 @@ angular.module('LocationInput', [])
       else
         marker.setPosition(new google.maps.LatLng(scope.latitude, scope.longitude))
 
-    google.maps.event.addListener map, 'dblclick', (e) ->
-      update_scope_locally(e.latLng)
-      create_or_move_location_marker()
+    if scope.is_editable
+      google.maps.event.addListener map, 'dblclick', (e) ->
+        update_scope_locally(e.latLng)
+        create_or_move_location_marker()
 
     scope.$watch "'' + latitude + ';' + longitude", ->
       return if changing_scope_localy

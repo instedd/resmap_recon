@@ -1,4 +1,5 @@
 %div.location_edit_popover
   .map
-  %i.icon-info-sign
-  %small.muted drag or double click to change location
+  %span(ng-show="is_editable")
+    %i.icon-info-sign
+    %small.muted drag or double click to change location
