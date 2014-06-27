@@ -80,10 +80,13 @@ angular.module('Curation',['RmHierarchyService'])
     source = $scope.source_by_id(source_id)
     return source.name if source
 
-  $scope.hierarchy_codes_to_paths = ->
+  $scope.hierarchy_codes_to_paths = ->    
+    $scope.mfl_sites.headers = (h for h in $scope.mfl_sites.headers when h.code != $scope.hierarchy_target_field_code)
+    $scope.mfl_sites.headers.push {name: "Administrative Division", code: "admin_division_path"}
+
     for site in $scope.mfl_sites.items
-        node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
-        site.properties[$scope.hierarchy_target_field_code] = node.path
+      node = NodeService.node_by_id(site.properties[$scope.hierarchy_target_field_code])
+      site.properties["admin_division_path"] = node.path
 
   $scope.load_mfl_page = (page_to_load = 1, search = "") ->
     params = { params: {hierarchy: $scope.selected_node?.id, search: search, page: page_to_load} }
@@ -92,6 +95,7 @@ angular.module('Curation',['RmHierarchyService'])
     page_request.success (data) ->
       $scope.mfl_sites.items = data.items
       $scope.mfl_sites.headers = data.headers
+
       $scope.mfl_sites.current_page = data.current_page
       $scope.mfl_sites.total_count = data.total_count
 
@@ -236,6 +240,27 @@ angular.module('Curation',['RmHierarchyService'])
 
 
 .controller 'MergePanel', ($scope, $http) ->
+  clone = (obj) ->
+    if not obj? or typeof obj isnt 'object'
+      return obj
+
+    if obj instanceof Date
+      return new Date(obj.getTime()) 
+
+    if obj instanceof RegExp
+      flags = ''
+      flags += 'g' if obj.global?
+      flags += 'i' if obj.ignoreCase?
+      flags += 'm' if obj.multiline?
+      flags += 'y' if obj.sticky?
+      return new RegExp(obj.source, flags) 
+
+    newInstance = new obj.constructor()
+
+    for key of obj
+      newInstance[key] = clone obj[key]
+
+    return newInstance
 
   $scope.header_for = (site, code) ->
     if source = $scope.source_by_id(site.source_list.id)
@@ -254,9 +279,12 @@ angular.module('Curation',['RmHierarchyService'])
       for site in sites
         source_sites.push(id: site.id, source_list_id: site.source_list.id)
 
+    mfl_site_to_merge = clone($scope.merge_mfl_site)
+    delete mfl_site_to_merge.properties["admin_division_path"]
+
     params = {
       source_sites: source_sites
-      target_site: $scope.merge_mfl_site
+      target_site: mfl_site_to_merge
     }
 
     on_success = ->
@@ -265,7 +293,7 @@ angular.module('Curation',['RmHierarchyService'])
       $scope.close_merge()
       $scope.clear_selection()
       $scope.lower_counters(first_site)
-
+      $scope.load_mfl_page()
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
