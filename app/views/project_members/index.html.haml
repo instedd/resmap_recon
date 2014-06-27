@@ -12,7 +12,8 @@
         %tr
           %td= user.email
           %td
-            = link_to 'Remove', project_member_path(@project, user), method: :delete, class: 'ladda'
+            - unless @project.users.count == 1 && user == current_user
+              = link_to 'Remove', project_member_path(@project, user), method: :delete, class: 'ladda'
 
 %h2 Invite members
 
