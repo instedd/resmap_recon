@@ -176,7 +176,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def can_promote?
-    project.no_source_list_was_promoted?
+    project.no_source_list_was_promoted? || !project.has_facilities?
   end
 
   def consolidated_with(master_site_id)

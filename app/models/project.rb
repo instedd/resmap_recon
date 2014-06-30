@@ -33,6 +33,10 @@ class Project < ActiveRecord::Base
     self.promoted_source_list_id.nil?
   end
 
+  def has_facilities?
+    master_collection.sites.count > 0
+  end
+
   def master_collection
     AppContext.resmap_api.collections.find(master_collection_id)
   end
