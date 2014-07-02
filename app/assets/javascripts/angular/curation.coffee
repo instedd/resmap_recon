@@ -80,7 +80,7 @@ angular.module('Curation',['RmHierarchyService'])
     source = $scope.source_by_id(source_id)
     return source.name if source
 
-  $scope.hierarchy_codes_to_paths = ->    
+  $scope.hierarchy_codes_to_paths = ->
     $scope.mfl_sites.headers = (h for h in $scope.mfl_sites.headers when h.code != $scope.hierarchy_target_field_code)
     $scope.mfl_sites.headers.push {name: "Administrative Division", code: "admin_division_path"}
 
@@ -196,13 +196,11 @@ angular.module('Curation',['RmHierarchyService'])
     $scope.selected_node = node
     $scope.clear_selection()
     # $scope._reset_and_load_pending_changes()
-    $scope.load_mfl_page()
 
   $scope.$on 'search-source-records', (e, search) ->
     $scope.source_records_search = search
     $scope.$broadcast 'search-source-records-changed', search
     $scope._reset_and_load_pending_changes()
-    $scope.load_mfl_page()
 
   # Let it begin!
   $scope.setup()
@@ -214,10 +212,7 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.clear_sites()
 
   $scope._search_sites = ->
-    if _.isEmpty($scope.search)
-      $scope.mfl_sites.items = []
-    else
-      $scope.load_mfl_page(1, $scope.search)
+    $scope.load_mfl_page(1, $scope.search)
 
   $scope.$watch 'search + selected_node.id', _.throttle($scope._search_sites, 200)
 
@@ -247,7 +242,7 @@ angular.module('Curation',['RmHierarchyService'])
       return obj
 
     if obj instanceof Date
-      return new Date(obj.getTime()) 
+      return new Date(obj.getTime())
 
     if obj instanceof RegExp
       flags = ''
@@ -255,7 +250,7 @@ angular.module('Curation',['RmHierarchyService'])
       flags += 'i' if obj.ignoreCase?
       flags += 'm' if obj.multiline?
       flags += 'y' if obj.sticky?
-      return new RegExp(obj.source, flags) 
+      return new RegExp(obj.source, flags)
 
     newInstance = new obj.constructor()
 
