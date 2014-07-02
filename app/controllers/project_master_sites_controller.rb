@@ -111,9 +111,11 @@ class ProjectMasterSitesController < ApplicationController
   def consolidate_with_master_site(master_site)
     master_site.update_properties(params[:target_site])
 
-    params[:source_sites].each do |source_site|
-      source_list = @project.source_lists.find(source_site[:source_list_id])
-      source_list.consolidate_with(source_site[:id], master_site.id)
+    if params[:source_sites]
+      params[:source_sites].each do |source_site|
+        source_list = @project.source_lists.find(source_site[:source_list_id])
+        source_list.consolidate_with(source_site[:id], master_site.id)
+      end
     end
   end
 
