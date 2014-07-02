@@ -20,7 +20,7 @@
           %span(dnd-source='value') {{value}}
 
   .span4
-    %fieldset
+    %fieldset(ng-disabled='viewing_reconciliations')
       %legend Master Facility
 
       .control-group(ng-class='{error: merge_mfl_site.duplicate}')
@@ -42,7 +42,7 @@
             %label= field.name
             %input{'type'=>'text', 'ng-model'=>"merge_mfl_site.properties.#{field.code}", 'dnd-target' =>"merge_mfl_site.properties.#{field.code}"}
 
-      %button.btn.btn-inverse(ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='merge_mfl_site.duplicate')
+      %button.btn.btn-inverse(ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='merge_mfl_site.duplicate' ng-show='!viewing_reconciliations')
         Save & Consolidate
       / %br
       / %span

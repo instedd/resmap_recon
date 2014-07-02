@@ -114,6 +114,7 @@ angular.module('Curation',['RmHierarchyService'])
         $scope.merge_source_sites = mapped_sites
         $scope.merge_mfl_site = $scope.target_mfl_site
         $scope.merging = true
+        $scope.viewing_reconciliations = true
 
   $scope.open_merge = () ->
     $scope.merge_source_sites = $scope.selected_sites
@@ -122,6 +123,7 @@ angular.module('Curation',['RmHierarchyService'])
 
   $scope.close_merge = () ->
     $scope.merging = false
+    $scope.viewing_reconciliations = false
 
   $scope.create_target_site = ->
     return unless first_site = $scope.first_selected_site()
