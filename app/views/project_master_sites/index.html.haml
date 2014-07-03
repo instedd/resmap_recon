@@ -63,6 +63,10 @@
                   %input(type='text' ng-model='target_site.name')
 
                 .control-group
+                  %label Administrative Division
+                  %hierarchy-input{collection_id: @project.master_collection_id, field_id: @project.target_field.id, node_id: "target_site.properties.#{@project.target_field.code}"}
+
+                .control-group
                   %label Latitude & Longitude
                   .input-append
                     %input.input-small(type='text' ng-model='target_site.lat')

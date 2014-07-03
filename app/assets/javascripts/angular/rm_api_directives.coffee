@@ -30,10 +30,17 @@ angular.module("RmApiDirectives", ['RmMetadataService'])
 .directive "rmHierarchyTree", ($parse, RmMetadataService) ->
   restrict: 'E',
   templateUrl: 'rm_hierarchy_tree.html'
-  compile: ->
-    pre: (scope, elem, attrs) ->
-      idGet = $parse(attrs.fieldId)
-      scope.hierarchy_field_id = parseInt(idGet(scope))
+  scope:
+    collectionId: '='
+    fieldId: '='
+    nodeTemplate: '@'
+    nodeId: '='
+    pendingList: '='
+
+  link: (scope) ->
+    scope.select_node = (nodeId) ->
+      if scope.nodeId
+        scope.nodeId = nodeId
 
 .directive "rmPager", () ->
   restrict: 'E'

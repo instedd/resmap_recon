@@ -3,8 +3,7 @@
     %i(ng-class='{"icon-folder-close": !node.leaf && !node.expanded, "icon-folder-open": !node.leaf && node.expanded, "icon-file": node.leaf}')
     {{node.name}}
     (id: {{node.id}})
-    %span.badge{'ng-show' => 'node.count'} {{node.count}}
-  %a.choose(href="javascript:" ng-click="choose(node)" ng-show="node.count")
+  %a.choose(href="javascript:" ng-click="choose(node)" )
     (choose)
 %ul{"ng-show" => "node.expanded"}
   %li(ng-repeat='node in node.sub' ng-include="nodeTemplate")

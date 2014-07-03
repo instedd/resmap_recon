@@ -259,6 +259,9 @@ angular.module('Curation',['RmHierarchyService'])
 
     return newInstance
 
+  $scope.$on 'tree-node-chosen', (e, node) ->
+    e.stopPropagation()
+
   $scope.header_for = (site, code) ->
     if source = $scope.source_by_id(site.source_list.id)
       source.headers[code]

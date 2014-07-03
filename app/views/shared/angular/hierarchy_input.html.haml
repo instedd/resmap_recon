@@ -1,0 +1,9 @@
+.input-append
+  %input(type="text" ng-model="node.name" disabled)
+  .btn-group
+    %button.btn.dropdown-toggle(data-toggle="dropdown")
+      %span.caret
+    .dropdown-menu
+      .hierarchy-tree-dropdown
+        %rm-hierarchy-tree{collection_id: "collectionId", field_id: "fieldId", node_template: "hierarchy_input_node.html", node_id: "nodeId"}
+

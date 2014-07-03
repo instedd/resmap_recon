@@ -7,7 +7,7 @@
         = back_to_project
         %rm-collection-context(id="#{@project.master_collection.id}")
           %h3 Administrative Unit
-          %rm-hierarchy-tree(field_id="#{@hierarchy_field_id}")
+          %rm-hierarchy-tree{collection_id: "collection_id", field_id: @hierarchy_field_id, node_template: "hierarchy_tree_node.html", pending_list: "pending_list"}
 
       .span9
         .row-fluid
