@@ -16,6 +16,8 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.source_records_search = null
   $scope.selected_source_list = $scope.source_lists[1]
 
+  $scope.validation_errors = []
+
   # Initialization
   $scope.setup = () ->
     $scope.clear_sites()
@@ -124,6 +126,7 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.close_merge = () ->
     $scope.merging = false
     $scope.viewing_reconciliations = false
+    $scope.validation_errors.splice(0)
 
   $scope.create_target_site = ->
     return unless first_site = $scope.first_selected_site()
@@ -269,6 +272,19 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.is_target_site_new = ->
     $scope.merge_mfl_site.id == null
 
+  $scope.has_errors = (field_id) ->
+    for error in $scope.validation_errors
+      return true if error.field_id == field_id
+
+    return false
+
+  $scope.error_message = (field_id) ->
+    for error in $scope.validation_errors
+      if error.field_id == field_id
+        return error.message
+
+    return ''    
+
   $scope.consolidate = ->
     return if $scope.merge_mfl_site.duplicate
     $scope.consolidate_loading = true
@@ -287,20 +303,27 @@ angular.module('Curation',['RmHierarchyService'])
       target_site: mfl_site_to_merge
     }
 
-    on_success = ->
+    $scope.validation_errors.splice 0
+
+    on_success = (data) ->
       $scope.consolidate_loading = false
-      $scope._reset_and_load_pending_changes()
-      $scope.close_merge()
-      $scope.clear_selection()
-      $scope.lower_counters(first_site)
-      $scope.load_mfl_page()
+
+      if data?.validation_errors? 
+        $scope.validation_errors.splice 0
+        $.merge($scope.validation_errors, data.validation_errors)
+      else        
+        $scope._reset_and_load_pending_changes()
+        $scope.close_merge()
+        $scope.clear_selection()
+        $scope.lower_counters(first_site)
+        $scope.load_mfl_page()
 
     if $scope.is_target_site_new()
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
-        .success ->
+        .success (data) ->
           $scope.mfl_sites.items.unshift($scope.merge_mfl_site)
           on_success()
     else
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.merge_mfl_site.id}", params)
-        .success ->
-          on_success()
+        .success (data) ->
+          on_success(data)

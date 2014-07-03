@@ -24,16 +24,24 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def update
-    site = @project.master_collection.sites.find(params[:id])
-    consolidate_with_master_site(site)
-    render nothing: true
+    begin
+      site = @project.master_collection.sites.find(params[:id])
+      consolidate_with_master_site(site)
+      render nothing: true
+    rescue ResourceMap::SiteValidationError => e
+      render json: { validation_errors: e.errors_by_property_code }
+    end
   end
 
   def create
-    params[:target_site].delete(:id) # it is null and we don't want it
-    site = @project.master_collection.sites.create(name: params[:target_site][:name])
-    consolidate_with_master_site(site)
-    render nothing: true
+    begin
+      params[:target_site].delete(:id) # it is null and we don't want it
+      site = @project.master_collection.sites.create(name: params[:target_site][:name])
+      consolidate_with_master_site(site)
+      render nothing: true
+    rescue ResourceMap::SiteValidationError => e
+      render json: { validation_errors: e.errors_by_property_code }      
+    end
   end
 
   def consolidated_sites
@@ -108,7 +116,7 @@ class ProjectMasterSitesController < ApplicationController
     @project = load_project_by_id(params[:project_id])
   end
 
-  def consolidate_with_master_site(master_site)
+  def consolidate_with_master_site(master_site)  
     master_site.update_properties(params[:target_site])
 
     if params[:source_sites]

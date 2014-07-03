@@ -38,9 +38,13 @@
 
       - @project.master_collection.fields.each do |field|
         - if field.id != @project.master_collection_target_field_id
-          .control-group
+          .control-group{'ng-class' => "{error: has_errors(\"#{field.id}\")}"}
             %label= field.name
             %input{'type'=>'text', 'ng-model'=>"merge_mfl_site.properties.#{field.code}", 'dnd-target' =>"merge_mfl_site.properties.#{field.code}"}
+            %br
+            %label{'class' => 'control-label', 'has-error'=>'', 'ng-show' => "has_errors(\"#{field.id}\")"}
+              = "{{error_message(\"#{field.id}\")}}"
+
 
       %button.btn.btn-inverse(ng-click='consolidate()' ladda-loading='consolidate_loading' ng-disabled='merge_mfl_site.duplicate' ng-show='!viewing_reconciliations')
         Save & Consolidate
