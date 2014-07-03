@@ -322,7 +322,7 @@ angular.module('Curation',['RmHierarchyService'])
       $http.post("/projects/#{$scope.project_id}/master/sites", params)
         .success (data) ->
           $scope.mfl_sites.items.unshift($scope.merge_mfl_site)
-          on_success()
+          on_success(data)
     else
       $http.post("/projects/#{$scope.project_id}/master/sites/#{$scope.merge_mfl_site.id}", params)
         .success (data) ->
