@@ -1,6 +1,8 @@
 angular.module('Curation',['RmHierarchyService'])
 
-.controller 'CurationPanel', ($scope, $http, RmHierarchyService) ->
+.controller 'CurationPanel', ($scope, $http, RmHierarchyService, $window) ->
+  scrollToTop = () ->
+    $window.scrollTo(0, 0)
 
   # Scope attributes
   $scope.merging = false
@@ -17,6 +19,8 @@ angular.module('Curation',['RmHierarchyService'])
   $scope.selected_source_list = $scope.source_lists[1]
 
   $scope.validation_errors = []
+
+  $scope.$watch 'merging', scrollToTop
 
   # Initialization
   $scope.setup = () ->
