@@ -2,7 +2,3 @@
 %td(dnd-source='site.source_list.name') {{site.source_list.name}}
 
 %td{'ng-repeat'=>'(code,name) in headers', 'dnd-source' => 'value'} {{site.properties[code]}}
-%td
-  %button.btn(ng-click='dismiss()') Dismiss
-/ %rm-label(code="key")
-/ %rm-read-only-input(model='key' value='value')
