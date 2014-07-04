@@ -22,7 +22,7 @@
 
 angular.module('ProjectSourceAfterCreateApp', ['Rails','ProjectSourceAfterCreate', 'Ladda']);
 angular.module('MappingEditorApp', ['Rails','MappingEditor', 'HierarchyViewer', 'RmApiDirectives']);
-angular.module('CurationApp', ['Rails','DndValue','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda', 'PendingList', 'RmApiDirectives', 'PaginatedGrid', 'SourceListCombo']);
+angular.module('CurationApp', ['Rails','DndValue','Curation', 'HierarchyViewer', 'LocationInput', 'Ladda', 'PendingList', 'RmApiDirectives', 'PaginatedGrid', 'SourceListCombo', 'HierarchyInput']);
 angular.module('MasterSitesEditorApp', ['Rails','DndValue','MasterSitesEditor', 'HierarchyViewer', 'LocationInput', 'RmApiDirectives', 'HierarchyInput']);
 angular.module('HierarchySelectionApp', ['Rails','HierarchySelection']);
 angular.module('FacilityPromotionApp', ['Rails', 'FacilityPromotion', 'RmApiDirectives']);
