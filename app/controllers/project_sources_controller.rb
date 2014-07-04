@@ -50,6 +50,11 @@ class ProjectSourcesController < ApplicationController
     end
   end
 
+  def upload_new_file
+    @source.destroy
+    redirect_to new_project_source_path(@project)
+  end
+
   def source_list_details
     begin
       @new_source_list = NewSourceList.new name: @source.as_collection.name

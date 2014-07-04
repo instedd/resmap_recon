@@ -29,8 +29,12 @@
         %button.btn.btn-primary(ng-disabled="import_disabled" ng-click="import()" ladda-loading="importing" ng-hide="status_finished")
           Import
 
-        = link_to project_source_path(@project, @source), :method => :delete, class: 'btn' do
-          Cancel
+        = link_to project_source_path(@project, @source), :method => :delete, "class" => 'btn', "ng-show" => "!status_finished" do
+          Delete
+
+        = link_to upload_new_file_project_source_path(@project, @source), :method => :get, "class" => 'btn', "ng-show" => "!status_finished" do
+          Upload new list
+
 
         %p(ng-show="status_finished")
           Facilities imported. You will be redirected in {{redirect_in}} seconds or
@@ -46,3 +50,4 @@
       Click
       %b Import
       when ready.
+

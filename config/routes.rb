@@ -27,6 +27,7 @@ ResmapRecon::Application.routes.draw do
 
         get 'after_create'
         get 'invalid'
+        get 'upload_new_file'
 
         resource 'import_wizard', controller: 'project_sources_import_wizard', only: [] do
           post 'validate'
