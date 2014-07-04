@@ -227,6 +227,8 @@ class SourceList < ActiveRecord::Base
   end
 
   def promote_properties_to_master(properties_to_promote)
+    return if properties_to_promote.nil?
+
     master_collection = project.master_collection
     master_collection_fields = master_collection.fields.map &:code
 

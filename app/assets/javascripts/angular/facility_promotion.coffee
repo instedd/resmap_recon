@@ -46,11 +46,10 @@ angular.module('FacilityPromotion',['RmApiService'])
           $scope.load_more_sites() if $scope.next_url
 
   $scope.promote_properties = ->
-    props_to_promote = Object.keys $scope.promoted_properties
-    if props_to_promote and props_to_promote.length > 0
-      $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/promote_properties", {properties_to_promote: props_to_promote}).success (data) ->
-        $scope.promote_next_site()
-
+    props_to_promote = Object.keys $scope.promoted_properties    
+    $http.post("/projects/#{$scope.project_id}/sources/#{$scope.source_list_id}/promote_properties", {properties_to_promote: props_to_promote}).success (data) ->
+      $scope.promote_next_site()
+    
   $scope.load_more_sites = ->
     $http.get($scope.next_url).success (data) ->
       $scope.sites = data.sites
