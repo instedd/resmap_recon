@@ -15,7 +15,7 @@ common: &default_settings
   # You must specify the license key associated with your New Relic
   # account.  This key binds your Agent's data to your account in the
   # New Relic service.
-  license_key: '26505b9e1e3902dd700b418f2c31a8e95bfeae3e'
+  # license_key: '<PASTE LICENSE KEY HERE>'
 
   # Agent Enabled (Ruby/Rails Only)
   # Use this setting to force the agent to run or not run.
@@ -42,7 +42,7 @@ common: &default_settings
   #       - Ajax Service
   #       - All Services
   #
-  app_name: MFL Reconciliation Tool (heroku)
+  app_name: MFL Reconciliation Tool
 
   # When "true", the agent collects performance data about your
   # application and reports this data to the New Relic service at
