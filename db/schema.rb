@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140307160527) do
+ActiveRecord::Schema.define(:version => 20140731221144) do
 
   create_table "identities", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20140307160527) do
     t.datetime "updated_at",                        :null => false
     t.boolean  "dismissed",      :default => false
   end
+
+  add_index "site_mappings", ["source_list_id", "site_id"], :name => "index_site_mappings_on_source_list_id_and_site_id"
 
   create_table "source_lists", :force => true do |t|
     t.integer  "project_id"

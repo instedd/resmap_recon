@@ -221,7 +221,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def import_sites_from_resource_map
-    as_collection.sites.where({}).each do |site|
+    as_collection.sites.where({}).page_size(1000).each do |site|
       site_mappings.create! site_id: site.id, name: site.name
     end
   end
@@ -260,13 +260,6 @@ class SourceList < ActiveRecord::Base
           current_mfl_id = hier_in_level[index]['id']
           hier_in_level = hier_in_level[index]['sub']
           error_branch << value
-        # elsif corrections[value]
-        #   index = hier_in_level.map{|entry| entry['name']}.index(corrections[value])
-        #   current_mfl_id = hier_in_level[index]['id']
-        #   hier_in_level = hier_in_level[index]['sub']
-        #   error_branch << value
-        #   new_error_branch = array_to_tree_branch(error_branch, hier_in_level, corrections[value])
-        #   error_tree = merge_into(error_tree, new_error_branch)
         else
           missed = true
           error_branch << value
