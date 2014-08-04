@@ -276,7 +276,7 @@ class SourceList < ActiveRecord::Base
 
     if count == sites_pending.count
       successful_mappings.each do |mapping|
-        site_mapping = SiteMapping.find_or_initialize_by_site_id(mapping[:id])
+        site_mapping = SiteMapping.where(source_list_id: id, site_id: mapping[:id]).first_or_initialize
         site_mapping.mfl_hierarchy = mapping[:mfl_id]
         site_mapping.save!
       end
