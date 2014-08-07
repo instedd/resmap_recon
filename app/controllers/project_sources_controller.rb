@@ -7,7 +7,7 @@ class ProjectSourcesController < ApplicationController
     @new_source_list ||= NewSourceList.new
     @source_list = SourceList.new project: @project
     master_name = @project.master_collection.name
-    @collection_ids = AppContext.resmap_api.collections.all.select{|c| c.sites.count > 0 && c.name != master_name}.map{|c| [c.name, c.id]}
+    @collection_ids = AppContext.resmap_api.collections.all.select{|c| c.site_count > 0 && c.name != master_name}.map{|c| [c.name, c.id]}
   end
 
   def create_from_file
