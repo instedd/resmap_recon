@@ -68,7 +68,7 @@ class ProjectSourcesController < ApplicationController
 
       @curation_progress = @source.curation_progress
       @mapping_progress = @source.mapping_progress
-    rescue
+    rescue Exception => e
       redirect_to invalid_project_source_path(@project, @source)
     end
   end

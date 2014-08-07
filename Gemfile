@@ -21,6 +21,7 @@ gem 'newrelic_rpm'
 gem 'rack-oauth2', git: "https://github.com/manastech/rack-oauth2.git", branch: 'master'
 gem 'alto_guisso', git: "https://bitbucket.org/instedd/alto_guisso.git", branch: 'master'
 gem 'resource_map_api_client', git: "https://bitbucket.org/instedd/resource_map_api_client.git", branch: 'master'
+gem 'activerecord-import'
 
 # Gems used only for assets and not required
 # in production environments by default.

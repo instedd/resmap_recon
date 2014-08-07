@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
     cols = AppContext.resmap_api.collections.all
 
     @source_lists = @project.source_lists.map do |source_list|
-      c = cols.detect { |c| c.id == source_list.id }      
+      c = cols.detect { |c| c.id == source_list.collection_id }      
       name = c.nil? ? 'Undefined' : c.name
 
       {

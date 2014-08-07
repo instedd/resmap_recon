@@ -221,9 +221,21 @@ class SourceList < ActiveRecord::Base
   end
 
   def import_sites_from_resource_map
-    as_collection.sites.where({}).page_size(1000).each do |site|
-      site_mappings.create! site_id: site.id, name: site.name
+    sites_rel = as_collection.sites.where({}).page_size(1000).page(1)
+
+    all_sites = sites_rel.to_a
+
+    while sites_rel = sites_rel.next_page do
+      all_sites = all_sites.concat sites_rel.to_a
     end
+
+    source_list_id = id
+
+    mappings = all_sites.map do |site|
+      SiteMapping.new site_id: site.id, name: site.name, source_list_id: id
+    end
+
+    SiteMapping.import mappings
   end
 
   def promote_properties_to_master(properties_to_promote)
