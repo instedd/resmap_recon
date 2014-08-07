@@ -1,15 +1,15 @@
 
 %ul.project_source_lists
-  - @project.source_lists.each do |source_list|
+  - @source_lists.each do |source_list|
     %li
       .well.well-small.well-white
-        = link_to source_list.name, source_list_details_project_source_path(@project, source_list)
+        = link_to source_list[:name], source_list_details_project_source_path(@project, source_list[:model])
         %br
-        = link_to "Download with MFL ID", source_list_sites_with_mfl_id_csv_project_source_path(@project, source_list)
+        = link_to "Download with MFL ID", source_list_sites_with_mfl_id_csv_project_source_path(@project, source_list[:model])
         %br
         %br
         .source-bottom
-          - source_list.mapping_progress.tap do |progress|
+          - source_list[:model].mapping_progress.tap do |progress|
             - if progress == 100
               %i.icon-ok
             - else

@@ -8,6 +8,19 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    # Force all collections to be loaded at once, to avoid subsequent N+1 requests
+    cols = AppContext.resmap_api.collections.all
+
+    @source_lists = @project.source_lists.map do |source_list|
+      c = cols.detect { |c| c.id == source_list.id }      
+      name = c.nil? ? 'Undefined' : c.name
+
+      {
+        name: name,
+        model: source_list
+      }
+    end
+
     @curation_progress = "#{@project.source_lists.map(&:curation_progress).reduce(:+) / @project.source_lists.count}%" rescue "0%"
   end
 
