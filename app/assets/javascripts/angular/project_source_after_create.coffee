@@ -1,6 +1,8 @@
 angular.module('ProjectSourceAfterCreate', [])
 
 .controller 'AfterCreateCtrl', ($scope, $http, $window, $timeout) ->
+  $scope.status_check_base = 2000
+  $scope.status_check_attempts = 0
 
   $scope.identifier_column = $scope.columns_spec[0]
   $scope.import_disabled = true
@@ -43,12 +45,19 @@ angular.module('ProjectSourceAfterCreate', [])
         $scope.importing = data.status != 'finished'
         $scope.status_finished = data.status == 'finished'
 
+        if $scope.status_finished
+          $scope.status_check_attempts = 0 
+        else
+          $scope.status_check_attempts = $scope.status_check_attempts + 1
+
         if $scope.importing
           $timeout ->
             $scope._check_status()
             $scope.$apply()
-          , 2000
+          , Math.min($scope.status_check_base * (2 ^ $scope.status_check_attempts), 30000)
         else
           $timeout ->
             $window.location.href = $scope.redirect_url
           , $scope.redirect_in * 1000
+
+
