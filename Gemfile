@@ -52,6 +52,7 @@ group :development, :test do
   gem 'capistrano-rvm', '~> 0.1.0'
 
   gem 'pry-debugger'
+  gem 'pry-stack_explorer'
 end
 
 group :test do

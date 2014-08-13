@@ -67,7 +67,7 @@ class SourceList < ActiveRecord::Base
 
     sites = find_sites_from_ids(mappings.keys)
     
-    sites.each do |s|
+    sites.each(true) do |s|
       mappings[s.id.to_s]["site"] = s
     end
 
@@ -82,7 +82,7 @@ class SourceList < ActiveRecord::Base
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name) + extra_columns
       
-      sites.each do |site_projection|
+      sites.each(true) do |site_projection|
         site, extras = yield(site_projection)
 
         data = site.data
@@ -115,7 +115,12 @@ class SourceList < ActiveRecord::Base
   end
 
   def unmapped_sites_csv
-    csv_serialize sites_pending, [] do |site_projection|
+    in_memory_sites_pending = []
+    sites_pending.each(true) do |s|
+      in_memory_sites_pending.push s
+    end
+
+    csv_serialize in_memory_sites_pending, [] do |site_projection|
       [site_projection, nil]
     end
   end
@@ -181,7 +186,13 @@ class SourceList < ActiveRecord::Base
 
   def consolidated_with(master_site_id)
     ids = site_mappings.where('mfl_site_id = ?', master_site_id).pluck(:site_id)
-    find_sites_from_ids(ids).map { |s| site_to_hash(s) }
+
+    consolidated_sites = []
+    find_sites_from_ids(ids).each(true) do |s|
+      consolidated_sites.push(site_to_hash(s))
+    end
+
+    consolidated_sites
   end
 
   def site_to_hash(site)
@@ -221,18 +232,10 @@ class SourceList < ActiveRecord::Base
   end
 
   def import_sites_from_resource_map
-    sites_rel = as_collection.sites.where({}).page_size(1000).page(1)
+    mappings = []
 
-    all_sites = sites_rel.to_a
-
-    while sites_rel = sites_rel.next_page do
-      all_sites = all_sites.concat sites_rel.to_a
-    end
-
-    source_list_id = id
-
-    mappings = all_sites.map do |site|
-      SiteMapping.new site_id: site.id, name: site.name, source_list_id: id
+    as_collection.sites.where({}).page_size(1000).each(true) do |s|
+      mappings.push(SiteMapping.new site_id: s.id, name: s.name, source_list_id: id)
     end
 
     SiteMapping.import mappings
@@ -254,13 +257,12 @@ class SourceList < ActiveRecord::Base
     layer.create_fields props_to_create_in_master
   end
 
-  # def process_automapping(chosen_fields, corrections)
   def process_automapping(chosen_fields)
     error_tree = []
     count = 0
     successful_mappings = []
 
-    sites_pending.each do |site|
+    sites_pending.each(true) do |site|
       hier_in_level = project.hierarchy
       missed = false
       error_branch = []
@@ -286,7 +288,7 @@ class SourceList < ActiveRecord::Base
       end
     end
 
-    if count == sites_pending.count
+    if count == sites_pending.total_count
       successful_mappings.each do |mapping|
         site_mapping = SiteMapping.where(source_list_id: id, site_id: mapping[:id]).first_or_initialize
         site_mapping.mfl_hierarchy = mapping[:mfl_id]
@@ -332,7 +334,7 @@ class SourceList < ActiveRecord::Base
     if ids.empty?
       []
     else
-      as_collection.sites.where(site_id: ids, page_size: 1000)
+      as_collection.sites.where(site_id: ids).page_size(1000)
     end
   end
 
