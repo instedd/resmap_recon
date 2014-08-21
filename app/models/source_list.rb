@@ -82,7 +82,7 @@ class SourceList < ActiveRecord::Base
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name) + extra_columns
       
-      sites.each(true) do |site_projection|
+      sites.each do |site_projection|
         site, extras = yield(site_projection)
 
         data = site.data
@@ -115,7 +115,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def unmapped_sites_csv
-    csv_serialize sites_pending, [] do |site_projection|
+    csv_serialize sites_pending.all, [] do |site_projection|
       [site_projection, nil]
     end
   end
@@ -327,14 +327,18 @@ class SourceList < ActiveRecord::Base
 
   def find_sites_from_ids(ids)
     if ids.empty?
-      EmptySiteApiResult.new
+      EmptySiteApiResult.new as_collection
     else
       as_collection.sites.where(site_id: ids).page_size(1000)
     end
   end
 
   # Hack, I know...
-  class EmptySiteApiResult
+  class EmptySiteApiResult < ResourceMap::SiteResult
+    def initialize(collection)
+      super collection, {}
+    end
+
     def each(seamless_paging=false)
       [].each do |e|
         yield e
