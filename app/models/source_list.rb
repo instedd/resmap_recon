@@ -115,12 +115,7 @@ class SourceList < ActiveRecord::Base
   end
 
   def unmapped_sites_csv
-    in_memory_sites_pending = []
-    sites_pending.each(true) do |s|
-      in_memory_sites_pending.push s
-    end
-
-    csv_serialize in_memory_sites_pending, [] do |site_projection|
+    csv_serialize sites_pending, [] do |site_projection|
       [site_projection, nil]
     end
   end
@@ -332,10 +327,18 @@ class SourceList < ActiveRecord::Base
 
   def find_sites_from_ids(ids)
     if ids.empty?
-      []
+      EmptySiteApiResult.new
     else
       as_collection.sites.where(site_id: ids).page_size(1000)
     end
   end
 
+  # Hack, I know...
+  class EmptySiteApiResult
+    def each(seamless_paging=false)
+      [].each do |e|
+        yield e
+      end
+    end
+  end  
 end
