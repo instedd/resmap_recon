@@ -54,9 +54,8 @@ class SourceList < ActiveRecord::Base
     find_sites_from_ids(ids)
   end
 
-  def sites_not_curated
-    ids = site_mappings.not_curated.pluck(:site_id)
-    find_sites_from_ids(ids)
+  def not_curated_site_ids
+    site_mappings.not_curated.pluck(:site_id)
   end
 
   def sites_with_mappings
@@ -66,7 +65,7 @@ class SourceList < ActiveRecord::Base
     end
 
     sites = find_sites_from_ids(mappings.keys)
-    
+
     sites.each(true) do |s|
       mappings[s.id.to_s]["site"] = s
     end
@@ -77,17 +76,17 @@ class SourceList < ActiveRecord::Base
   def csv_serialize(sites, extra_columns)
     collection = as_collection
     properties = collection.fields.select{|f| !f.name.starts_with?("_")}
-    remaining_fields = ['name', 'lat', 'long']    
+    remaining_fields = ['name', 'lat', 'long']
 
     csv_string = CSV.generate do |csv|
       csv << remaining_fields + properties.map(&:name) + extra_columns
-      
+
       sites.each do |site_projection|
         site, extras = yield(site_projection)
 
         data = site.data
         row = []
-        
+
         remaining_fields.each do |code|
           row << data[code]
         end
@@ -244,7 +243,7 @@ class SourceList < ActiveRecord::Base
 
     props = self.as_collection.fields.select { |f| properties_to_promote.include?(f.code) && !master_collection_fields.include?(f.code) }
 
-    props_to_create_in_master = props.map do |p| 
+    props_to_create_in_master = props.map do |p|
       {name: p.name, code: p.code, kind: 'text'}
     end
 
@@ -344,5 +343,5 @@ class SourceList < ActiveRecord::Base
         yield e
       end
     end
-  end  
+  end
 end

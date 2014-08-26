@@ -103,7 +103,7 @@ class ProjectSourcesController < ApplicationController
       return
     end
 
-    @sites_to_promote_url = AppContext.resmap_url_to_recon(@source.sites_not_curated.url)
+    @sites_to_promote_ids = @source.not_curated_site_ids
   end
 
   def promote_site
