@@ -8,8 +8,7 @@ set :rvm_ruby_version, '1.9.3'
 
 set :branch, ENV['REVISION'] || 'master'
 set :deploy_to, '/u/apps/resmap_recon'
-# set :deploy_to, '/var/www/my_app'
-# set :scm, :git
+set :port, 4000
 
 # set :format, :pretty
 # set :log_level, :debug
@@ -17,18 +16,51 @@ set :deploy_to, '/u/apps/resmap_recon'
 
 set :linked_files, %w{config/settings.yml config/database.yml config/guisso.yml config/newrelic.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-# set :keep_releases, 5
+namespace :foreman do
+  desc 'Export the Procfile to Ubuntu upstart scripts'
+  task :export do
+    on roles(:app) do
+      within current_path do
+        execute :echo, "RAILS_ENV=production > .env"
+        %w(PATH GEM_HOME GEM_PATH).each do |var|
+          execute :rvm, %(#{fetch(:rvm_ruby_version)} do ruby -e 'puts "#{var}=\#{ENV["#{var}"]}"' >> .env)
+        end
+        execute :bundle, "exec rvmsudo foreman export upstart /etc/init -f Procfile -a #{fetch(:application)} -u `whoami` -p #{fetch(:port)} --concurrency=\"web=1\""
+      end
+    end
+  end
+
+  desc "Start the application services"
+  task :start do
+    on roles(:app) do
+      sudo "start #{fetch(:application)}"
+    end
+  end
+
+  desc "Stop the application services"
+  task :stop do
+    on roles(:app) do
+      sudo "stop #{fetch(:application)}"
+    end
+  end
+
+  desc "Restart the application services"
+  task :restart do
+    on roles(:app) do
+      execute "sudo start #{fetch(:application)} || sudo restart #{fetch(:application)}"
+    end
+  end
+
+  after 'deploy:publishing', 'foreman:export'
+  after 'deploy:restart', 'foreman:restart'
+end
 
 namespace :deploy do
 
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
