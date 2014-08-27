@@ -2,11 +2,6 @@ source 'https://rubygems.org'
 # ruby '1.9.3'
 
 gem 'rails', '~> 3.2.13'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem "pg", :group => :production
 gem 'mysql2'
 gem 'devise'
 gem 'omniauth'
@@ -22,6 +17,8 @@ gem 'rack-oauth2', git: "https://github.com/manastech/rack-oauth2.git", branch: 
 gem 'alto_guisso', git: "https://bitbucket.org/instedd/alto_guisso.git", branch: 'master'
 gem 'resource_map_api_client', git: "https://bitbucket.org/instedd/resource_map_api_client.git", branch: 'master'
 gem 'activerecord-import'
+gem 'puma'
+gem 'foreman'
 
 # Gems used only for assets and not required
 # in production environments by default.
