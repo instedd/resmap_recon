@@ -22,6 +22,7 @@ describe SourceList do
 
     sites_relation = double(:sites_relation)
     sites.should_receive(:where).with({}).and_return(sites_relation)
+    sites_relation.should_receive(:page_size).with(1000).and_return(sites_relation)
 
     sites_relation.should_receive(:each).and_yield(MockSite.new(10, "Ten", {})).and_yield(MockSite.new(20, "Twenty", {}))
 
@@ -48,10 +49,27 @@ describe SourceList do
       ]
     }
 
-    def define_sites_pending(properties)
-      sites_pending = properties.each_with_index.map do |props, i|
-        MockSite.new(i + 1, "Site#{i}", props)
+    class SiteRelationMock
+      def initialize(enumerable)
+        @sites = enumerable
       end
+
+      def each(flag=true)
+        @sites.each do |s|
+          yield(s) 
+        end
+      end
+
+      def total_count
+        @sites.length
+      end
+    end
+
+    def define_sites_pending(properties)
+      sites_pending = SiteRelationMock.new(properties.each_with_index.map do |props, i|
+        MockSite.new(i + 1, "Site#{i}", props)
+      end)
+
       source_list.stub sites_pending: sites_pending
 
       properties.length.times do |i|
