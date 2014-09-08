@@ -49,6 +49,7 @@ ResmapRecon::Application.routes.draw do
           post 'create'
           get 'search'
           get 'find_duplicates'
+          get 'map'
         end
         member do
           post 'update'
