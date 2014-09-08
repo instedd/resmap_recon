@@ -18,6 +18,6 @@ SourceList.blueprint do
 end
 
 SiteMapping.blueprint do
-  source_list
   name
+  project
 end
