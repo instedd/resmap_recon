@@ -55,6 +55,7 @@ end
 group :test do
   gem 'machinist', '1.0.6'
   gem 'faker'
+  gem 'shoulda'
 end
 
 group :profile do
