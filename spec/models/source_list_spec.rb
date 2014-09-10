@@ -54,7 +54,7 @@ describe SourceList do
         @sites = enumerable
       end
 
-      def each(flag=true)
+      def each(flag=false)
         @sites.each do |s|
           yield(s) 
         end

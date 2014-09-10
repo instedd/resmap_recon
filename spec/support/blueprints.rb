@@ -19,5 +19,4 @@ end
 
 SiteMapping.blueprint do
   name
-  project
 end

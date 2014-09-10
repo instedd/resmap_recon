@@ -157,6 +157,13 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def unmapped_mfl_sites?
+    # TODO: change this to pluck if we ever migrate to Rails 4. There's no multicolumn pluck in Rails 3 :(.
+    #mappings = ActiveRecord::Base.connection.select_all site_mappings.non_source_list.select [:mfl_site_id, :mfl_hierarchy]
+
+    
+  end
+
   def app_suffix
     "#{Settings.system_id}_#{id}"
   end
