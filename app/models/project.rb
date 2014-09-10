@@ -164,6 +164,24 @@ class Project < ActiveRecord::Base
     
   end
 
+  def search_mfl(options={})
+    page_size = options[:page_size] || 50
+    page = options[:page] || 1
+    search = options[:search] || {}
+    hierarchy = options[:hierarchy]
+
+    sites = self.master_collection.sites
+
+    if search.empty? && !hierarchy
+      sites = sites.where({})
+    else
+      sites = sites.where(search: search) unless search.empty?
+      sites = sites.where("#{self.target_field.code}[under]" => hierarchy) if hierarchy
+    end
+
+    sites.page_size(page_size).page(page)
+  end
+
   def app_suffix
     "#{Settings.system_id}_#{id}"
   end

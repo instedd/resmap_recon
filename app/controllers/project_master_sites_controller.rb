@@ -7,13 +7,12 @@ class ProjectMasterSitesController < ApplicationController
   end
 
   def search
-    sites = @project.master_collection.sites
     page = 1
     if params[:id].present?
-      sites = [sites.find(params[:id])]
+      sites = [@project.master_collection.sites.find(params[:id])]
     else
       page = params[:page] || 1
-      sites = search_mfl(sites, params[:hierarchy], params[:search], page)
+      sites = @project.search_mfl(hierarchy: params[:hierarchy], search: params[:search], page: page, page_size: 5)
     end
 
     headers = []
@@ -125,16 +124,5 @@ class ProjectMasterSitesController < ApplicationController
         source_list.consolidate_with(source_site[:id], master_site.id)
       end
     end
-  end
-
-  def search_mfl(sites, hierarchy, search, page)
-    if !hierarchy && search.empty?
-      sites = sites.where({})
-    else
-      sites = sites.where(search: search) if search.present?
-      sites = sites.where("#{@project.target_field.code}[under]" => hierarchy) if hierarchy
-    end
-    sites = sites.page_size(5).page(page)
-    sites
   end
 end
