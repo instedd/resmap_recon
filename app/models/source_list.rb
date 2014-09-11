@@ -131,39 +131,6 @@ class SourceList < ActiveRecord::Base
     site.save!
   end
 
-  def promote_to_master(site_id)
-    if project.promoted_source_list_id != self.id
-      project.promoted_source_list_id = self.id
-      project.save!
-    end
-
-    # grab site info
-    s = self.as_collection.sites.find(site_id)
-
-    # TODO raise exception if the site is already consolidated.
-
-    # build master site info:
-    #  * name/lat/long
-    #  * common_properties_with_master
-    #  * mapped geo-political hierarchy
-    name = s.data['name']
-    lat = s.data['lat']
-    long = s.data['long']
-
-    mapped_target_value = site_mappings.find_by_site_id(site_id).mfl_hierarchy
-
-    properties = s.data['properties'].select{|k,v| common_properties_with_master.include?(k.to_s)}
-    properties[project.target_field.code] = mapped_target_value
-    # create master site
-    new_site = project.master_collection.sites.create(name:name)
-    new_site.update_properties(lat: lat, long: long, properties: properties)
-
-    # mark as consolidated
-    self.consolidate_with(site_id, new_site.id)
-
-    true
-  end
-
   # returns array of codes of properties that are shared among
   # this source_list's collection and the master collection
   def common_properties_with_master
@@ -172,10 +139,6 @@ class SourceList < ActiveRecord::Base
 
   def properties_not_in_master
     (self.as_collection.fields.map &:code) - (self.project.master_collection.fields.map &:code)
-  end
-
-  def can_promote?
-    project.no_source_list_was_promoted? || !project.has_facilities?
   end
 
   def consolidated_with(master_site_id)
@@ -233,22 +196,6 @@ class SourceList < ActiveRecord::Base
     end
 
     SiteMapping.import mappings
-  end
-
-  def promote_properties_to_master(properties_to_promote)
-    return if properties_to_promote.nil?
-
-    master_collection = project.master_collection
-    master_collection_fields = master_collection.fields.map &:code
-
-    props = self.as_collection.fields.select { |f| properties_to_promote.include?(f.code) && !master_collection_fields.include?(f.code) }
-
-    props_to_create_in_master = props.map do |p|
-      {name: p.name, code: p.code, kind: 'text'}
-    end
-
-    layer = project.master_collection.find_or_create_layer_by_name 'Main'
-    layer.create_fields props_to_create_in_master
   end
 
   def process_automapping(chosen_fields)

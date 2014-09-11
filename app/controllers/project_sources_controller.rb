@@ -97,29 +97,6 @@ class ProjectSourcesController < ApplicationController
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@source.name}")
   end
 
-  def promote_facilities
-    if @source.current_site_mappings.count == 0
-      render 'mapping_property_not_set'
-      return
-    end
-
-    @sites_to_promote_ids = @source.not_curated_site_ids
-  end
-
-  def promote_site
-    if @source.promote_to_master(params[:site_id])
-      status = 'ok'
-    else
-      status = 'fail'
-    end
-    render json: {status: status}
-  end
-
-  def promote_properties
-    @source.promote_properties_to_master params[:properties_to_promote]
-    render json: {status: 'ok'}
-  end
-
   def process_automapping
     # corrections = flatten_corrections(params[:corrections]) || {}
     # error_tree, count = @source.process_automapping(params[:chosen_fields], corrections)
