@@ -102,14 +102,4 @@ describe Project do
       end
     end
   end
-  
-  pending '#unmapped_mfl_sites?' do
-    it 'has unmapped sites' do
-      expect(project.unmapped_mfl_sites?).to be_true
-    end
-
-    it 'does not have unmapped sites' do
-      expect(project.unmapped_mfl_sites?).to be_false
-    end
-  end
 end

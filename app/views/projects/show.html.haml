@@ -4,18 +4,12 @@
     %h2 Step 1. Define MFL Schema
 
     .row-fluid
-      .span4
-        / .well.well-small.well-white
+      .span6
         %p
           = link_to 'Review MFL Schema in Resource Map →', @project.master_collection.layers_url, target: '_blank'
-      / .span4
-      /   .well.well-small.well-white
-      /     %p
-      /       = link_to 'Import CSV to MFL →', @project.master_collection.import_wizard_url, target: '_blank'
-
-      / .span3
-      /   %i.icon-info-sign
-      /   Do you like have initial data for MFL? The import will guide you to create schema also.
+        - if @project.master_collection.site_count == 0
+          %p
+            = link_to "Import initial MFL data using Resource Map's Import Wizard →", @project.master_collection.import_wizard_url, target: '_blank'
 
     %h2 Step 2. Import and  Map Source List
     Note: Unmapped records can't be reconciled in Step 3
