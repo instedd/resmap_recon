@@ -95,19 +95,20 @@ angular.module('Curation',['RmHierarchyService'])
       site.properties["admin_division_path"] = node.path
 
   $scope.load_mfl_page = (page_to_load = 1, search = "") ->
-    params = { params: {hierarchy: $scope.selected_node?.id, search: search, page: page_to_load} }
-    page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
+    if $scope.selected_node?
+      params = { params: {hierarchy: $scope.selected_node?.id, search: search, page: page_to_load} }
+      page_request = $http.get("/projects/#{$scope.project_id}/master/sites/search.json", params)
 
-    page_request.success (data) ->
-      $scope.mfl_sites.items = data.items
-      $scope.mfl_sites.headers = data.headers
+      page_request.success (data) ->
+        $scope.mfl_sites.items = data.items
+        $scope.mfl_sites.headers = data.headers
 
-      $scope.mfl_sites.current_page = data.current_page
-      $scope.mfl_sites.total_count = data.total_count
+        $scope.mfl_sites.current_page = data.current_page
+        $scope.mfl_sites.total_count = data.total_count
 
-      $scope.mfl_sites.loaded = true
+        $scope.mfl_sites.loaded = true
 
-      $scope.hierarchy_codes_to_paths()
+        $scope.hierarchy_codes_to_paths()
 
   $scope.view_reconciliations = () ->
     $http.get("/projects/#{$scope.project_id}/master/sites/#{$scope.target_mfl_site.id}/consolidated_sites")
