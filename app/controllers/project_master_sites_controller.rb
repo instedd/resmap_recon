@@ -74,6 +74,10 @@ class ProjectMasterSitesController < ApplicationController
     send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@project.name}")
   end
 
+  def csv_download_from_rm
+    redirect_to @project.master_collection.csv_url
+  end
+
   def find_duplicates
     sites = @project.master_collection.sites
     sites = sites.where(name: params[:name])

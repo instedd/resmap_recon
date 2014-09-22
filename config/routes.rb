@@ -40,6 +40,7 @@ ResmapRecon::Application.routes.draw do
     end
     resource :master, only: [] do
       get 'csv_download', controller: :project_master_sites
+      get 'csv_download_from_rm', controller: :project_master_sites
       resources :sites, controller: 'project_master_sites', only: [] do
         collection do
           get 'index'
